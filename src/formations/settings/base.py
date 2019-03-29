@@ -9,6 +9,9 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
+print('---------------------')
+print("Je suis dans la BASE ")
+print('---------------------')
 
 import os
 
