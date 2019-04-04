@@ -15,6 +15,15 @@ print('---------------------')
 import os
 from formations.aws.conf import *
 
+# Email configuration
+EMAIL_HOST = 'smtp.sendgrid.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')  # username sur sendgrid.com
+EMAIL_MAIN = os.environ.get('EMAIL_MAIN')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD') # code sur sendgrid.com
+EMAIL_PORT = 587
+EMAIL_USER_TLS = False
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
@@ -45,7 +54,6 @@ DATABASES['default']['CONN_MAX_AGE'] = 500
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,13 +61,49 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # external apps
+    'crispy_forms',
     'storages',
-
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.linkedin',
     # internal apps
-    'formations'
+    'formations',
+    'cours'
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.12',
+    }
+}
+SITE_ID = 1
+CRISPY_TEMPLATE_PACK = "bootstrap3"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -93,7 +137,12 @@ WSGI_APPLICATION = 'formations.wsgi.application'
 
 
 
-
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -141,3 +190,12 @@ CSRF_COOKIE_SECURE              = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
 SECURE_HSTS_SECONDS             = 1000000
 SECURE_FRAME_DENY               = True
+
+# Authentification configuration
+ACCOUNT_EMAIL_REQUIRED=True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+LOGIN_REDIRECT_URL = "/"
+SOCIALACCOUNT_QUERY_EMAIL=ACCOUNT_EMAIL_REQUIRED
+SOCIALACCOUNT_EMAIL_REQUIRED=ACCOUNT_EMAIL_REQUIRED
+SOCIALACCOUNT_STORE_TOKENS=False

@@ -1,0 +1,51 @@
+
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+  <nav id="menu" class="fake_menu"></nav>
+
+  <div id="preloader">
+    <div data-loader="circle-side"></div>
+  </div>
+  <!-- End Preload -->
+
+  <div id="login">
+    <aside>
+      <figure>
+        <a href="index.html"><img src="{% static 'img/logo.png' %}" width="149" height="42" data-retina="true" alt=""></a>
+      </figure>
+
+            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}" style="display:flex;">
+              <div class="">
+                {% csrf_token %}
+                <div class="text-left">
+                  {% crispy form %}
+                </div>
+
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+                <button type="submit" class="btn_1 rounded full-width add_top_60">Register to Udema</button>
+                <div class="text-center add_top_10">Already have an acccount? <strong><a href="{% url 'account_login' %}">Sign in</a></strong></div>
+              </div>
+            </form>
+            <div class="copy">© 2019 Udema</div>
+
+      <div class="copy">© 2019 Udema</div>
+    </aside>
+  </div>
+  <!-- /login -->
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
