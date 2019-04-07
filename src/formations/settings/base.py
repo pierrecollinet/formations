@@ -54,7 +54,9 @@ INSTALLED_APPS = [
 
     # internal apps
     'formations',
-    'cours'
+    'cours',
+    'formateurs',
+    'apprenants'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {

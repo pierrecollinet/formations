@@ -38,7 +38,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'SOME+RANDOM+KEY(z9+3vnm(jb0u@&w68t#5_
 
 
 DEBUG = False
-ALLOWED_HOSTS =  ['airbnb-formations.herokuapp.com', '.yourdomain.com']
+ALLOWED_HOSTS =  ['airbnb-formations2.herokuapp.com', '.yourdomain.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -72,9 +72,12 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.linkedin',
+
     # internal apps
     'formations',
-    'cours'
+    'cours',
+    'formateurs',
+    'apprenants'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {

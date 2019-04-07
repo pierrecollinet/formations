@@ -5,8 +5,12 @@ from cours.models import Cours
 
 def detail_cours(request, pk):
     cours = Cours.objects.get(pk=pk)
-    return render(request, 'detail_cours.html', {"cours":cours})
+    return render(request, 'cours/detail_cours.html', {"cours":cours})
 
-def liste_cours(request):
+def courses_grid(request):
     cours = Cours.objects.all()
-    return render(request, 'liste_cours.html', {"cours":cours})
+    return render(request, 'cours/courses-grid-sidebar.html', {"cours":cours})
+
+def courses_list(request):
+    cours = Cours.objects.all()
+    return render(request, 'cours/courses-list-sidebar.html', {"cours":cours})

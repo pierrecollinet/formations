@@ -12,7 +12,11 @@
     <body>
       <div id="page">
         {% block navbar %}
-        {% include 'base/navbar.html'%}
+          {% if request.user.is_authenticated %}
+            {% include 'base/navbar_logged_user.html'%}
+          {% else %}
+            {% include 'base/navbar.html'%}
+          {% endif %}
         {% endblock %}
 
           {% if messages %}
