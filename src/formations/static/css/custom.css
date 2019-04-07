@@ -1,3 +1,19 @@
 /*============================================================================================*/
-/* Your custom styles below */
+/* My custom styles  */
 /*============================================================================================*/
+
+ul#top_menu li a.btn_2 {
+  background-color: transparent;
+  border : solid 1px #fff;
+  color: #fff;
+  padding: 13px 30px;
+}
+ul#top_menu li a.btn_2:hover {
+  background-color: #FFC107;
+  color: #fff;
+  opacity: 1;
+}
+
+.nav-icon {
+  font-size:25px;
+}

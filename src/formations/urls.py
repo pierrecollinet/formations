@@ -1,10 +1,13 @@
 from django.conf.urls import url, include
 from django.contrib import admin
-from formations.views import welcome, contact
+from formations.views import welcome, contact, about, faq, terms_and_conditions
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', welcome, name='welcome'),
     url(r'^contact$', contact, name='contact'),
+    url(r'^about$', about, name='about'),
+    url(r'^faq$', faq, name='faq'),
+    url(r'^terms_and_conditions$', terms_and_conditions, name='terms-and-conditions'),
 
     url(r'^cours/', include('cours.urls')),
     url(r'^formateurs/', include('formateurs.urls')),

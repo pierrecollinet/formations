@@ -5,9 +5,10 @@
       <a href="{% url 'welcome' %}"><img src="{% static 'img/logo.png' %}" width="149" height="42" data-retina="true" alt=""></a>
     </div>
     <ul id="top_menu">
-      <li><a href="login.html" class="login">Login</a></li>
+      <li><a href="login.html"><i class="icon-cart nav-icon"></i></a></li>
       <li><a href="#0" class="search-overlay-menu-btn">Search</a></li>
-      <li class="hidden_tablet"><a href="{% url 'account_signup' %}" class="btn_1 rounded">Try it ! </a></li>
+      <li><a href="{% url 'account_login' %}" class="btn_2 rounded">Login</a></li>
+      <li class="hidden_tablet"><a href="{% url 'account_signup' %}" class="btn_1 ">Register</a></li>
     </ul>
     <!-- /top_menu -->
     <a href="#menu" class="btn_mobile">
@@ -19,7 +20,7 @@
     </a>
     <nav id="menu" class="main-menu">
       <ul>
-        <li><span><a href="#0">Home</a></span>
+        <li><span><a href="#0">Categories</a></span>
           <ul>
             <li><a href="index.html">Home version 1</a></li>
             <li><a href="index-2.html">Home version 2</a></li>
@@ -29,9 +30,8 @@
             <li><a href="index-5.html">With Cookie bar (EU law)</a></li>
           </ul>
         </li>
-        <li><span><a href="#0">Courses</a></span></li>
 
-        <li><span><a href="#0">Buy template</a></span></li>
+        <li><span><a href="#0">Enseigner sur Udema</a></span></li>
       </ul>
     </nav>
     <!-- Search Menu -->

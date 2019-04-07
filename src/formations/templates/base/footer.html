@@ -18,8 +18,8 @@
         <div class="col-lg-3 col-md-6 ml-lg-auto">
           <h5>Useful links</h5>
           <ul class="links">
-            <li><a href="#0">Admission</a></li>
-            <li><a href="#0">About</a></li>
+            <li><a href="{% url 'faq' %}">FAQ</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
             <li><a href="{% url 'account_login' %}">Login</a></li>
             <li><a href="{% url 'account_signup' %}">Register</a></li>
             <li><a href="#0">News &amp; Events</a></li>
@@ -49,7 +49,7 @@
       <div class="row">
         <div class="col-md-8">
           <ul id="additional_links">
-            <li><a href="#0">Terms and conditions</a></li>
+            <li><a href="{% url 'terms-and-conditions' %}">Terms and conditions</a></li>
             <li><a href="#0">Privacy</a></li>
           </ul>
         </div>
