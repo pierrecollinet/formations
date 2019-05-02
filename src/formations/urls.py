@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^contact$', contact, name='contact'),
     url(r'^about$', about, name='about'),
     url(r'^faq$', faq, name='faq'),
-    url(r'^terms_and_conditions$', terms_and_conditions, name='terms-and-conditions'),
+    url(r'^terms-and-conditions$', terms_and_conditions, name='terms-and-conditions'),
 
     url(r'^cours/', include('cours.urls')),
     url(r'^formateurs/', include('formateurs.urls')),
