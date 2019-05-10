@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.linkedin',
+    'fontawesome',
 
     # internal apps
     'formations',
