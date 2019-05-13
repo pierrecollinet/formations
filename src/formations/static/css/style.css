@@ -93,9 +93,10 @@ Author URI: http://themeforest.net/user/Ansonika/
     padding: 0 8px 15px 8px;
     font-size: 13px;
     font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    font-weight: 400;
+   /* letter-spacing: 2px;*/
+  /*  text-transform: uppercase; */
+    font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
   }
   .main-menu > ul > li span:hover > a {
     opacity: 0.7;
@@ -685,7 +686,7 @@ ul#top_menu li {
   margin: 2px 0 0 0;
   text-transform: uppercase;
   font-weight: 600;
-  letter-spacing: 2px;
+/*  letter-spacing: 2px; */
   line-height: 1;
   margin-right: 20px;
 }
@@ -735,7 +736,7 @@ ul#top_menu li a.search-overlay-menu-btn:before {
 ul#top_menu li a.btn_1 {
   background-color: #FFC107;
   color: #333;
-  padding: 13px 30px;
+  padding: 11px 12px;
 }
 ul#top_menu li a.btn_1:hover {
   background-color: #3f9fff;

@@ -113,10 +113,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'formations.context_processors.categories_processor',
+                'formations.context_processors.best_courses_processor',
             ],
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'formations.wsgi.application'
 
