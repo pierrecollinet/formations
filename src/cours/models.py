@@ -20,7 +20,7 @@ class Cours(models.Model):
     titre              = models.CharField(max_length = 500)
     courte_description = models.TextField()
     long_description   = models.TextField()
-    image              = models.ImageField()
+    image              = models.ImageField(upload_to = 'mes_images/')
     active             = models.BooleanField(default = True)
 
     def __str__(self):

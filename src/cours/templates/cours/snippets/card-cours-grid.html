@@ -1,0 +1,21 @@
+<div class="box_grid wow">
+  <figure class="block-reveal">
+    <div class="block-horizzontal"></div>
+    <a href="#0" class="wish_bt"></a>
+    <a href="course-detail.html"><img src="{{ instance.image.url }}" class="img-fluid" alt="" style="width: 800px;height: 250px;object-fit: cover";></a>
+    <div class="price">$54</div>
+    <div class="preview" href="{% url 'detail-cours' pk=instance.pk %}"><span>En savoir plus</span></div>
+
+  </figure>
+  <div class="wrapper">
+    <small>{% for cat in instance.categoriecours_set.all %}{{ cat.categorie.nom }}{% endfor %}</small>
+    <h3>{{ instance.titre }}</h3>
+    <p>{{ instance.courte_description }}</p>
+    <div class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i> <small>(145)</small></div>
+  </div>
+  <ul>
+    <li><i class="icon_clock_alt"></i> 1h 30min</li>
+    <li><i class="icon_like"></i> 890</li>
+    <li><a href="{% url 'detail-cours' pk=instance.pk %}">Participer</a></li>
+  </ul>
+</div>

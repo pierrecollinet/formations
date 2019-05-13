@@ -14,7 +14,7 @@
     <section id="hero_in" class="courses">
       <div class="wrapper">
         <div class="container">
-          <h1 class="fadeInUp"><span></span>Online course detail - {{ cours.titre }}</h1>
+          <h1 class="fadeInUp"><span></span>{{ cours.titre }}</h1>
         </div>
       </div>
     </section>
@@ -72,8 +72,7 @@
               <div class="intro_title">
                 <h2>Lessons</h2>
                 <ul>
-                  <li>18 lessons</li>
-                  <li>01:02:10</li>
+                  <li>{{cours.lecon_set.all|length }} lessons</li>
                 </ul>
               </div>
               <div id="accordion_lessons" role="tablist" class="add_bottom_45">

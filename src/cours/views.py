@@ -10,8 +10,10 @@ def detail_cours(request, pk):
 
 def courses_grid(request):
     cours = Cours.objects.all()
-    return render(request, 'cours/courses-grid-sidebar.html', {"cours":cours})
+    categories = Categorie.objects.all()
+    return render(request, 'cours/courses-grid-sidebar.html', {"cours":cours, "categories":categories})
 
 def courses_list(request):
     cours = Cours.objects.all()
-    return render(request, 'cours/courses-list-sidebar.html', {"cours":cours})
+    categories = Categorie.objects.all()
+    return render(request, 'cours/courses-list-sidebar.html', {"cours":cours, "categories":categories})
