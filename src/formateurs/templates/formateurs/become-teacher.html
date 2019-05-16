@@ -1,0 +1,146 @@
+{% extends "formateurs/base.html" %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load account socialaccount %}
+
+{% block head_title %}{% endblock %}
+
+{% block content %}
+  <!-- /Navigation-->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Devenir Professeur</li>
+      </ol>
+    <form method="post" action="{% url 'become-teacher' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="box_general padding_bottom">
+        <div class="header_box version_2">
+          <h2><i class="fa fa-file"></i>Infos de base</h2>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Prénom</label>
+              {% render_field form.prenom type="text" class="form-control" placeholder="Ton prénom" %}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Nom</label>
+              {% render_field form.nom type="text" class="form-control" placeholder="Ton nom de famille" %}
+            </div>
+          </div>
+        </div>
+        <!-- /row-->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>GSM</label>
+              {% render_field form.gsm type="text" class="form-control" placeholder="Ton numéro de gsm" required="True" %}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Email</label>
+              {% render_field form.email type="email" class="form-control" placeholder="Ton adresse email" required="True" %}
+            </div>
+          </div>
+        </div>
+        <!-- /row-->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Photo de profil</label>
+              {% render_field form.photo_profil required="True" %}
+            </div>
+          </div>
+        </div>
+        <!-- /row-->
+      </div>
+      <!-- /box_general-->
+
+      <div class="box_general padding_bottom">
+        <div class="header_box version_2">
+          <h2><i class="fa fa-share-alt"></i>Social profiles</h2>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            {% if form.facebook_link.errors %}
+              <div class="alert alert-danger" role="alert" >
+                {{ form.facebook_link.errors }}
+              </div>
+            {% endif %}
+            <div class="form-group">
+              <label>Facebook</label>
+              {% render_field form.facebook_link type="text" class="form-control" placeholder="Link" %}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Linkdin</label>
+              {% render_field form.linkdin_link type="text" class="form-control" placeholder="Link" %}
+            </div>
+          </div>
+        </div>
+        <!-- /row-->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Google Plus</label>
+              {% render_field form.googleplus_link type="text" class="form-control" placeholder="Link" %}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Twitter</label>
+              {% render_field form.twitter_link type="text" class="form-control" placeholder="Link" %}
+            </div>
+          </div>
+        </div>
+        <!-- /row-->
+      </div>
+      <!-- /box_general-->
+
+      <div class="box_general padding_bottom">
+        <div class="header_box version_2">
+          <h2><i class="fa fa-file-text"></i>Curriculum</h2>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Professional statement</label>
+              <textarea rows="5" class="form-control" style="height:100px;" placeholder="Description"></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- /row-->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Spécialisation <a href="#0" data-toggle="tooltip" data-placement="top" title="Séparés par des virgules..."><i class="fa fa-fw fa-question-circle"></i></a></label>
+              <input type="text" class="form-control" placeholder="Ex: Physique, Mathématique, Biologie...">
+            </div>
+          </div>
+        </div>
+        <!-- /row-->
+      </div>
+      <!-- /box_general-->
+
+      <!-- /box_general-->
+      <p><input type="submit" class="btn_1 medium" value="Confirmer"></p>
+    </form>
+    </div>
+    <!-- /.container-fluid-->
+    </div>
+    <!-- /.container-wrapper-->
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

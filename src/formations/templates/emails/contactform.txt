@@ -1,0 +1,5 @@
+Nom : {{ nom }}
+Prénom : {{ prenom }}
+Email : {{ email }}
+Gsm : {{ gsm }}
+Message : {{ message }}

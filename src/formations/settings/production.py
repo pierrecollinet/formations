@@ -37,7 +37,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'SOME+RANDOM+KEY(z9+3vnm(jb0u@&w68t#5_
 
 
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS =  ['airbnb-formations2.herokuapp.com', '.yourdomain.com']
 DATABASES = {
     'default': {
@@ -173,7 +173,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-FR'
 
 TIME_ZONE = 'UTC'
 
