@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load widget_tweaks %}
 
 {% block content %}
   <main>
@@ -18,19 +18,19 @@
         <ul class="clearfix">
           <li>
             <i class="pe-7s-map-marker"></i>
-            <h4>Address</h4>
-            <span>PO Box 97845 Baker st. 567, Los Angeles<br>California - US.</span>
+            <h4>Adresse</h4>
+            <span>Rue Armand Campenhout, 61<br>Bruxelles - Belgique</span>
           </li>
           <li>
             <i class="pe-7s-mail-open-file"></i>
-            <h4>Email address</h4>
-            <span>admission@udema.com - info@udema.com<br><small>Monday to Friday 9am - 7pm</small></span>
+            <h4>Adresse Email</h4>
+            <span>admission@udema.com - info@udema.com<br><small>Lundi au Vendredi 9am - 7pm</small></span>
 
           </li>
           <li>
             <i class="pe-7s-phone"></i>
-            <h4>Contacts info</h4>
-            <span>+ 61 (2) 8093 3402 + 61 (2) 8093 3402<br><small>Monday to Friday 9am - 7pm</small></span>
+            <h4>Téléphone</h4>
+            <span>+ 32 476 31 27 45 + 32 499 92 81 26<br><small>Lundi au Vendredi 9am - 7pm</small></span>
           </li>
         </ul>
       </div>
@@ -46,24 +46,26 @@
             <!-- /map -->
           </div>
           <div class="col-lg-6">
-            <h4>Send a message</h4>
-            <p>Ex quem dicta delicata usu, zril vocibus maiestatis in qui.</p>
+            <h4>Contactez-nous</h4>
+            <p>Un membre de l'équipe vous répondra aussi vite que possible !</p>
             <div id="message-contact"></div>
-            <form method="post" action="assets/contact.php" id="contactform" autocomplete="off">
+            <form method="post" action="{% url 'contact' %}" id="form">
+              {% csrf_token %}
               <div class="row">
                 <div class="col-md-6">
                   <span class="input">
-                    <input class="input_field" type="text" id="name_contact" name="name_contact">
+                    {% render_field form.nom class="input_field" type="text" id="name_contact" name="name_contact" %}
                     <label class="input_label">
-                      <span class="input__label-content">Your Name</span>
+                      <span class="input__label-content">Nom</span>
                     </label>
                   </span>
                 </div>
+
                 <div class="col-md-6">
                   <span class="input">
-                    <input class="input_field" type="text" id="lastname_contact" name="lastname_contact">
+                    {% render_field form.prenom class="input_field" type="text" id="lastname_contact" name="lastname_contact" %}
                     <label class="input_label">
-                      <span class="input__label-content">Last name</span>
+                      <span class="input__label-content">Prénom</span>
                     </label>
                   </span>
                 </div>
@@ -72,36 +74,42 @@
               <div class="row">
                 <div class="col-md-6">
                   <span class="input">
-                    <input class="input_field" type="email" id="email_contact" name="email_contact">
+                    {% render_field form.email class="input_field" type="email" id="email_contact" name="email_contact" %}
                     <label class="input_label">
-                      <span class="input__label-content">Your email</span>
+                      <span class="input__label-content">Adresse Email</span>
                     </label>
                   </span>
                 </div>
                 <div class="col-md-6">
                   <span class="input">
-                    <input class="input_field" type="text" id="phone_contact" name="phone_contact">
+                    {% render_field form.gsm class="input_field" type="text" id="phone_contact" name="phone_contact" %}
                     <label class="input_label">
-                      <span class="input__label-content">Your telephone</span>
+                      <span class="input__label-content">GSM</span>
                     </label>
                   </span>
                 </div>
               </div>
               <!-- /row -->
               <span class="input">
-                  <textarea class="input_field" id="message_contact" name="message_contact" style="height:150px;"></textarea>
+                  {% render_field form.message class="input_field" id="message_contact" name="message_contact" style="height:150px;" %}
                   <label class="input_label">
-                    <span class="input__label-content">Your message</span>
+                    <span class="input__label-content">Ton Message</span>
                   </label>
               </span>
+                  {% if form.check_human.errors %}
+                    <div class="alert alert-danger" role="alert" >
+                      {{ form.check_human.errors }}
+                    </div>
+                  {% endif %}
               <span class="input">
-                  <input class="input_field" type="text" id="verify_contact" name="verify_contact">
+                  {% render_field form.check_human class="input_field" type="text" id="verify_contact" name="verify_contact" %}
                   <label class="input_label">
-                  <span class="input__label-content">Are you human? 3 + 1 =</span>
+                  <span class="input__label-content">Es-tu humain? 3 + 1 =</span>
                   </label>
               </span>
-              <p class="add_top_30"><input type="submit" value="Submit" class="btn_1 rounded" id="submit-contact"></p>
+              <p class="add_top_30"><input type="submit" value="Envoyer" class="btn_1 rounded" id="submit-contact"></p>
             </form>
+
           </div>
         </div>
         <!-- /row -->
@@ -112,3 +120,19 @@
   </main>
 {% endblock %}
 
+{% block javascript %}
+<script>
+$(function () {
+    {% if anchor %}
+        console.log("ancre repérée")
+        $(document).ready(function(){
+            window.location = '#{{ anchor }}'
+        });
+        $(document.body).animate({
+
+            'scrollTop':   $('#{{ anchor }}').offset().top
+        }, 2000);
+    {% endif %}
+});
+</script>
+{% endblock %}

@@ -20,7 +20,7 @@
     </section>
     <!--/hero_in-->
 
-    <div class="filters_listing sticky_horizontal">
+    <div class="filters_listing sticky_horizontal" >
       <div class="container">
         <ul class="clearfix">
           <li>
@@ -40,11 +40,11 @@
             </div>
           </li>
           <li>
-            <select name="orderby" class="selectbox">
+            <select name="orderby" class="selectbox" onchange="location = this.value;">
               <option value="category">Categories</option>
               <option value="all">Tout</option>
               {% for categorie in categories %}
-              <option value="category_{{ categorie.id }}">{{ categorie.nom }}</option>
+              <option value="{% url 'categorie-grid' pk=categorie.pk %}">{{ categorie.nom }}</option>
               {% endfor %}
               </select>
           </li>
@@ -54,7 +54,7 @@
     </div>
     <!-- /filters -->
 
-    <div class="container margin_60_35">
+    <div class="container margin_60_35" id="courses">
       <div class="row">
         <aside class="col-lg-3" id="sidebar">
           <div id="filters_col"> <a data-toggle="collapse" href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filters_col_bt">Filters </a>
@@ -64,13 +64,13 @@
                 <ul>
                   <li>
                     <label>
-                      <input type="checkbox" class="icheck" checked>Tout <small>(945)</small>
+                      <input type="checkbox" class="icheck" checked><a href="{% url 'courses-grid' %}">Tout <small></small></a>
                     </label>
                   </li>
                   {% for categorie in categories %}
                   <li>
                     <label>
-                      <input type="checkbox" class="icheck" checked>{{ categorie.nom }} <small>(945)</small>
+                      <input type="checkbox" class="icheck" checked><a href="{% url 'categorie-grid' pk=categorie.pk %}">{{ categorie.nom }} <small>({{ categorie.get_number_cours }})</small></a>
                     </label>
                   </li>
                   {% endfor %}
@@ -120,12 +120,18 @@
 
         <div class="col-lg-9">
           <div class="row" style="display:flex;">
-            {% for c in cours %}
-            <div class="col-md-6" style="display:flex;">
-              {% include 'cours/snippets/card-cours-grid.html' with instance=c %}
-            </div>
-            <!-- /box_grid -->
-            {% endfor %}
+            {% if cours|length > 0%}
+              {% for c in cours %}
+              <div class="col-md-6" style="display:flex;">
+                {% include 'cours/snippets/card-cours-grid.html' with instance=c %}
+              </div>
+              <!-- /box_grid -->
+              {% endfor %}
+            {% else %}
+              <div class="col-md-6" style="display:flex;">
+                <p>Aucun résultat ne correspond à votre recherche.</p>
+              </div>
+            {% endif %}
           </div>
           <!-- /row -->
           <p class="text-center"><a href="#0" class="btn_1 rounded add_top_30">Charger plus</a></p>
@@ -170,4 +176,21 @@
   <!--/main-->
 
 
+{% endblock %}
+
+{% block javascript %}
+<script>
+$(function () {
+    {% if anchor %}
+        console.log("ancre repérée")
+        $(document).ready(function(){
+            window.location = '#{{ anchor }}'
+        });
+        $(document.body).animate({
+
+            'scrollTop':   $('#{{ anchor }}').offset().top
+        }, 2000);
+    {% endif %}
+});
+</script>
 {% endblock %}

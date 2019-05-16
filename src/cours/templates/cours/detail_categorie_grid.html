@@ -5,16 +5,16 @@
 {% load crispy_forms_tags %}
 {% load account socialaccount %}
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block head_title %}Tous nos cours en {{ categorie }}{% endblock %}
 
 
 {% block content %}
 
   <main>
-    <section id="hero_in" class="courses">
+    <section id="hero_in" class="courses small_header">
       <div class="wrapper">
         <div class="container">
-          <h1 class="fadeInUp"><span></span>Nos cours</h1>
+          <h1 class="fadeInUp"><span></span>{{ categorie }}</h1>
         </div>
       </div>
     </section>
@@ -41,10 +41,10 @@
           </li>
           <li>
             <select name="orderby" class="selectbox" onchange="location = this.value;">
-              <option value="category">Categories</option>
-              <option value="all">Tout</option>
+              <option value="{% url 'courses-grid' %}">Categories</option>
+              <option value="{% url 'courses-grid' %}">Tout</option>
               {% for categorie in categories %}
-              <option value="{% url 'categorie-list' pk=categorie.pk %}">{{ categorie.nom }}</option>
+              <option value="{% url 'categorie-grid' pk=categorie.pk %}">{{ categorie.nom }}</option>
               {% endfor %}
               </select>
           </li>
@@ -64,13 +64,13 @@
                 <ul>
                   <li>
                     <label>
-                      <input type="checkbox" class="icheck" checked><a href="{% url 'courses-list' %}">Tout <small></small></a>
+                      <input type="checkbox" class="icheck" checked><a href="{% url 'courses-grid' %}">Tout <small></small></a>
                     </label>
                   </li>
                   {% for categorie in categories %}
                   <li>
                     <label>
-                      <input type="checkbox" class="icheck" checked><a href="{% url 'categorie-list' pk=categorie.pk %}">{{ categorie.nom }} <small>({{ categorie.get_number_cours }})</small></a>
+                      <input type="checkbox" class="icheck" checked><a href="{% url 'categorie-grid' pk=categorie.pk %}">{{ categorie.nom }} <small>({{ categorie.get_number_cours }})</small></a>
                     </label>
                   </li>
                   {% endfor %}
@@ -118,13 +118,17 @@
         </aside>
         <!-- /aside -->
 
-        <div class="col-lg-9" id="list_sidebar">
-          {% for c in cours %}
-            {% include 'cours/snippets/card-cours-list.html' with instance=c %}
-          <!-- /box_list -->
-          {% endfor %}
-          <!-- /box_list -->
-          <p class="text-center add_top_60"><a href="#0" class="btn_1 rounded">Voir plus</a></p>
+        <div class="col-lg-9">
+          <div class="row" style="display:flex;">
+            {% for c in categorie.get_cours %}
+            <div class="col-md-6" style="display:flex;">
+              {% include 'cours/snippets/card-cours-grid.html' with instance=c %}
+            </div>
+            <!-- /box_grid -->
+            {% endfor %}
+          </div>
+          <!-- /row -->
+          <p class="text-center"><a href="#0" class="btn_1 rounded add_top_30">Charger plus</a></p>
         </div>
         <!-- /col -->
       </div>

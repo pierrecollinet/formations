@@ -10,7 +10,7 @@
     <div class="col-lg-7">
       <div class="wrapper">
         <a href="#0" class="wish_bt"></a>
-        <div class="price">$39</div>
+        <div class="price">{{ c.total }}&euro;</div>
         <small>{% for cat in c.categoriecours_set.all %}{{ cat.categorie.nom }}{% endfor %}</small>
         <h3>{{ c.titre}}</h3>
         <p>{{ c.courte_description }} </p>

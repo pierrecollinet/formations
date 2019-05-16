@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'widget_tweaks',
+
     # 'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.linkedin',

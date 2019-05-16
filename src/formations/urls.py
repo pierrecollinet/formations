@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from django.contrib import admin
-from formations.views import welcome, contact, about, faq, terms_and_conditions
+from formations.views import welcome, contact, about, faq, terms_and_conditions, search
 
 from django.conf.urls.static import static
 from django.conf import settings
@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^about$', about, name='about'),
     url(r'^faq$', faq, name='faq'),
     url(r'^terms-and-conditions$', terms_and_conditions, name='terms-and-conditions'),
+    url(r'^search/$', search, name='search'),
 
     url(r'^cours/', include('cours.urls')),
     url(r'^formateurs/', include('formateurs.urls')),

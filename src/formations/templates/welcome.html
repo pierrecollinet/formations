@@ -7,11 +7,11 @@
       <div class="wrapper">
         <div class="container">
           <h3>Découvre une large gamme de cours dynamique et interractif</h3>
-          <form>
+          <form role="search" method="get"  action="{% url 'search' %}">
             <div id="custom-search-input">
               <div class="input-group">
-                <input type="text" class=" search-query" placeholder="Que veux-tu apprendre?...">
-                <input type="submit" class="btn_search" value="Search">
+                  <input type="text" class=" search-query" name="q" placeholder="Que veux-tu apprendre?...">
+                  <input type="submit" class="btn_search" value="Chercher">
               </div>
             </div>
           </form>

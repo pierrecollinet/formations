@@ -3,7 +3,7 @@
     <div class="block-horizzontal"></div>
     <a href="#0" class="wish_bt"></a>
     <a href="course-detail.html"><img src="{{ instance.image.url }}" class="img-fluid" alt="" style="width: 800px;height: 250px;object-fit: cover";></a>
-    <div class="price">$54</div>
+    <div class="price">{{ instance.total }}&euro;</div>
     <div class="preview" href="{% url 'detail-cours' pk=instance.pk %}"><span>En savoir plus</span></div>
 
   </figure>
