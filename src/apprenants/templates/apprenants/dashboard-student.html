@@ -86,31 +86,10 @@
     </div>
     <!-- /cards -->
     <h2></h2>
-    <div class="row" style="display:flex;">
-        <div class="col-md-6" style="border:solid 1px;">
-          <div class="box_general padding_bottom" style="height:100%;">
-            <div class="header_box version_2">
-              <h2><i class="fa fa-lock"></i>Mes cours</h2>
-            </div>
-            <p>Ajouter une liste avec tous les cours suivi</p>
-          </div>
-        </div>
-        <div class="col-md-6" style="border:solid 1px;">
-          <div class="box_general padding_bottom" style="height:100%;" >
-            <div class="header_box version_2">
-              <h2><i class="fa fa-lock"></i>Mes cours</h2>
-            </div>
-            <p>Ajouter une liste avec tous les cours suivi</p>
-            <p>coucou</p>
-          </div>
-        </div>
-    </div>
-
-    <hr>
 
     <div class="row" style="display:flex;">
         <div class="col-md-6">
-          <div class="box_general padding_bottom">
+          <div class="box_general padding_bottom" style="height:90%;">
             <div class="header_box version_2">
               <h2><i class="fa fa-lock"></i>Mes cours</h2>
             </div>
@@ -119,7 +98,7 @@
         </div>
       {% if request.user.formateur %}
         <div class="col-md-6">
-          <div class="box_general padding_bottom">
+          <div class="box_general padding_bottom" style="height:90%;">
             <div class="header_box version_2">
               <h2><i class="fa fa-envelope"></i>Je suis formateur</h2>
             </div>
@@ -138,6 +117,15 @@
           </div>
         </div>
       {% endif %}
+        <div class="col-md-6">
+          <div class="box_general padding_bottom">
+            <div class="header_box version_2">
+              <h2><i class="fa fa-envelope"></i>Obtenir des recommandations personnalisées</h2>
+            </div>
+            <p>Répondez à quelques questions pour vos sélections préférées</p>
+            <a href="#" class="btn_1 rounded">Premier pas</a>
+          </div>
+        </div>
     </div>
     </div>
     <!-- /.container-fluid-->

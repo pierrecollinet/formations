@@ -7,6 +7,7 @@ from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 
 from cours.models import Cours, Categorie, Lecon, SousCategorie
+from formations.models import Prospect
 from formations.forms import ContactForm
 
 def welcome(request):
@@ -70,3 +71,18 @@ def search(request):
         for l in lecons :
             all_cours.update(l.cours)
     return render(request, 'cours/courses-grid-sidebar.html', {"cours":all_cours, "anchor":"courses"})
+
+def newsletter(request):
+    if 'email_newsletter' in request.POST:
+        email_newsletter = request.POST['email_newsletter']
+        prospect, created = Prospect.objects.get_or_create(email = email_newsletter)
+        prospect.reason = "newsletter"
+        prospect.save()
+        messages.success(request, "Félicitations, vous aurez bientôt de nos nouvelles !")
+    return redirect(request.META['HTTP_REFERER'])
+
+
+
+
+
+
