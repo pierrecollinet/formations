@@ -46,3 +46,10 @@ def wait_to_be_validated(request):
         return redirect('dashboard-formateurs')
     return render(request, 'formateurs/wait-to-be-validated.html', {})
 
+
+
+
+
+
+
+

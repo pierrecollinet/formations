@@ -18,5 +18,7 @@ class Formateur(models.Model):
     twitter_link    = models.URLField(max_length=1000, blank=True, null=True)
     googleplus_link = models.URLField(max_length=1000, blank=True, null=True)
     active = models.BooleanField(default=False)
+
     def __str__(self):
         return self.prenom + " " + self.nom
+

@@ -45,6 +45,12 @@ class Cours(models.Model):
     def __str__(self):
         return self.titre
 
+class FormateurCours(models.Model):
+    cours = models.ForeignKey(Cours, on_delete=models.CASCADE,)
+    formateur = models.ForeignKey('formateurs.Formateur', on_delete=models.CASCADE,)
+
+    def __str__(self):
+        return self.cours.titre + ' - ' + self.formateur.email
 class SousCategorieCours(models.Model):
     sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE,)
     cours     = models.ForeignKey(Cours, on_delete=models.CASCADE,)

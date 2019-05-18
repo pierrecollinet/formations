@@ -1,0 +1,3 @@
+{% for c in request.user.formateur.formateurcours_set.all %}
+<p>{{ c.cours.titre }}</p>
+{% endfor %}

@@ -8,3 +8,4 @@ def complete_profile(request):
 @login_required
 def dashboard_student(request):
     return render(request, 'apprenants/dashboard-student.html', {})
+

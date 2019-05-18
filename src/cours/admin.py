@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # import models
-from cours.models import Categorie, SousCategorie, Cours, SousCategorieCours, SkillCours, Lecon, Option
+from cours.models import Categorie, SousCategorie, Cours, SousCategorieCours, SkillCours, Lecon, Option, FormateurCours
 from django.contrib import admin
 
 
@@ -12,3 +12,4 @@ admin.site.register(SousCategorieCours)
 admin.site.register(SkillCours)
 admin.site.register(Lecon)
 admin.site.register(Option)
+admin.site.register(FormateurCours)
