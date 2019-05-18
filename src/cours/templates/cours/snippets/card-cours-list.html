@@ -3,7 +3,7 @@
     <div class="col-lg-5">
       <figure class="block-reveal">
         <div class="block-horizzontal"></div>
-        <a href="course-detail.html"><img src="{{c.image.url}}" alt="" style="width:350px;object-fit:cover;"></a>
+        <a href="{% url 'detail-cours' pk=c.pk %}"><img src="{{c.image.url}}" alt="" style="width:350px;object-fit:cover;"></a>
         <div class="preview"><span>En savoir plus</span></div>
       </figure>
     </div>

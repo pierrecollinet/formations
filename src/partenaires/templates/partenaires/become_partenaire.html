@@ -1,1 +1,114 @@
-become_partenaire.html
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+  <main>
+    <section id="hero_in" class="general">
+      <div class="wrapper">
+        <div class="container">
+          <h1 class="fadeInUp"><span></span>Devenez notre Partenaire</h1>
+        </div>
+      </div>
+    </section>
+    <!--/hero_in-->
+
+    <div class="container margin_120_95">
+      <div class="main_title_2">
+        <span><em></em></span>
+        <h2>Mettez votre espace à disposition</h2>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6">
+          <a class="box_feat" href="#">
+            <i class="pe-7s-diamond"></i>
+            <h3>Nos Professeurs</h3>
+            <p>Découvrez le profilde ces professionnels qui ont décidés de partager leur passion.</p>
+          </a>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <a class="box_feat" href="#">
+            <i class="pe-7s-display2"></i>
+            <h3>NOs salles de cours</h3>
+            <p>Id mea congue dictas, nec et summo mazim impedit. Vim te audiam impetus interpretaris, cum no alii option, cu sit mazim libris. </p>
+          </a>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <a class="box_feat" href="#">
+            <i class="pe-7s-science"></i>
+            <h3>Advanced teaching</h3>
+            <p>Id mea congue dictas, nec et summo mazim impedit. Vim te audiam impetus interpretaris, cum no alii option, cu sit mazim libris.</p>
+          </a>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <a class="box_feat" href="#">
+            <i class="pe-7s-rocket"></i>
+            <h3>Adavanced study plans</h3>
+            <p>Id mea congue dictas, nec et summo mazim impedit. Vim te audiam impetus interpretaris, cum no alii option, cu sit mazim libris. </p>
+          </a>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <a class="box_feat" href="#">
+            <i class="pe-7s-target"></i>
+            <h3>Focus on target</h3>
+            <p>Id mea congue dictas, nec et summo mazim impedit. Vim te audiam impetus interpretaris, cum no alii option, cu sit mazim libris.</p>
+          </a>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <a class="box_feat" href="#">
+            <i class="pe-7s-graph1"></i>
+            <h3>focus on success</h3>
+            <p>Id mea congue dictas, nec et summo mazim impedit. Vim te audiam impetus interpretaris, cum no alii option, cu sit mazim libris. </p>
+          </a>
+        </div>
+      </div>
+      <!--/row-->
+    </div>
+    <!-- /container -->
+
+    <div class="bg_color_1">
+      <div class="container margin_120_95">
+        <div class="main_title_2">
+          <span><em></em></span>
+          <h2>Our Origins and Story</h2>
+          <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
+        </div>
+        <div class="row justify-content-between">
+          <div class="col-lg-6 wow" data-wow-offset="150">
+            <figure class="block-reveal">
+              <div class="block-horizzontal"></div>
+              <img src="http://via.placeholder.com/800x533/ccc/fff/course_1.jpg" class="img-fluid" alt="">
+            </figure>
+          </div>
+          <div class="col-lg-5">
+            <p>Lorem ipsum dolor sit amet, homero erroribus in cum. Cu eos <strong>scaevola probatus</strong>. Nam atqui intellegat ei, sed ex graece essent delectus. Autem consul eum ea. Duo cu fabulas nonumes contentiones, nihil voluptaria pro id. Has graeci deterruisset ad, est no primis detracto pertinax, at cum malis vitae facilisis.</p>
+            <p>Dicam diceret ut ius, no epicuri dissentiet philosophia vix. Id usu zril tacimates neglegentur. Eam id legimus torquatos cotidieque, usu decore <strong>percipitur definitiones</strong> ex, nihil utinam recusabo mel no. Dolores reprehendunt no sit, quo cu viris theophrastus. Sit unum efficiendi cu.</p>
+            <p><em>CEO Marc Schumaker</em></p>
+          </div>
+        </div>
+        <!--/row-->
+      </div>
+      <!--/container-->
+    </div>
+    <!--/bg_color_1-->
+
+    <div class="container margin_120_95">
+      <div class="main_title_2">
+        <span><em></em></span>
+        <h2>Proposer une salle</h2>
+        <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
+      </div>
+      <div class="col-xs-12 col-md-6 offset-md-3">
+        <form action="" method="post">
+          {% crispy form %}
+        </form>
+      </div>
+    </div>
+    <!--/container-->
+  </main>
+  <!--/main-->
+
+{% endblock %}
+
