@@ -27,9 +27,9 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 SECRET_KEY = '$)@)2_!iqg%^dk6*pxbejf4hl09br(-#-veq9$k_4xsg50n9a#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost"]
 
 
 # Application definition
@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     'formations',
     'cours',
     'formateurs',
-    'apprenants'
+    'apprenants',
+    'partenaires'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {

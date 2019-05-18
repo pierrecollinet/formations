@@ -37,7 +37,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'SOME+RANDOM+KEY(z9+3vnm(jb0u@&w68t#5_
 
 
 
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS =  ['airbnb-formations2.herokuapp.com', '.yourdomain.com']
 DATABASES = {
     'default': {
@@ -79,7 +79,8 @@ INSTALLED_APPS = [
     'formations',
     'cours',
     'formateurs',
-    'apprenants'
+    'apprenants',
+    'partenaires'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {

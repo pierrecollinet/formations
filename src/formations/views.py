@@ -81,6 +81,21 @@ def newsletter(request):
         messages.success(request, "Félicitations, vous aurez bientôt de nos nouvelles !")
     return redirect(request.META['HTTP_REFERER'])
 
+def custom404(request, exception=None):
+    print('404')
+    return render(request, '404.html', status=404)
+
+def custom500(request, exception=None):
+    print('500')
+    return render(request, '500.html', status=500)
+
+
+
+
+
+
+
+
 
 
 

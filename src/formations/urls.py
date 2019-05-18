@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^cours/', include('cours.urls')),
     url(r'^formateurs/', include('formateurs.urls')),
     url(r'^apprenants/', include('apprenants.urls')),
+    url(r'^partenaires/', include('partenaires.urls')),
 
     url(r'^accounts/', include('allauth.urls'))
 ]
@@ -26,3 +27,11 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL , document_root=settings.MEDIA_ROOT)
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns += staticfiles_urlpatterns()
+
+from formations.views import custom404, custom500
+handler404 = custom404
+handler500 = custom500
+
+
+
+
