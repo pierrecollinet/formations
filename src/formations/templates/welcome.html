@@ -45,7 +45,7 @@
       </div>
       <div id="reccomended" class="owl-carousel owl-theme">
         {% for cours in best_courses %}
-          {% include 'cours/snippets/card-cours-grid.html' with instance=cours %}
+          {% autoescape off %}{% include 'cours/snippets/card-cours-grid.html' with instance=cours %}{% endautoescape %}
         {% endfor %}
         <!-- /item -->
       </div>

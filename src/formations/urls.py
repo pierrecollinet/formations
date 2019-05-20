@@ -19,7 +19,8 @@ urlpatterns = [
     url(r'^apprenants/', include('apprenants.urls')),
     url(r'^partenaires/', include('partenaires.urls')),
 
-    url(r'^accounts/', include('allauth.urls'))
+    url(r'^accounts/', include('allauth.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
 ]
 
 #urlpatterns += staticfiles_urlpatterns()
