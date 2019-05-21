@@ -8,8 +8,10 @@
 {% endblock %}
 
 {% block base_head %}
-<script src="{% static 'js/tinymce/js/tinymce/tinymce.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/tinymce/custom.js' %}" ></script>
+  <script src="{% static 'js/tinymce/js/tinymce/tinymce.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/tinymce/custom.js' %}" ></script>
+  <link rel="stylesheet" href="{% static '/css/jquery-timepicker/jquery.timepicker.css' %}">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 {% endblock %}
 
 {% block content %}
@@ -50,4 +52,25 @@
 {% endblock %}
 
 {% block javascript %}
+  <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+  <script type="text/javascript">
+
+  // http://jonthornton.github.io/jquery-timepicker/
+  $(document).ready(function() {
+    $('.timepicker').timepicker({
+        'timeFormat': 'H:i',
+        'step': 15,
+        'minTime': '8:00',
+          'maxTime': '22:00',
+    });
+  });
+
+  $(document).ready(function(){
+    $('.datepicker').datepicker({
+      minDate: 0,
+        dateFormat: 'dd/mm/yy',
+      });
+  });
+  </script>
+  <script src="{% static '/css/jquery-timepicker/jquery.timepicker.min.js' %}"></script>
 {% endblock %}

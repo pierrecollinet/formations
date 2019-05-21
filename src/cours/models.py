@@ -1,6 +1,7 @@
 from django.db import models
 from fontawesome.fields import IconField
 from django.db.models.signals import pre_save, post_save, post_delete
+from django.contrib.auth.models import User
 
 class Categorie(models.Model):
     nom  = models.CharField(max_length = 200)
@@ -33,6 +34,17 @@ class SousCategorie(models.Model):
         cours = Cours.objects.filter(id__in = cours_ids)
         return set(cours)
 
+class CoursQuerySet(models.query.QuerySet):
+    def validated(self):
+        return self.filter(validated=True)
+
+class CoursManager(models.Manager):
+
+    def get_queryset(self):
+        return CoursQuerySet(self.model, using=self._db)
+
+    def all(self):
+        return self.get_queryset().validated()
 
 class Cours(models.Model):
     titre              = models.CharField(max_length = 500)
@@ -41,7 +53,9 @@ class Cours(models.Model):
     image              = models.ImageField(upload_to = 'mes_images/')
     active             = models.BooleanField(default = True)
     total              = models.CharField(max_length=20, default="0")
+    validated          = models.BooleanField(default = False)
 
+    objects = CoursManager()
     def __str__(self):
         return self.titre
 
@@ -59,7 +73,7 @@ class SousCategorieCours(models.Model):
         return self.sous_categorie.nom + ' - ' + self.cours.titre
 
 class SkillCours(models.Model):
-    skill = models.TextField()
+    skill = models.TextField(blank=True, null=True)
     cours = models.ForeignKey(Cours, on_delete=models.CASCADE,)
 
     def __str__(self):
@@ -89,6 +103,17 @@ class Option(models.Model):
             return self.lecon.cours.titre + " - " + self.debut.strftime("%d/%m/%Y, %H:%M")
         else :
             return "Lecon - " + self.debut.strftime("%d/%m/%Y, %H:%M")
+    class Meta:
+        ordering = ('debut', )
+    def show_date_range(self):
+        date_debut  = self.debut.strftime("%d/%m/%Y")
+        date_fin    = self.fin.strftime("%d/%m/%Y")
+        heure_debut = self.debut.strftime("%H:%M")
+        heure_fin   = self.fin.strftime("%H:%M")
+        if date_debut == date_fin:
+            return "Le {} de {} à {}".format(date_debut, heure_debut, heure_fin)
+        else :
+            return "Du {} ({}) au {} ({})".format(date_debut, heure_debut, date_fin, heure_fin)
 
 def option_post_save(sender, instance, *args, **kwargs):
     cours = instance.lecon.cours
@@ -101,6 +126,21 @@ def option_post_save(sender, instance, *args, **kwargs):
     cours.total = str(total)
     cours.save()
 post_save.connect(option_post_save, sender = Option)
+
+
+class ReviewCours(models.Model):
+    cours       = models.ForeignKey(Cours, on_delete=models.CASCADE,)
+    auteur      = models.ForeignKey(User, on_delete=models.CASCADE,)
+    commentaire = models.TextField()
+    created     = models.DateTimeField(auto_now_add=True)
+    rating      = models.PositiveSmallIntegerField(choices=((1,1),(2,2),(3,3),(4,4),(5,5),))
+
+    def __str__(self):
+        return self.auteur.username + " - " + self.commentaire[:30]
+
+
+
+
 
 
 

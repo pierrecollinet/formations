@@ -27,6 +27,7 @@
   <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Plugin styles -->
   <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <link href="vendor/dropzone.css" rel="stylesheet">
   <!-- Your custom styles -->
   <link href="css/custom.css" rel="stylesheet">
 	
@@ -218,92 +219,162 @@
         <li class="breadcrumb-item">
           <a href="#">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Your Courses</li>
+        <li class="breadcrumb-item active">Add listing</li>
       </ol>
-		<div class="box_general">
-			<div class="header_box">
-				<h2 class="d-inline-block">Your Courses</h2>
-				<div class="filter">
-					<select name="orderby" class="selectbox">
-						<option value="Any status">Any status</option>
-						<option value="Approved">Started</option>
-						<option value="Pending">Pending</option>
-						<option value="Cancelled">Cancelled</option>
-					</select>
+		<div class="box_general padding_bottom">
+			<div class="header_box version_2">
+				<h2><i class="fa fa-file"></i>Basic info</h2>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Name</label>
+						<input type="text" class="form-control" placeholder="Your name">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Last name</label>
+						<input type="text" class="form-control" placeholder="Your last name">
+					</div>
 				</div>
 			</div>
-			<div class="list_general">
-				<ul>
-					<li>
-						<figure><img src="img/course_1.jpg" alt=""></figure>
-						<h4>Course title <i class="pending">Pending</i></h4>
-						<ul class="course_list">
-							<li><strong>Start date</strong> 11 November 2017</li>
-							<li><strong>Expire date</strong> 11 April 2018</li>
-							<li><strong>Category</strong> Science, Economy</li>
-							<li><strong>Teacher</strong> Mark Twain</li>
-						</ul>
-						<h6>Course description</h6> 
-						<p>Lorem ipsum dolor sit amet, est ei idque voluptua copiosae, pro detracto disputando reformidans at, ex vel suas eripuit. Vel alii zril maiorum ex, mea id sale eirmod epicurei. Sit te possit senserit, eam alia veritus maluisset ei, id cibo vocent ocurreret per. Te qui doming doctus referrentur, usu debet tamquam et. Sea ut nullam aperiam, mei cu tollit salutatus delicatissimi. His appareat perfecto intellegat te. </p>
-						<ul class="buttons">
-							<li><a href="#0" class="btn_1 gray approve"><i class="fa fa-fw fa-check-circle-o"></i> Approve</a></li>
-							<li><a href="#0" class="btn_1 gray delete"><i class="fa fa-fw fa-times-circle-o"></i> Cancel</a></li>
-						</ul>
-					</li>
-					<li>
-						<figure><img src="img/course_2.jpg" alt=""></figure>
-						<h4>Course title <i class="cancel">Cancelled</i></h4>
-						<ul class="course_list">
-							<li><strong>Start date</strong> 11 November 2017</li>
-							<li><strong>Expire date</strong> 11 April 2018</li>
-							<li><strong>Category</strong> Science, Economy</li>
-							<li><strong>Teacher</strong> Mark Twain</li>
-						</ul>
-						<h6>Course description</h6> 
-						<p>Lorem ipsum dolor sit amet, est ei idque voluptua copiosae, pro detracto disputando reformidans at, ex vel suas eripuit. Vel alii zril maiorum ex, mea id sale eirmod epicurei. Sit te possit senserit, eam alia veritus maluisset ei, id cibo vocent ocurreret per. Te qui doming doctus referrentur, usu debet tamquam et. Sea ut nullam aperiam, mei cu tollit salutatus delicatissimi. His appareat perfecto intellegat te. </p>
-						<ul class="buttons">
-							<li><a href="#0" class="btn_1 gray approve"><i class="fa fa-fw fa-check-circle-o"></i> Approve</a></li>
-							<li><a href="#0" class="btn_1 gray delete"><i class="fa fa-fw fa-times-circle-o"></i> Cancel</a></li>
-						</ul>
-					</li>
-					<li>
-						<figure><img src="img/course_3.jpg" alt=""></figure>
-						<h4>Course title <i class="approved">Started</i></h4>
-						<ul class="course_list">
-							<li><strong>Start date</strong> 11 November 2017</li>
-							<li><strong>Expire date</strong> 11 April 2018</li>
-							<li><strong>Category</strong> Science, Economy</li>
-							<li><strong>Teacher</strong> Mark Twain</li>
-						</ul>
-						<h6>Course description</h6> 
-						<p>Lorem ipsum dolor sit amet, est ei idque voluptua copiosae, pro detracto disputando reformidans at, ex vel suas eripuit. Vel alii zril maiorum ex, mea id sale eirmod epicurei. Sit te possit senserit, eam alia veritus maluisset ei, id cibo vocent ocurreret per. Te qui doming doctus referrentur, usu debet tamquam et. Sea ut nullam aperiam, mei cu tollit salutatus delicatissimi. His appareat perfecto intellegat te. </p>
-						<ul class="buttons">
-							<li><a href="#0" class="btn_1 gray approve"><i class="fa fa-fw fa-check-circle-o"></i> Approve</a></li>
-							<li><a href="#0" class="btn_1 gray delete"><i class="fa fa-fw fa-times-circle-o"></i> Cancel</a></li>
-						</ul>
-					</li>
-				</ul>
+			<!-- /row-->
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Telephone</label>
+						<input type="text" class="form-control" placeholder="Your telephone number">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Email</label>
+						<input type="email" class="form-control" placeholder="Your email">
+					</div>
+				</div>
 			</div>
+			<!-- /row-->
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label>Profile picture</label>
+						<form action="/file-upload" class="dropzone" ></form>
+					</div>
+				</div>
+			</div>
+			<!-- /row-->
 		</div>
 		<!-- /box_general-->
-		<nav aria-label="...">
-			<ul class="pagination pagination-sm add_bottom_30">
-				<li class="page-item disabled">
-					<a class="page-link" href="#" tabindex="-1">Previous</a>
-				</li>
-				<li class="page-item"><a class="page-link" href="#">1</a></li>
-				<li class="page-item"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item">
-					<a class="page-link" href="#">Next</a>
-				</li>
-			</ul>
-		</nav>
-		<!-- /pagination-->
+		
+		<div class="box_general padding_bottom">
+			<div class="header_box version_2">
+				<h2><i class="fa fa-share-alt"></i>Social profiles</h2>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Facebook</label>
+						<input type="text" class="form-control" placeholder="Link">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Linkdin</label>
+						<input type="text" class="form-control" placeholder="Link">
+					</div>
+				</div>
+			</div>
+			<!-- /row-->
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Google Plus</label>
+						<input type="text" class="form-control" placeholder="Link">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Twitter</label>
+						<input type="text" class="form-control" placeholder="Link">
+					</div>
+				</div>
+			</div>
+			<!-- /row-->
+		</div>
+		<!-- /box_general-->
+		
+		<div class="box_general padding_bottom">
+			<div class="header_box version_2">
+				<h2><i class="fa fa-file-text"></i>Curriculum</h2>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label>Professional statement</label>
+						<textarea rows="5" class="form-control" style="height:100px;" placeholder="Description"></textarea>
+					</div>
+				</div>
+			</div>
+			<!-- /row-->
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label>Specialization <a href="#0" data-toggle="tooltip" data-placement="top" title="Separated by commas"><i class="fa fa-fw fa-question-circle"></i></a></label>
+						<input type="text" class="form-control" placeholder="Ex: Biologist, Pediatrician...">
+					</div>
+				</div>
+			</div>
+			<!-- /row-->
+		</div>
+		<!-- /box_general-->
+		
+		<div class="box_general padding_bottom">
+			<div class="header_box version_2">
+				<h2><i class="fa fa-folder"></i>Courses</h2>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h6>Course item</h6>
+					<table id="pricing-list-container" style="width:100%;">
+						<tr class="pricing-list-item">
+							<td>
+								<div class="row">
+									<div class="col-md-5">
+										<div class="form-group">
+											<input type="text" class="form-control" placeholder="Title">
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="form-group">
+											<input type="text" class="form-control"  placeholder="Category">
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<input type="text" class="form-control" placeholder="Price">
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<a class="delete" href="#"><i class="fa fa-fw fa-remove"></i></a>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
+					<a href="#0" class="btn_1 gray add-pricing-list-item"><i class="fa fa-fw fa-plus-circle"></i>Add Item</a>
+					</div>
+			</div>
+			<!-- /row-->
+		</div>
+		<!-- /box_general-->
+		<p><a href="#0" class="btn_1 medium">Save</a></p>
 	  </div>
-	  <!-- /container-fluid-->
+	  <!-- /.container-fluid-->
    	</div>
-    <!-- /container-wrapper-->
+    <!-- /.container-wrapper-->
     <footer class="sticky-footer">
       <div class="container">
         <div class="text-center">
@@ -347,6 +418,8 @@
 	<script src="vendor/jquery.magnific-popup.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="js/admin.js"></script>
+	<!-- Custom scripts for this page-->
+	<script src="vendor/dropzone.min.js"></script>
 	
 </body>
 </html>

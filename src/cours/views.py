@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 
 # import models
-from cours.models import Categorie, SousCategorie, Cours, SousCategorieCours, FormateurCours, Lecon, Option
+from cours.models import Categorie, SousCategorie, Cours, SousCategorieCours, FormateurCours, Lecon, Option, SkillCours
 from formateurs.models import Formateur
 from formateurs.forms import FormateurForm
-from cours.forms import CoursModelForm, LeconModelForm, OptionModelForm
+from cours.forms import CoursModelForm, LeconModelForm, OptionModelForm, SkillModelForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -131,13 +131,45 @@ def creer_option(request, pk):
 @formateur_required
 def edit_option(request, pk):
     option = Option.objects.get(pk=pk)
-    form = OptionModelForm(request.POST or None, instance=option)
+    heure_debut = option.debut.strftime("%H:%M")
+    date_debut  = option.debut.strftime("%d/%m/%Y")
+    heure_fin   = option.fin.strftime("%H:%M")
+    date_fin    = option.fin.strftime("%d/%m/%Y")
+    form = OptionModelForm(request.POST or None, instance=option, initial={'heure_debut': heure_debut, 'heure_fin':heure_fin, "date_debut":date_debut, "date_fin":date_fin})
     if form.is_valid():
-        option = form.save()
+        heure_debut = request.POST['heure_debut']
+        date_debut = request.POST['date_debut']
+        date_time_debut = datetime.strptime(date_debut + " " + heure_debut, '%d/%m/%Y %H:%M')
+        heure_fin = request.POST['heure_fin']
+        date_fin = request.POST['date_fin']
+        date_time_fin = datetime.strptime(date_fin + " " + heure_fin, '%d/%m/%Y %H:%M')
+
+        option = form.save(commit=False)
+        option.debut = date_time_debut
+        option.fin = date_time_fin
+        option.save()
         return redirect('detail-cours-formateur', pk=option.lecon.cours.pk)
     return render(request, 'cours/mes-options/edit-option.html', {"form":form})
 
+@formateur_required
+def creer_competence(request, pk):
+    cours = Cours.objects.get(pk=pk)
+    form = SkillModelForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        competence = form.save(commit=False)
+        competence.cours = cours
+        competence.save()
+        return redirect('detail-cours-formateur', pk=cours.pk)
+    return render(request, 'cours/mes-competences/creer-competence.html', {"form":form})
 
+@formateur_required
+def edit_competence(request, pk):
+    competence = SkillCours.objects.get(pk=pk)
+    form = SkillModelForm(request.POST or None, instance=competence)
+    if form.is_valid():
+        competence = form.save()
+        return redirect('detail-cours-formateur', pk=competence.cours.pk)
+    return render(request, 'cours/mes-competences/edit-competence.html', {"form":form})
 
 
 

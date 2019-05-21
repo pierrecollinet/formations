@@ -11,7 +11,7 @@ from crispy_forms.bootstrap import InlineRadios, InlineCheckboxes, FieldWithButt
 
 from datetime import datetime, date
 
-from cours.models import Cours, Lecon, Option
+from cours.models import Cours, Lecon, Option, SkillCours
 
 class CoursModelForm(forms.ModelForm):
     class Meta:
@@ -114,5 +114,21 @@ class OptionModelForm(forms.ModelForm):
             if date_time_fin <= date_time_debut:
                 msg = "Ton cours ne peut pas se terminer avant d'avoir commencé. "
                 raise forms.ValidationError(msg)
+
+class SkillModelForm(forms.ModelForm):
+    class Meta:
+        model = SkillCours
+        fields = ('skill',)
+
+    def __init__(self, *args, **kwargs):
+        super(SkillModelForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+
+        self.helper.layout = Layout(
+                                Field('Skill', placeholder="Décris la compétence"),
+        )
+        self.helper.add_input(Submit('submit', 'Confirmer', css_class='btn btn-default btn-lg'))
+
 
 

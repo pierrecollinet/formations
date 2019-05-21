@@ -26,7 +26,7 @@
           <ul class="clearfix">
             <li><a href="#description" class="active">Description</a></li>
             <li><a href="#lessons">Cours</a></li>
-            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#reviews">Feedbacks</a></li>
           </ul>
         </div>
       </nav>
@@ -41,11 +41,11 @@
               <ul class="list_ok">
                 {% for skill in cours.skillcours_set.all %}
                 <li>
-                  <h6>{{ skill.skill }}</h6>
+                  <h6>{% autoescape off %}{{ skill.skill }} (<a href="{% url 'edit-competence' pk=skill.pk %}"><i class="icon-edit-2"></i> Modifier</a>){% endautoescape %}</h6>
                 </li>
                 {% endfor %}
               </ul>
-              <a href="#0" class="btn_1">Ajouter une compétence</a>
+              <a href="{% url 'creer-competence' pk=cours.pk %}" class="btn_1">Ajouter une compétence</a>
               <hr>
               <p>Mea appareat omittantur eloquentiam ad, nam ei quas oportere democritum. Prima causae admodum id est, ei timeam inimicus sed. Sit an meis aliquam, cetero inermis vel ut. An sit illum euismod facilisis, tamquam vulputate pertinacia eum at.</p>
               <div class="row">
@@ -106,6 +106,11 @@
                     <div class="card-body">
                       <div class="list_lessons">
                         {% autoescape off %}{{ lecon.contenu }}{% endautoescape %}
+                        <ul>
+                          {% for option in lecon.option_set.all %}
+                          <li><a href="" class="video">{{ option.show_date_range }}</a><span>{{ option.tarif }} &euro; /<a href="{% url 'edit-option' pk=option.pk %}"><i class="icon-edit-2"></i>Modifier</a></span></li>
+                          {% endfor %}
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -119,7 +124,7 @@
             <!-- /section -->
 
             <section id="reviews">
-              <h2>Reviews</h2>
+              <h2>Feedbacks</h2>
               <div class="reviews-container">
                 <div class="row">
                   <div class="col-lg-3">
@@ -128,7 +133,7 @@
                       <div class="rating">
                         <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
                       </div>
-                      <small>Based on 4 reviews</small>
+                      <small>basé sur {{ cours.reviewcours_set.all|length }} feedbacks</small>
                     </div>
                   </div>
                   <div class="col-lg-9">
@@ -185,7 +190,7 @@
               <hr>
 
               <div class="reviews-container">
-
+                {% for review in cours.reviewcours_set.all %}
                 <div class="review-box clearfix">
                   <figure class="rev-thumb"><img src="http://via.placeholder.com/150x150/ccc/fff/avatar1.jpg" alt="">
                   </figure>
@@ -194,52 +199,16 @@
                       <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
                     </div>
                     <div class="rev-info">
-                      Admin – April 03, 2016:
+                      {{ review.auteur.username }} – {{review.created}}:
                     </div>
                     <div class="rev-text">
                       <p>
-                        Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
+                        {{ review.commentaire }}
                       </p>
                     </div>
                   </div>
                 </div>
-                <!-- /review-box -->
-                <div class="review-box clearfix">
-                  <figure class="rev-thumb"><img src="http://via.placeholder.com/150x150/ccc/fff/avatar2.jpg" alt="">
-                  </figure>
-                  <div class="rev-content">
-                    <div class="rating">
-                      <i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
-                    </div>
-                    <div class="rev-info">
-                      Ahsan – April 01, 2016:
-                    </div>
-                    <div class="rev-text">
-                      <p>
-                        Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <!-- /review-box -->
-                <div class="review-box clearfix">
-                  <figure class="rev-thumb"><img src="http://via.placeholder.com/150x150/ccc/fff/avatar3.jpg" alt="">
-                  </figure>
-                  <div class="rev-content">
-                    <div class="rating">
-                      <i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
-                    </div>
-                    <div class="rev-info">
-                      Sara – March 31, 2016:
-                    </div>
-                    <div class="rev-text">
-                      <p>
-                        Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar hendrerit. Cum sociis natoque penatibus et magnis dis
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <!-- /review-box -->
+                {% endfor %}
               </div>
               <!-- /review-container -->
             </section>
@@ -253,7 +222,7 @@
                 <a href="https://www.youtube.com/watch?v=LDgd_gUcqCw" class="video"><i class="arrow_triangle-right"></i><img src="http://via.placeholder.com/800x533/ccc/fff/course_1.jpg" alt="" class="img-fluid"><span>View course preview</span></a>
               </figure>
               <div class="price">
-                $29<span class="original_price"><em>$49</em>60% discount price</span>
+                {{ cours.total }} &euro;<span class="original_price"><em>$49</em>60% discount price</span>
               </div>
               <a href="#0" class="btn_1 full-width">Purchase</a>
               <a href="#0" class="btn_1 full-width outline"><i class="icon_heart"></i> Add to wishlist</a>
