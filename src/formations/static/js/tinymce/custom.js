@@ -1,4 +1,3 @@
-console.log("-------heyaaaa")
 tinymce.init({
   selector: 'textarea',
   height: 200,

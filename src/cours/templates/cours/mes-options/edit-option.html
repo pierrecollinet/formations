@@ -1,0 +1,53 @@
+{% extends "formateurs/base.html" %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load account socialaccount %}
+
+{% block head_title %}
+{% endblock %}
+
+{% block base_head %}
+<script src="{% static 'js/tinymce/js/tinymce/tinymce.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/tinymce/custom.js' %}" ></script>
+{% endblock %}
+
+{% block content %}
+  <!-- /Navigation-->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Créer un cours</li>
+      </ol>
+    <div class="box_general padding_bottom">
+      <div class="header_box version_2">
+        <h2><i class="fa fa-user"></i>Profile details</h2>
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+          <label>Your photo</label>
+            <form action="/file-upload" class="dropzone"></form>
+            </div>
+        </div>
+        <div class="col-md-8 add_top_30">
+          <form method="post" enctype="multipart/form-data">{% csrf_token %}
+              {% crispy form %}
+          </form>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- /.container-fluid-->
+    </div>
+    <!-- /.container-wrapper-->
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

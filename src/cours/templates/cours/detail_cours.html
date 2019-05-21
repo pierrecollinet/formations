@@ -25,7 +25,7 @@
         <div class="container">
           <ul class="clearfix">
             <li><a href="#description" class="active">Description</a></li>
-            <li><a href="#lessons">Lessons</a></li>
+            <li><a href="#lessons">Cours</a></li>
             <li><a href="#reviews">Reviews</a></li>
           </ul>
         </div>
@@ -36,7 +36,7 @@
 
             <section id="description">
               <h2>Description</h2>
-              <p>{{ cours.long_description }}</h5>
+              {% autoescape off %}{{ cours.long_description }}{% endautoescape %}
               <ul class="list_ok">
                 {% for skill in cours.skillcours_set.all %}
                 <li>
@@ -70,9 +70,9 @@
 
             <section id="lessons">
               <div class="intro_title">
-                <h2>Lessons</h2>
+                <h2>Leçons</h2>
                 <ul>
-                  <li>{{cours.lecon_set.all|length }} lessons</li>
+                  <li>{{cours.lecon_set.all|length }} leçons</li>
                 </ul>
               </div>
               <div id="accordion_lessons" role="tablist" class="add_bottom_45">
@@ -93,7 +93,7 @@
                   <div id="collapse{{lecon.pk}}" class="collapse {% if forloop.first %}show {% endif %}" role="tabpanel" aria-labelledby="heading{{lecon.pk}}" data-parent="#accordion_lessons">
                     <div class="card-body">
                       <div class="list_lessons">
-                        {{ lecon.contenu }}
+                        {% autoescape off %}{{ lecon.contenu }}{% endautoescape %}
                       </div>
                     </div>
                   </div>

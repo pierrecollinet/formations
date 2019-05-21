@@ -71,3 +71,15 @@ ul#top_menu li a.btn_2:hover {
   height: 250px;
 }
 
+.blue-icon {
+  color:#3f9fff;
+}
+
+@media(min-width:767px){
+  .edit-link{
+    position:absolute;
+    right:20px;
+    display: inline;
+  }
+}
+

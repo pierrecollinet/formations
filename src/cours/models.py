@@ -36,8 +36,8 @@ class SousCategorie(models.Model):
 
 class Cours(models.Model):
     titre              = models.CharField(max_length = 500)
-    courte_description = models.TextField()
-    long_description   = models.TextField()
+    courte_description = models.TextField(blank = True, null = True)
+    long_description   = models.TextField(blank = True, null = True)
     image              = models.ImageField(upload_to = 'mes_images/')
     active             = models.BooleanField(default = True)
     total              = models.CharField(max_length=20, default="0")
@@ -68,12 +68,14 @@ class SkillCours(models.Model):
 class Lecon(models.Model):
     titre     = models.CharField(max_length = 500, blank = True, null = True)
     cours     = models.ForeignKey(Cours, on_delete=models.CASCADE,)
-    contenu   = models.TextField()
-    prerequis = models.TextField()
+    contenu   = models.TextField(blank=True, null=True)
+    prerequis = models.TextField(blank=True, null=True)
     ordre     = models.PositiveSmallIntegerField(default=1)
 
     def __str__(self):
         return self.cours.titre + ' - ' + self.contenu[:30]
+    class Meta:
+        ordering = ('ordre', )
 
 class Option(models.Model):
     lecon    = models.ForeignKey(Lecon, on_delete=models.CASCADE, blank=True, null=True)

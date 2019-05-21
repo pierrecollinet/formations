@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 
 # import models
-from cours.models import Categorie, SousCategorie, Cours, SousCategorieCours, FormateurCours
+from cours.models import Categorie, SousCategorie, Cours, SousCategorieCours, FormateurCours, Lecon, Option
 from formateurs.models import Formateur
 from formateurs.forms import FormateurForm
-from cours.forms import CoursModelForm
+from cours.forms import CoursModelForm, LeconModelForm, OptionModelForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+from datetime import datetime
 def formateur_required(function):
     def wrapper(request, *args, **kwargs):
         decorated_view_func = login_required(request)
@@ -76,6 +77,66 @@ def creer_cours(request):
         formateurcours.save()
         return redirect('dashboard-formateurs')
     return render(request, 'cours/mes-cours/creer-cours.html', {"form":form})
+
+@formateur_required
+def edit_cours(request, pk):
+    cours = Cours.objects.get(pk=pk)
+    form = CoursModelForm(request.POST or None, request.FILES or None, instance=cours)
+    if form.is_valid():
+        cours = form.save()
+        return redirect('detail-cours-formateur', pk=cours.pk)
+    return render(request, 'cours/mes-cours/creer-cours.html', {"form":form})
+
+
+@formateur_required
+def creer_lecon(request, pk):
+    form = LeconModelForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        cours = Cours.objects.get(pk=pk)
+        lecon = form.save(commit=False)
+        lecon.cours = cours
+        lecon.save()
+        return redirect('detail-cours-formateur', pk=cours.pk)
+    return render(request, 'cours/mes-lecons/creer-lecon.html', {"form":form})
+
+@formateur_required
+def edit_lecon(request, pk):
+    lecon = Lecon.objects.get(pk=pk)
+    form = LeconModelForm(request.POST or None, instance=lecon)
+    if form.is_valid():
+        lecon = form.save()
+        return redirect('detail-cours-formateur', pk=lecon.cours.pk)
+    return render(request, 'cours/mes-lecons/edit-lecon.html', {"form":form})
+
+@formateur_required
+def creer_option(request, pk):
+    form = OptionModelForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        heure_debut = request.POST['heure_debut']
+        date_debut = request.POST['date_debut']
+        date_time_debut = datetime.strptime(date_debut + " " + heure_debut, '%d/%m/%Y %H:%M')
+        heure_fin = request.POST['heure_fin']
+        date_fin = request.POST['date_fin']
+        date_time_fin = datetime.strptime(date_fin + " " + heure_fin, '%d/%m/%Y %H:%M')
+
+        lecon = Lecon.objects.get(pk=pk)
+        option = form.save(commit=False)
+        option.lecon = lecon
+        option.debut = date_time_debut
+        option.fin = date_time_fin
+        option.save()
+        return redirect('detail-cours-formateur', pk=lecon.cours.pk)
+    return render(request, 'cours/mes-options/creer-option.html', {"form":form})
+
+@formateur_required
+def edit_option(request, pk):
+    option = Option.objects.get(pk=pk)
+    form = OptionModelForm(request.POST or None, instance=option)
+    if form.is_valid():
+        option = form.save()
+        return redirect('detail-cours-formateur', pk=option.lecon.cours.pk)
+    return render(request, 'cours/mes-options/edit-option.html', {"form":form})
+
 
 
 

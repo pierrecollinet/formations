@@ -1,3 +1,89 @@
-{% for c in request.user.formateur.formateurcours_set.all %}
-<p>{{ c.cours.titre }}</p>
-{% endfor %}
+{% extends "formateurs/base.html" %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load account socialaccount %}
+
+{% block head_title %}
+{% endblock %}
+
+{% block base_head %}
+<script src="{% static 'js/tinymce/js/tinymce/tinymce.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/tinymce/custom.js' %}" ></script>
+{% endblock %}
+
+{% block content %}
+  <!-- /Navigation-->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Créer un cours</li>
+      </ol>
+    <div class="box_general">
+      <div class="header_box">
+        <h2 class="d-inline-block">Tes cours</h2>
+        <div class="filter">
+          <select name="orderby" class="selectbox">
+            <option value="Any status">Any status</option>
+            <option value="Approved">Started</option>
+            <option value="Pending">Pending</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="list_general">
+        <ul>
+          {% for c in request.user.formateur.formateurcours_set.all %}
+          <p></p>
+          <li>
+            <figure><img src="{{ c.cours.image.url }}" alt=""></figure>
+            <h4>{{ c.cours.titre }} <i class="pending">Pending</i></h4>
+            <ul class="course_list">
+              <li><strong>Début</strong> 11 November 2017</li>
+              <li><strong>Fin</strong> 11 April 2018</li>
+              <li><strong>Catégorie</strong> Science, Economy</li>
+              <li><strong>Professeur</strong> Mark Twain</li>
+            </ul>
+            <h6>Description du cours</h6>
+           {% autoescape off %}{{ c.cours.courte_description }} {% endautoescape %}
+            <ul class="buttons">
+              <li><a href="#0" class="btn_1 gray approve"><i class="fa fa-fw fa-check-circle-o"></i> Approve</a></li>
+              <li><a href="#0" class="btn_1 gray delete"><i class="fa fa-fw fa-times-circle-o"></i> Cancel</a></li>
+              <li><a href="{% url 'detail-cours-formateur' pk=c.cours.pk %}" class="btn_1 gray delete"><i class="fa fa-fw fa-times-circle-o"></i> Voir</a></li>
+              <li><a href="{% url 'edit-cours' pk=c.cours.pk %}" class="btn_1 gray delete"><i class="fa fa-fw fa-times-circle-o"></i> Modifier</a></li>
+            </ul>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <!-- /box_general-->
+    <nav aria-label="...">
+      <ul class="pagination pagination-sm add_bottom_30">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /row-->
+    </div>
+    <!-- /.container-fluid-->
+  </div>
+  <!-- /.container-wrapper-->
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
+
+
+

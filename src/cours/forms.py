@@ -9,9 +9,9 @@ from crispy_forms.layout import Layout, Field, Div,Submit, HTML
 from crispy_forms.layout import MultiWidgetField
 from crispy_forms.bootstrap import InlineRadios, InlineCheckboxes, FieldWithButtons, StrictButton
 
-import datetime
+from datetime import datetime, date
 
-from cours.models import Cours
+from cours.models import Cours, Lecon, Option
 
 class CoursModelForm(forms.ModelForm):
     class Meta:
@@ -30,3 +30,89 @@ class CoursModelForm(forms.ModelForm):
                                 Field('image'),
         )
         self.helper.add_input(Submit('submit', 'Confirmer', css_class='btn btn-default btn-lg'))
+
+class LeconModelForm(forms.ModelForm):
+    class Meta:
+        model = Lecon
+        fields = ('titre','contenu','prerequis','ordre',)
+
+    def __init__(self, *args, **kwargs):
+        super(LeconModelForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+
+        self.helper.layout = Layout(
+                                Field('titre', placeholder="Titre du cours"),
+                                Field('contenu', placeholder="Décris le contenu du cours..."),
+                                Field('prerequis', placeholder="Quel(s) sont les prérequis pour assister au cours ?"),
+                                Field('ordre'),
+        )
+        self.helper.add_input(Submit('submit', 'Confirmer', css_class='btn btn-default btn-lg'))
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        titre = cleaned_data.get("titre")
+        contenu = cleaned_data.get("contenu")
+        prerequis = cleaned_data.get("prerequis")
+
+        if not titre or not contenu or not prerequis:
+            msg = "Tous les champs sont obligatoires ! "
+            raise forms.ValidationError(msg)
+
+class OptionModelForm(forms.ModelForm):
+    date_debut  = forms.DateField(initial=date.today(), required=True, widget=forms.DateInput(format='%d/%m/%Y', attrs={'class': 'datepicker'}),  input_formats=('%d/%m/%Y',))
+    heure_debut = forms.TimeField(initial='09:00', required=True, widget=forms.TimeInput(format='%H:%M', attrs={'class': 'timepicker','placeholder': "Début du cours"}), input_formats=('%H:%M',))
+    date_fin    = forms.DateField(initial=date.today(), required=True, widget=forms.DateInput(format='%d/%m/%Y', attrs={'class': 'datepicker'}),  input_formats=('%d/%m/%Y',))
+    heure_fin   = forms.TimeField(initial='09:00', required=True, widget=forms.TimeInput(format='%H:%M', attrs={'class': 'timepicker','placeholder': "Début du cours"}), input_formats=('%H:%M',))
+
+    class Meta:
+        model = Option
+        fields = ('tarif','capacite',)
+
+    def __init__(self, *args, **kwargs):
+        super(OptionModelForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+
+        self.helper.layout = Layout(
+                                Div(
+                                    Div('date_debut',css_class='col-md-6',placeholder="Date de début"),
+                                    Div('heure_debut',css_class='col-md-6',placeholder="Heure de début"),
+                                    css_class='row',
+                                ),
+                                Div(
+                                    Div('date_fin',css_class='col-md-6',placeholder="Date de fin"),
+                                    Div('heure_fin',css_class='col-md-6',placeholder="Heure de fin"),
+                                    css_class='row',
+                                ),
+                                Div(
+                                    Div('tarif',css_class='col-md-6',placeholder="Tarif par personne"),
+                                    Div('capacite',css_class='col-md-6',placeholder="Combien d'élèves maximum?"),
+                                    css_class='row',
+                                ),
+        )
+        self.helper.add_input(Submit('submit', 'Confirmer', css_class='btn btn-default btn-lg'))
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        heure_debut = cleaned_data.get("heure_debut")
+        heure_debut = heure_debut.strftime("%H:%M")
+        date_debut  = cleaned_data.get("date_debut")
+        date_debut  = date_debut.strftime("%d/%m/%Y")
+        heure_fin   = cleaned_data.get("heure_fin")
+        heure_fin   = heure_fin.strftime("%H:%M")
+        date_fin    = cleaned_data.get("date_fin")
+        date_fin    = date_fin.strftime("%d/%m/%Y")
+
+        if heure_debut and date_debut and heure_fin and date_fin:
+            date_time_debut = datetime.strptime(date_debut + " " + heure_debut, '%d/%m/%Y %H:%M')
+
+            date_time_fin   = datetime.strptime(date_fin + " " + heure_fin, '%d/%m/%Y %H:%M')
+
+            if date_time_fin <= date_time_debut:
+                msg = "Ton cours ne peut pas se terminer avant d'avoir commencé. "
+                raise forms.ValidationError(msg)
+
+
