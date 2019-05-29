@@ -39,15 +39,17 @@ class LeconModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(LeconModelForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.empty_permitted = False
         self.helper.form_class = 'form-horizontal'
 
         self.helper.layout = Layout(
-                                Field('titre', placeholder="Titre du cours"),
+                                Field('titre', placeholder="Titre du cours",css_class="col-xs-12"),
                                 Field('contenu', placeholder="Décris le contenu du cours..."),
                                 Field('prerequis', placeholder="Quel(s) sont les prérequis pour assister au cours ?"),
                                 Field('ordre'),
         )
-        self.helper.add_input(Submit('submit', 'Confirmer', css_class='btn btn-default btn-lg'))
+    #    self.helper.add_input(Submit('submit', 'Confirmer', css_class='btn btn-default btn-lg'))
 
 
     def clean(self):

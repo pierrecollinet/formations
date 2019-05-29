@@ -14,9 +14,12 @@ import datetime
 from formateurs.models import Formateur
 
 class FormateurForm(forms.ModelForm):
+
     class Meta:
         model = Formateur
-        fields = ('prenom','nom','gsm','email','photo_profil','experience','photo_profil',
-                  'facebook_link','linkdin_link','twitter_link','googleplus_link',
+        fields = ('prenom','nom','gsm','email','photo_profil','experience','photo_profil', 'niveau_etude', 'etablissement_scolaire', 'profession',
+                  'facebook_link','linkdin_link','twitter_link','googleplus_link', 'motivation', 'methodologie'
                   )
+
+
 

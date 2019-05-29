@@ -55,6 +55,31 @@
         </div>
         <!-- /row-->
         <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Niveau d'étude</label>
+              {% render_field form.niveau_etude type="text" class="form-control" required="True" %}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Etablissement Scolaire</label>
+              {% render_field form.etablissement_scolaire type="text" class="form-control" placeholder="Le nom de ton école/université" required="True" %}
+            </div>
+          </div>
+        </div>
+        <!-- /row-->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Profession</label>
+              {% render_field form.profession type="text" class="form-control" required="True" placeholder="Que fais-tu dans la vie?" %}
+            </div>
+          </div>
+
+        </div>
+        <!-- /row-->
+        <div class="row">
           <div class="col-md-12">
             <div class="form-group">
               <label>Photo de profil</label>
@@ -110,13 +135,21 @@
 
       <div class="box_general padding_bottom">
         <div class="header_box version_2">
-          <h2><i class="fa fa-file-text"></i>Curriculum</h2>
+          <h2><i class="fa fa-file-text"></i>Informations sur ta pédagogie</h2>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label>Professional statement</label>
-              <textarea rows="5" class="form-control" style="height:100px;" placeholder="Description"></textarea>
+              <label>Méthodologie</label>
+              {% render_field form.methodologie type="text" class="form-control" placeholder="Décris ta méthodologie en quelques lignes"  rows='5' %}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Motivation <a href="#0" data-toggle="tooltip" data-placement="top" title="Explique-nous ce qui te pousse à vouloir enseigner/donner une formation?"><i class="fa fa-fw fa-question-circle"></i></a></label>
+              {% render_field form.motivation type="text" class="form-control" placeholder="Pourquoi veux-tu rejoindre notre plateforme?" rows='5' %}
             </div>
           </div>
         </div>

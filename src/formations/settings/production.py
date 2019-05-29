@@ -37,7 +37,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'SOME+RANDOM+KEY(z9+3vnm(jb0u@&w68t#5_
 
 
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS =  ['airbnb-formations2.herokuapp.com', '.yourdomain.com']
 DATABASES = {
     'default': {
@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'widget_tweaks',
     'tinymce',
+    'formtools',
     # 'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.linkedin',

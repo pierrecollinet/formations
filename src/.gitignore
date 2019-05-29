@@ -6,6 +6,7 @@ pip-selfcheck.json
 formations/settings/local.py
 src/formations/settings/local.py
 */settings/local.py
+formations/media/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

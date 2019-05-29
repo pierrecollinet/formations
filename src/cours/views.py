@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
 
+import os
+from django.conf import settings
+
 # import models
 from cours.models import Categorie, SousCategorie, Cours, SousCategorieCours, FormateurCours, Lecon, Option, SkillCours
 from formateurs.models import Formateur
@@ -7,6 +10,11 @@ from formateurs.forms import FormateurForm
 from cours.forms import CoursModelForm, LeconModelForm, OptionModelForm, SkillModelForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from formtools.wizard.views import WizardView, SessionWizardView
+from django.core.files.storage import FileSystemStorage
+
+from django.forms import formset_factory
+from django.forms.formsets import BaseFormSet
 
 from datetime import datetime
 def formateur_required(function):
@@ -66,6 +74,28 @@ def detail_cours_formateur(request, pk):
 @formateur_required
 def cours_list_formateur(request):
     return render(request, 'cours/mes-cours/cours-list.html', {})
+
+LeconFormSet = formset_factory(LeconModelForm,
+                                 formset=BaseFormSet,
+                                 max_num=20
+                                 )
+
+FORMS = [("creer_cours", CoursModelForm),
+         ("creer_lecon", LeconFormSet),
+         ("creer_option", OptionModelForm)]
+
+TEMPLATES = {"creer_cours": "cours/cours-wizard/creer-cours.html",
+             "creer_lecon": "cours/cours-wizard/creer-lecon.html",
+             "creer_option": "cours/cours-wizard/creer-option.html"}
+
+class CreateCoursWizard(SessionWizardView):
+    file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'photos'))
+
+    def get_template_names(self):
+        return [TEMPLATES[self.steps.current]]
+
+    def done(self, form_list, **kwargs):
+        return redirect('dashboard-formateurs')
 
 @formateur_required
 def creer_cours(request):

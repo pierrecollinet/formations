@@ -11,7 +11,7 @@
 {% block content %}
 
   <main>
-    <section id="hero_in" class="courses">
+    <section id="hero_in" class="courses" style="background-image: url({{ cours.image.url }});">
       <div class="wrapper">
         <div class="container">
           <h1 class="fadeInUp"><span></span>{{ cours.titre }}</h1>
@@ -106,6 +106,9 @@
                     <div class="card-body">
                       <div class="list_lessons">
                         {% autoescape off %}{{ lecon.contenu }}{% endautoescape %}
+                        {% if lecon.option_set.all|length > 1 %}
+                            <p>Choisis l'horaire qui te convient le mieux : </p>
+                        {% endif %}
                         <ul>
                           {% for option in lecon.option_set.all %}
                           <li><a href="" class="video">{{ option.show_date_range }}</a><span>{{ option.tarif }} &euro; /<a href="{% url 'edit-option' pk=option.pk %}"><i class="icon-edit-2"></i>Modifier</a></span></li>

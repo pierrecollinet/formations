@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'widget_tweaks',
     'tinymce',
+    'formtools',
 
     # 'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.facebook',
