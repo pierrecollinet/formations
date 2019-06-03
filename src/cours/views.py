@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect
 
 import os
 from django.conf import settings
-
+from django.http import HttpResponse
+import json as simplejson
 # import models
 from cours.models import Categorie, SousCategorie, Cours, SousCategorieCours, FormateurCours, Lecon, Option, SkillCours
 from formateurs.models import Formateur
 from formateurs.forms import FormateurForm
-from cours.forms import CoursModelForm, LeconModelForm, OptionModelForm, SkillModelForm
+from cours.forms import CoursModelForm, LeconModelForm, OptionModelForm, SkillModelForm, IntroductionForm, ConfirmationForm, SousCategorieForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from formtools.wizard.views import WizardView, SessionWizardView
@@ -77,25 +78,107 @@ def cours_list_formateur(request):
 
 LeconFormSet = formset_factory(LeconModelForm,
                                  formset=BaseFormSet,
-                                 max_num=20
+                                 max_num=20,
                                  )
 
-FORMS = [("creer_cours", CoursModelForm),
+FORMS = [("introduction", IntroductionForm),
+         ("creer_cours", CoursModelForm),
          ("creer_lecon", LeconFormSet),
-         ("creer_option", OptionModelForm)]
+         ("ajouter_sous_categorie", SousCategorieForm),
+         ("confirmation", ConfirmationForm)]
 
-TEMPLATES = {"creer_cours": "cours/cours-wizard/creer-cours.html",
-             "creer_lecon": "cours/cours-wizard/creer-lecon.html",
-             "creer_option": "cours/cours-wizard/creer-option.html"}
+TEMPLATES = {"introduction":"cours/cours-wizard/introduction.html",
+             "creer_cours" : "cours/cours-wizard/creer-cours.html",
+             "creer_lecon" : "cours/cours-wizard/creer-lecon.html",
+             "ajouter_sous_categorie": "cours/cours-wizard/ajouter-sous-categorie.html",
+             "confirmation": "cours/cours-wizard/confirmation.html"}
 
 class CreateCoursWizard(SessionWizardView):
-    file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'photos'))
+    file_storage = FileSystemStorage(location=settings.DEFAULT_FILE_STORAGE)
 
     def get_template_names(self):
         return [TEMPLATES[self.steps.current]]
 
+    def get_context_data(self, form, **kwargs):
+        context = super(CreateCoursWizard, self).get_context_data(form=form, **kwargs)
+        if self.steps.current == 'confirmation':
+          cours_form = self.get_cleaned_data_for_step('creer_cours')
+          lecon_form = self.get_cleaned_data_for_step('creer_lecon')
+          categorie_form = self.get_cleaned_data_for_step('ajouter_sous_categorie')
+          cours = Cours(
+                        titre = cours_form['titre'],
+                        courte_description = cours_form['courte_description'],
+                        long_description = cours_form['long_description'],
+                        image = cours_form['image']
+                        )
+          sous_categories = []
+          for sous_categorie in categorie_form['sous_categorie']:
+              sous_categories.append(sous_categorie)
+          context.update({'cours':cours, 'image':cours_form['image'],'sous_categories':sous_categories})
+          lecons = []
+          for form in lecon_form:
+              lecon = Lecon(
+                          titre     = form['titre'],
+                          cours     = Cours.objects.first(),
+                          contenu   = form['contenu'],
+                          prerequis = form['prerequis'],
+                          ordre     = form['ordre']
+                      )
+              lecons.append(lecon)
+          context.update({'lecons':lecons})
+        return context
     def done(self, form_list, **kwargs):
+        cours_form = self.get_cleaned_data_for_step('creer_cours')
+        lecon_form = self.get_cleaned_data_for_step('creer_lecon')
+        categorie_form = self.get_cleaned_data_for_step('ajouter_sous_categorie')
+
+        # 1. On sauve le nouveau cours
+        cours = Cours(
+                        titre = cours_form['titre'],
+                        courte_description = cours_form['courte_description'],
+                        long_description = cours_form['long_description'],
+                        image = cours_form['image']
+                        )
+        cours.save()
+
+        # 2. On sauve les leçons du cours ET les options
+        for form in lecon_form:
+            lecon = Lecon(
+                        titre     = form['titre'],
+                        cours     = cours,
+                        contenu   = form['contenu'],
+                        prerequis = form['prerequis'],
+                        ordre     = form['ordre']
+                      )
+            lecon.save()
+            debut = datetime.combine(form['date_debut'], form['heure_debut'])
+            fin   = datetime.combine(form['date_fin'], form['heure_fin'])
+            option =  Option(
+                            lecon    = lecon,
+                            debut    = debut,
+                            fin      = fin,
+                            tarif    = form['tarif'],
+                            capacite = form['capacite'],
+
+              )
+            option.save()
+        # 3. On associe les sous-catégories au cours
+        for sous_categorie in categorie_form['sous_categorie']:
+            sous_categorie = SousCategorieCours(cours=cours, sous_categorie=sous_categorie)
+            sous_categorie.save()
+        # 4. On associe le cours au formateur qui l'a créé
+        formateur_cours = FormateurCours(cours=cours, formateur=self.request.user.formateur)
+        formateur_cours.save()
         return redirect('dashboard-formateurs')
+
+def ajax_get_sous_categories(request, pk):
+    print('okokokokok')
+    categorie = Categorie.objects.get(pk=pk)
+    sous_categories = SousCategorie.objects.filter(categorie=categorie)
+    sous_categories_dict=[]
+    [sous_categories_dict.append((each_sous_categorie.pk,each_sous_categorie.nom)) for each_sous_categorie in sous_categories]
+    print(sous_categories_dict)
+    return HttpResponse(simplejson.dumps(sous_categories_dict), content_type="application/json")
 
 @formateur_required
 def creer_cours(request):

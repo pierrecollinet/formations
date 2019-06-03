@@ -22,4 +22,3 @@ class FormateurForm(forms.ModelForm):
                   )
 
 
-

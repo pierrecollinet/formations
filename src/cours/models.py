@@ -67,7 +67,7 @@ class FormateurCours(models.Model):
         return self.cours.titre + ' - ' + self.formateur.email
 class SousCategorieCours(models.Model):
     sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE,)
-    cours     = models.ForeignKey(Cours, on_delete=models.CASCADE,)
+    cours          = models.ForeignKey(Cours, on_delete=models.CASCADE,)
 
     def __str__(self):
         return self.sous_categorie.nom + ' - ' + self.cours.titre
@@ -138,9 +138,21 @@ class ReviewCours(models.Model):
     def __str__(self):
         return self.auteur.username + " - " + self.commentaire[:30]
 
+class Cible(models.Model):
+    nom         = models.CharField(max_length=200)
+    image       = models.ImageField(upload_to = 'mes_images/')
+    description = models.TextField()
+    icon        = IconField()
 
+    def __str__(self):
+        return self.nom
 
+class CibleCours(models.Model):
+    cible = models.ForeignKey(Cible, on_delete=models.CASCADE,)
+    cours = models.ForeignKey(Cours, on_delete=models.CASCADE,)
 
+    def __str__(self):
+        return self.cours.titre + " - " + self.cible.nom
 
 
 

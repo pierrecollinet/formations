@@ -23,27 +23,30 @@
     </figure>
     <div id="wizard_container">
       <div id="top-wizard">
-        <div id="progressbar" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33.333333"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: block; width: 33%;"></div></div>
+        <div id="progressbar"></div>
       </div>
       <!-- /top-wizard -->
-      <form name="example-1" id="wrapped" method="POST" enctype="multipart/form-data">
-
+      <form name="example-1" id="wrapped" method="POST">
+        {% csrf_token %}
+        {{ wizard.management_form }}
+        {{ form }}
         <input id="website" name="website" type="text" value="">
         <!-- Leave for security protection, read docs for details -->
         <div id="middle-wizard">
           <div class="step">
-            <h3 class="main_question"><strong>1/3</strong>Création du cours</h3>
-            {% csrf_token %}
-            {{ wizard.management_form }}
-            {% crispy form %}
-            <button type="submit" name="wizard_goto_step" class="backward" value="{{ wizard.steps.first }}" formnovalidate="formnovalidate"><i class="icon-left-open"></i> Précédent </button>
-            <button type="submit" name="process" class="submit">Confirmer <i class="icon-ok"></i></button>
-
+            <div id="intro">
+              <figure><img src="{% static 'img/wizard_intro_icon.svg' %}" alt=""></figure>
+              <h1>Création d'un cours</h1>
+              <p>Exerci tibique eum cu, paulo appellantur et mei, ea partem urbanitas vim. His ei iusto nonumes atomorum. Mentitum pericula in nec. In eos habemus tibique. </p>
+              <p><strong>Mel erant legere iuvaret ea. At eum doctus voluptatibus, has id veritus constituam.</strong></p>
+            </div>
           </div>
-          <!-- /step-->
 
         </div>
-
+        <!-- /middle-wizard -->
+        <div id="bottom-wizard">
+          <button type="submit" name="forward" class="forward">Commencer !</button>
+        </div>
         <!-- /bottom-wizard -->
       </form>
     </div>
@@ -80,4 +83,3 @@
 
 {% block javascript %}
 {% endblock %}
-

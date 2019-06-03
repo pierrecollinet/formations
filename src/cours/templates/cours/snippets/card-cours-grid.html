@@ -10,7 +10,7 @@
   <div class="wrapper">
     <small>{% for cat in instance.categoriecours_set.all %}{{ cat.categorie.nom }}{% endfor %}</small>
     <h3>{{ instance.titre }}</h3>
-    <p>{{ instance.courte_description }}</p>
+    <p>{% autoescape off %}{{ instance.courte_description }}{% endautoescape %}</p>
     <div class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i> <small>(145)</small></div>
   </div>
   <ul>

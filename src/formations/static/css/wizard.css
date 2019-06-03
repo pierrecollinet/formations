@@ -14,7 +14,7 @@
   height: 100vh;
   background-color: #fff;
   margin: auto;
-  width: 430px;
+  width: 600px;
   -webkit-box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.3);
@@ -101,10 +101,9 @@ button.submit {
 button.backward {
   color: #333;
   background: #e8e8e8;
-  padding: 12px 20px 12px 30px;
+  padding: 12px 20px 12px 20px;
 }
 button.backward:before {
-  content: "\34";
   font-family: 'ElegantIcons';
   position: absolute;
   top: 9px;
@@ -115,7 +114,7 @@ button.backward:before {
 
 button.forward,
 button.submit {
-  padding: 12px 30px 12px 20px;
+  padding: 12px 20px 12px 20px;
 }
 
 button[disabled] {
@@ -123,7 +122,6 @@ button[disabled] {
 }
 
 button.forward:before {
-  content: "\35";
   font-family: 'ElegantIcons';
   position: absolute;
   top: 8px;
@@ -133,7 +131,6 @@ button.forward:before {
 }
 
 button.submit:before {
-  content: "\4e";
   font-family: 'ElegantIcons';
   position: absolute;
   top: 8px;
@@ -220,40 +217,6 @@ span.error:after {
   left: 20%;
 }
 
-.radio_input span.error {
-  top: -30px;
-}
-
-.styled-select span.error {
-  top: -20px;
-}
-
-.terms span.error {
-  top: -30px;
-}
-
-.form-group {
-  position: relative;
-}
-.form-group i {
-  font-size: 20px;
-  position: absolute;
-  right: 0;
-  top: 10px;
-  color: #ccc;
-}
-.form-group label {
-  font-weight: 400;
-  color: #222;
-}
-.form-group.checkbox_questions label {
-  font-weight: 400;
-  cursor: pointer;
-  color: #555;
-}
-.form-group.select {
-  margin: 30px 0 30px 0;
-}
 
 .styled-select {
   width: 100%;
@@ -300,46 +263,6 @@ span.error:after {
 
 .form-control::-webkit-input-placeholder {
   color: #999;
-}
-
-input.form-control,
-select.form-control,
-textarea.form-control {
-  background: none;
-  background-color: #fff;
-  border: none;
-  border-bottom: 2px solid #e8ebed;
-  border-radius: 0;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  color: #999;
-  height: 44px;
-  font-size: 14px;
-  font-size: 0.875rem;
-  font-weight: 400;
-  margin-bottom: 25px;
-  padding: 6px 12px 6px 0;
-}
-
-input.form-control:focus,
-select.form-control:focus,
-textarea.form-control:focus {
-  border-color: #3f9fff;
-  outline: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  color: #555;
-  -moz-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
-  -webkit-transition: all 0.3s ease-in-out;
-  -ms-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
 }
 
 .form-group.radio_input {

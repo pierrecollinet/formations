@@ -13,7 +13,7 @@
         <div class="price">{{ c.total }}&euro;</div>
         <small>{% for cat in c.categoriecours_set.all %}{{ cat.categorie.nom }}{% endfor %}</small>
         <h3>{{ c.titre}}</h3>
-        <p>{{ c.courte_description }} </p>
+        {% endautoescape %}
         <div class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i> <small>(145)</small></div>
       </div>
       <ul>

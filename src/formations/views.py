@@ -6,12 +6,13 @@ from django.contrib import messages
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 
-from cours.models import Cours, Categorie, Lecon, SousCategorie
+from cours.models import Cours, Categorie, Lecon, SousCategorie, Cible, CibleCours
 from formations.models import Prospect
 from formations.forms import ContactForm
 
 def welcome(request):
-    return render(request, 'welcome.html', {})
+    cibles = Cible.objects.all()
+    return render(request, 'welcome.html', {'cibles':cibles})
 
 def contact(request):
     form = ContactForm(request.POST or None)
@@ -70,6 +71,11 @@ def search(request):
                                     )
         for l in lecons :
             all_cours.update(l.cours)
+    if 'cible' in request.GET :
+        pk = request.GET['cible']
+        cible = Cible.objects.get(pk=pk)
+        cible_cours_pk = CibleCours.objects.filter(cible=cible).values_list('cours', flat=True)
+        all_cours = Cours.objects.filter(pk__in = cible_cours_pk)
     return render(request, 'cours/courses-grid-sidebar.html', {"cours":all_cours, "anchor":"courses"})
 
 def newsletter(request):

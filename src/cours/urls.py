@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from cours.views import detail_cours, courses_list, courses_grid, detail_categorie_grid, detail_categorie_list, detail_sous_categorie_grid, detail_sous_categorie_list
 from cours.views import cours_list_formateur, detail_cours_formateur, creer_cours, creer_lecon, edit_lecon, edit_cours, creer_option, edit_option, creer_competence, edit_competence
-from cours.views import CreateCoursWizard, FORMS
+from cours.views import CreateCoursWizard, FORMS, ajax_get_sous_categories
 
 urlpatterns = [
     url('^(?P<pk>\d+)/$', detail_cours, name='detail-cours'),
@@ -27,6 +27,8 @@ urlpatterns = [
     url('^creer-competence/(?P<pk>\d+)/$', creer_competence, name='creer-competence'),
     url('^edit-competence/(?P<pk>\d+)/$', edit_competence, name='edit-competence'),
 
-    url('^creer-courss/$', CreateCoursWizard.as_view(FORMS), name="create-cours-wizard"),
+    url('^creer-cours/$', CreateCoursWizard.as_view(FORMS), name="creer-cours"),
+    url('^get_sous_categories/(?P<pk>\d+)/$', ajax_get_sous_categories, name="get-sous-categories"),
+
 
 ]

@@ -11,7 +11,13 @@ from crispy_forms.bootstrap import InlineRadios, InlineCheckboxes, FieldWithButt
 
 from datetime import datetime, date
 
-from cours.models import Cours, Lecon, Option, SkillCours
+from cours.models import Cours, Lecon, Option, SkillCours, Categorie, SousCategorie
+
+class IntroductionForm(forms.Form):
+    title = 'introduction'
+
+class ConfirmationForm(forms.Form):
+    title = 'confirmation'
 
 class CoursModelForm(forms.ModelForm):
     class Meta:
@@ -29,9 +35,15 @@ class CoursModelForm(forms.ModelForm):
                                 Field('long_description', placeholder='Description plus détaillée...'),
                                 Field('image'),
         )
-        self.helper.add_input(Submit('submit', 'Confirmer', css_class='btn btn-default btn-lg'))
 
 class LeconModelForm(forms.ModelForm):
+    date_debut  = forms.DateField(initial=date.today(), required=True, widget=forms.DateInput(format='%d/%m/%Y', attrs={'class': 'datepicker'}),  input_formats=('%d/%m/%Y',))
+    heure_debut = forms.TimeField(initial='09:00', required=True, widget=forms.TimeInput(format='%H:%M', attrs={'class': 'timepicker','placeholder': "Début du cours"}), input_formats=('%H:%M',))
+    date_fin    = forms.DateField(initial=date.today(), required=True, widget=forms.DateInput(format='%d/%m/%Y', attrs={'class': 'datepicker'}),  input_formats=('%d/%m/%Y',))
+    heure_fin   = forms.TimeField(initial='09:00', required=True, widget=forms.TimeInput(format='%H:%M', attrs={'class': 'timepicker','placeholder': "Début du cours"}), input_formats=('%H:%M',))
+    tarif       = forms.CharField()
+    capacite    = forms.IntegerField(initial=3)
+    ordre       = forms.IntegerField(widget=forms.HiddenInput(attrs={'value':1}))
     class Meta:
         model = Lecon
         fields = ('titre','contenu','prerequis','ordre',)
@@ -48,6 +60,21 @@ class LeconModelForm(forms.ModelForm):
                                 Field('contenu', placeholder="Décris le contenu du cours..."),
                                 Field('prerequis', placeholder="Quel(s) sont les prérequis pour assister au cours ?"),
                                 Field('ordre'),
+                                Div(
+                                    Div('date_debut',css_class='col-md-6',placeholder="Date de début"),
+                                    Div('heure_debut',css_class='col-md-6',placeholder="Heure de début"),
+                                    css_class='row',
+                                ),
+                                Div(
+                                    Div('date_fin',css_class='col-md-6',placeholder="Date de fin"),
+                                    Div('heure_fin',css_class='col-md-6',placeholder="Heure de fin"),
+                                    css_class='row',
+                                ),
+                                Div(
+                                    Div('tarif',css_class='col-md-6',placeholder="Tarif par personne"),
+                                    Div('capacite',css_class='col-md-6',placeholder="Combien d'élèves maximum?"),
+                                    css_class='row',
+                                )
         )
     #    self.helper.add_input(Submit('submit', 'Confirmer', css_class='btn btn-default btn-lg'))
 
@@ -94,7 +121,7 @@ class OptionModelForm(forms.ModelForm):
                                     css_class='row',
                                 ),
         )
-        self.helper.add_input(Submit('submit', 'Confirmer', css_class='btn btn-default btn-lg'))
+#        self.helper.add_input(Submit('submit', 'Confirmer', css_class='btn btn-default btn-lg'))
 
     def clean(self):
         cleaned_data = super().clean()
@@ -132,5 +159,7 @@ class SkillModelForm(forms.ModelForm):
         )
         self.helper.add_input(Submit('submit', 'Confirmer', css_class='btn btn-default btn-lg'))
 
-
+class SousCategorieForm(forms.Form):
+    categorie      = forms.ModelChoiceField(queryset=Categorie.objects.all())
+    sous_categorie = forms.ModelMultipleChoiceField(queryset=SousCategorie.objects.all(), widget=forms.CheckboxSelectMultiple)
 
