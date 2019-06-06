@@ -5,8 +5,6 @@
       <a href="{% url 'welcome' %}"><img src="{% static 'img/logo.png' %}" width="149" height="42" data-retina="true" alt=""></a>
     </div>
     <ul id="top_menu">
-      <li><a href="login.html"><i class="icon-cart nav-icon"></i></a></li>
-      <li><a href="#0" class="search-overlay-menu-btn">Search</a></li>
       <li><a href="{% url 'account_login' %}" class="btn_2 rounded">Se connecter</a></li>
       <li class="hidden_tablet"><a href="{% url 'account_signup' %}" class="btn_1 ">S'inscrire</a></li>
     </ul>
@@ -20,7 +18,20 @@
     </a>
     <nav id="menu" class="main-menu">
       <ul>
-        <li><span><a href="#0">Categories</a></span>
+        <li class="nav-item">
+          <form role="search" method="get" class="form-inline my-2 my-lg-0 mr-lg-2" action="{% url 'search' %}">
+              <div class="input-group" id="navbar-search">
+                  <input type="text" class="form-control search-top" name="q" placeholder="Que veux-tu apprendre ?">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                      <i class="icon-search"></i>
+                    </button>
+                  </span>
+              </div>
+          </form>
+        </li>
+
+        <li><span><a href="#0"><i class="icon-th"></i>Categories</a></span>
           <ul>
             {% for categorie in categories %}
             <li class="dropdown-submenu men "><a href="{% url 'categorie-grid' pk=categorie.pk %}" class="dropdown-toggle" data-toggle="dropdown">{{ categorie.nom }}</a>
@@ -40,14 +51,6 @@
         <li><span><a href="{% url 'become-teacher' %}">Enseigner</a></span></li>
       </ul>
     </nav>
-    <!-- Search Menu -->
-    <div class="search-overlay-menu">
-      <span class="search-overlay-close"><span class="closebt"><i class="ti-close"></i></span></span>
-      <form role="search" id="searchform" method="get"  action="{% url 'search' %}">
-        <input value="" name="q" type="search" placeholder="Chercher..." />
-        <button type="submit"><i class="icon_search"></i>
-        </button>
-      </form>
-    </div><!-- End Search Menu -->
+
   </header>
   <!-- /header -->

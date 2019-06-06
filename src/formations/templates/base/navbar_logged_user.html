@@ -4,10 +4,7 @@
     <div id="logo">
       <a href="{% url 'welcome' %}"><img src="{% static 'img/logo.png' %}" width="149" height="42" data-retina="true" alt=""></a>
     </div>
-    <ul id="top_menu">
-      <li><a href="login.html"><i class="icon-cart nav-icon"></i></a></li>
-      <li><a href="#0" class="search-overlay-menu-btn">Search</a></li>
-    </ul>
+
     <!-- /top_menu -->
     <a href="#menu" class="btn_mobile">
       <div class="hamburger hamburger--spin" id="hamburger">
@@ -18,7 +15,19 @@
     </a>
     <nav id="menu" class="main-menu">
       <ul>
-        <li><span><a href="#0">Categories</a></span>
+        <li class="nav-item">
+          <form role="search" method="get" class="form-inline my-2 my-lg-0 mr-lg-2" action="{% url 'search' %}">
+              <div class="input-group" id="navbar-search">
+                  <input type="text" class="form-control search-top" name="q" placeholder="Que veux-tu apprendre ?">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                      <i class="icon-search"></i>
+                    </button>
+                  </span>
+              </div>
+          </form>
+        </li>
+        <li><span><a href="#0"><i class="icon-th"></i>Categories</a></span>
           <ul>
             {% for categorie in categories %}
             <li class="dropdown-submenu"><a href="{% url 'categorie-grid' pk=categorie.pk %}">{{ categorie.nom }}</a>
@@ -34,6 +43,7 @@
             {% endfor %}
           </ul>
         </li>
+        <li><span><a href="{% url 'become-teacher' %}">Enseigner</a></span></li>
         <li><span><a href="#0">{{ request.user.username }}</a></span>
           <ul>
             <li><a href="{% url 'dashboard-student' %}">Tableau de bord</a></li>
@@ -44,7 +54,7 @@
             <li><a href="{% url 'account_logout' %}">Logout</a></li>
           </ul>
         </li>
-        <li><span><a href="{% url 'become-teacher' %}">Enseigner</a></span></li>
+
       </ul>
     </nav>
     <!-- Search Menu -->

@@ -18,31 +18,39 @@
     <div data-loader="circle-side"></div>
   </div>
   <!-- End Preload -->
+  <div id="register_bg">
+    <div id="login">
+      <aside>
+        <figure>
+          <a href="index.html"><img src="{% static 'img/logo.png' %}" width="149" height="42" data-retina="true" alt=""></a>
+        </figure>
 
-  <div id="login">
-    <aside>
-      <figure>
-        <a href="index.html"><img src="{% static 'img/logo.png' %}" width="149" height="42" data-retina="true" alt=""></a>
-      </figure>
-
-            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}" style="display:flex;">
-              <div class="">
-                {% csrf_token %}
-                <div class="text-left">
-                  {% crispy form %}
+              <form class="signup col-xs-12" id="signup_form" method="post" action="{% url 'account_signup' %}" style="display:flex;">
+                <div class="" style="width:100%;">
+                  {% csrf_token %}
+                  <div class="access_social">
+                    <a href='{% provider_login_url "facebook" method="oauth2" %}' class="social_bt facebook">Se connecter via Facebook</a>
+          <!--           <a href="#0" class="social_bt google">Login with Google</a>
+                    <a href="#0" class="social_bt linkedin">Login with Linkedin</a> -->
+                  </div>
+                  <div class="divider"><span>Ou</span></div>
+                  <div class="col-md-12 col-xs-12" >
+                    <div class="text-left">
+                      {% crispy form %}
+                    </div>
+                  </div>
+                  {% if redirect_field_value %}
+                  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                  {% endif %}
+                  <button type="submit" class="btn_1 rounded full-width add_top_60">Se créer un compte</button>
+                  <div class="text-center add_top_10">Tu as déjà un compte? <strong><a href="{% url 'account_login' %}">Se connecter</a></strong></div>
                 </div>
+              </form>
+              <div class="copy">© 2019 Udema</div>
 
-                {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-                {% endif %}
-                <button type="submit" class="btn_1 rounded full-width add_top_60">Register to Udema</button>
-                <div class="text-center add_top_10">Already have an acccount? <strong><a href="{% url 'account_login' %}">Sign in</a></strong></div>
-              </div>
-            </form>
-            <div class="copy">© 2019 Udema</div>
-
-      <div class="copy">© 2019 Udema</div>
-    </aside>
+        <div class="copy">© 2019 Udema</div>
+      </aside>
+    </div>
   </div>
   <!-- /login -->
 

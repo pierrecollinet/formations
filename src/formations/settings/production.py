@@ -82,7 +82,9 @@ INSTALLED_APPS = [
     'cours',
     'formateurs',
     'apprenants',
-    'partenaires'
+    'partenaires',
+    'carts',
+    'billing'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {

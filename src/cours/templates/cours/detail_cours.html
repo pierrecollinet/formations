@@ -12,7 +12,7 @@
 
   <main>
     <section id="hero_in" class="courses" style="background-image: url({{ cours.image.url }});">
-      <div class="wrapper">
+      <div class="wrapper custom-dark-background">
         <div class="container">
           <h1 class="fadeInUp"><span></span>{{ cours.titre }}</h1>
         </div>
@@ -44,27 +44,6 @@
                 </li>
                 {% endfor %}
               </ul>
-              <hr>
-              <p>Mea appareat omittantur eloquentiam ad, nam ei quas oportere democritum. Prima causae admodum id est, ei timeam inimicus sed. Sit an meis aliquam, cetero inermis vel ut. An sit illum euismod facilisis, tamquam vulputate pertinacia eum at.</p>
-              <div class="row">
-                <div class="col-lg-6">
-                  <ul class="bullets">
-                    <li>Dolorem mediocritatem</li>
-                    <li>Mea appareat</li>
-                    <li>Prima causae</li>
-                    <li>Singulis indoctum</li>
-                  </ul>
-                </div>
-                <div class="col-lg-6">
-                  <ul class="bullets">
-                    <li>Timeam inimicus</li>
-                    <li>Oportere democritum</li>
-                    <li>Cetero inermis</li>
-                    <li>Pertinacia eum</li>
-                  </ul>
-                </div>
-              </div>
-              <!-- /row -->
             </section>
             <!-- /section -->
 
@@ -110,6 +89,13 @@
                 {% endfor %}
               </div>
               <!-- /accordion -->
+            </section>
+            <!-- /section -->
+
+            <section id="description">
+              <h2>Prérequis</h2>
+              {% autoescape off %}{{ cours.prerequis }}{% endautoescape %}
+              <span style="color:red;">Ajouter quelque chose OU prérequis dans "Leçon" ???</span>
             </section>
             <!-- /section -->
 
@@ -209,7 +195,7 @@
           <aside class="col-lg-4" id="sidebar">
             <div class="box_detail">
               <figure>
-                <a href="https://www.youtube.com/watch?v=LDgd_gUcqCw" class="video"><i class="arrow_triangle-right"></i><img src="http://via.placeholder.com/800x533/ccc/fff/course_1.jpg" alt="" class="img-fluid"><span>View course preview</span></a>
+                <a href="https://www.youtube.com/watch?v=LDgd_gUcqCw" class="video"><i class="arrow_triangle-right"></i><img src="{{ cours.get_main_teacher.photo_profil.url }}" alt="" class="img-fluid"><span>View course preview</span></a>
               </figure>
               <div class="price">
                 {{ cours.total }} &euro;<span class="original_price"><em>{{ cours.total }} &euro;</em>60% discount price</span>
@@ -217,11 +203,11 @@
               <a href="#0" class="btn_1 full-width">Purchase</a>
               <a href="#0" class="btn_1 full-width outline"><i class="icon_heart"></i> Add to wishlist</a>
               <div id="list_feat">
-                <h3>What's includes</h3>
+                <h3>Cela comprend</h3>
                 <ul>
-                  <li><i class="icon_mobile"></i>Mobile support</li>
-                  <li><i class="icon_archive_alt"></i>Lesson archive</li>
-                  <li><i class="icon_mobile"></i>Mobile support</li>
+                  <li><i class="icon_mobile"></i>Questions illimitées au professeur</li>
+                  <li><i class="icon_archive_alt"></i>3 ressources téléchargeables</li>
+                  <li><i class="icon_mobile"></i>{{ cours.total_time_lecons}} heures de formation</li>
                   <li><i class="icon_chat_alt"></i>Tutor chat</li>
                   <li><i class="icon_document_alt"></i>Course certificate</li>
                 </ul>

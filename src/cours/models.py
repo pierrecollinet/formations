@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 class Categorie(models.Model):
     nom  = models.CharField(max_length = 200)
     icon = IconField()
+    image = models.ImageField(upload_to = 'mes_images/', blank=True, null=True)
 
     def __str__(self):
         return self.nom
@@ -50,6 +51,7 @@ class Cours(models.Model):
     titre              = models.CharField(max_length = 500)
     courte_description = models.TextField(blank = True, null = True)
     long_description   = models.TextField(blank = True, null = True)
+    prerequis          = models.TextField(blank=True, null=True)
     image              = models.ImageField(upload_to = 'mes_images/')
     active             = models.BooleanField(default = True)
     total              = models.CharField(max_length=20, default="0")
@@ -59,10 +61,32 @@ class Cours(models.Model):
     def __str__(self):
         return self.titre
 
+    def get_main_teacher(self):
+        main_teachers = self.formateurcours_set.filter(main=True)
+        if len(main_teachers) > 0:
+            main_teacher = main_teachers.first()
+            teacher = main_teacher.formateur
+            return teacher
+        else :
+            main_teachers = self.formateurcours_set.all()
+            main_teacher = main_teachers.first()
+            teacher = main_teacher.formateur
+            return teacher
+
+    def get_lecons(self):
+        lecons = Lecon.objects.filter(cours=self)
+        return lecons
+
+    def total_time_lecons(self):
+        total = 0
+        for lecon in self.get_lecons():
+            total += lecon.get_time_lecon()
+        return total
+
 class FormateurCours(models.Model):
     cours = models.ForeignKey(Cours, on_delete=models.CASCADE,)
     formateur = models.ForeignKey('formateurs.Formateur', on_delete=models.CASCADE,)
-
+    main = models.BooleanField(default = True)
     def __str__(self):
         return self.cours.titre + ' - ' + self.formateur.email
 class SousCategorieCours(models.Model):
@@ -83,13 +107,21 @@ class Lecon(models.Model):
     titre     = models.CharField(max_length = 500, blank = True, null = True)
     cours     = models.ForeignKey(Cours, on_delete=models.CASCADE,)
     contenu   = models.TextField(blank=True, null=True)
-    prerequis = models.TextField(blank=True, null=True)
     ordre     = models.PositiveSmallIntegerField(default=1)
 
     def __str__(self):
         return self.cours.titre + ' - ' + self.contenu[:30]
     class Meta:
         ordering = ('ordre', )
+
+    def get_time_lecon(self):
+        options = Option.objects.filter(lecon=self)
+        if len(options)>0:
+            option = options.first()
+            delta = option.fin - option.debut
+            return delta.total_seconds()/3600
+        else :
+          return 0
 
 class Option(models.Model):
     lecon    = models.ForeignKey(Lecon, on_delete=models.CASCADE, blank=True, null=True)
@@ -143,9 +175,19 @@ class Cible(models.Model):
     image       = models.ImageField(upload_to = 'mes_images/')
     description = models.TextField()
     icon        = IconField()
+    ordre       = models.PositiveSmallIntegerField(default=1)
 
     def __str__(self):
         return self.nom
+
+    class Meta:
+        ordering = ('ordre', )
+
+    def get_cours(self):
+        cibles_cours = CibleCours.objects.filter(cible = self)
+        cours_ids = cibles_cours.values_list('cours', flat=True)
+        cours = Cours.objects.filter(id__in = cours_ids)
+        return set(cours)
 
 class CibleCours(models.Model):
     cible = models.ForeignKey(Cible, on_delete=models.CASCADE,)

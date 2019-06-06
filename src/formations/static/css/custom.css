@@ -83,3 +83,21 @@ ul#top_menu li a.btn_2:hover {
   }
 }
 
+.pd-30{
+  padding:30px 0px;
+}
+
+
+#hero_in.courses .custom-dark-background{
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#navbar-search{
+  width:250px;
+}
+
+@media(min-width:1100px){
+  #navbar-search{
+    width:350px;
+  }
+}

@@ -13,36 +13,38 @@
 {% block content %}
   <nav id="menu" class="fake_menu"></nav>
 
-  <div id="login">
-    <aside>
-      <figure>
-        <a href="index.html"><img src="{% static 'img/logo.png' %}" width="149" height="42" data-retina="true" alt=""></a>
-      </figure>
+  <div id="login_bg">
+    <div id="login">
+      <aside>
+        <figure>
+          <a href="index.html"><img src="{% static 'img/logo.png' %}" width="149" height="42" data-retina="true" alt=""></a>
+        </figure>
 
-      <form class="login" method="POST" id="loginform" action="{% url 'account_login' %}">{% csrf_token %}
-        <div class="access_social">
-          <a href='{% provider_login_url "facebook" method="oauth2" %}' class="social_bt facebook">Login with Facebook</a>
-          <a href="#0" class="social_bt google">Login with Google</a>
-          <a href="#0" class="social_bt linkedin">Login with Linkedin</a>
-        </div>
-        <div class="divider"><span>Or</span></div>
-        <div class="col-md-12 col-xs-12 ">
-          <div class="text-left">
-            {% crispy form %}
-            <small><a href="{% url 'account_reset_password' %}">Forgot password?</a></small>
+        <form class="login" method="POST" id="loginform" action="{% url 'account_login' %}">{% csrf_token %}
+          <div class="access_social">
+            <a href='{% provider_login_url "facebook" method="oauth2" %}' class="social_bt facebook">Se connecter via Facebook</a>
+  <!--           <a href="#0" class="social_bt google">Login with Google</a>
+            <a href="#0" class="social_bt linkedin">Login with Linkedin</a> -->
           </div>
-          {% if redirect_field_value %}
-          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-          {% endif %}
-          <button type="submit" class="btn_1 rounded full-width add_top_60">Login to Udema</button>
-          <div class="row text-center">
-            <div class="text-center add_top_10">New to Udema? <strong><a href="{% url 'account_signup' %}">Sign up!</a></strong></div>
+          <div class="divider"><span>Ou</span></div>
+          <div class="col-md-12 col-xs-12 ">
+            <div class="text-left">
+              {% crispy form %}
+              <small><a href="{% url 'account_reset_password' %}">Mot de passe oublié?</a></small>
             </div>
-          </div>
-        </form>
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <button type="submit" class="btn_1 rounded full-width add_top_60">Se connecter à Udema</button>
+            <div class="row text-center">
+              <div class="text-center add_top_10">Pas encore membre? <strong><a href="{% url 'account_signup' %}">Crée-toi un compte!</a></strong></div>
+              </div>
+            </div>
+          </form>
 
-      <div class="copy">© 2017 Udema</div>
-    </aside>
+        <div class="copy">© 2017 Udema</div>
+      </aside>
+    </div>
   </div>
   <!-- /login -->
 

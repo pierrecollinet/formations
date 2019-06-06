@@ -60,7 +60,7 @@ Author URI: http://themeforest.net/user/Ansonika/
     position: relative;
     z-index: 9;
     width: auto;
-    top: 12px;
+/*    top: 12px;*/
     right: 15px;
     float: right;
     -moz-transition: all 0.3s ease-in-out;
@@ -657,6 +657,13 @@ header.header.sticky {
   background: -webkit-linear-gradient(left, #480048, #C04848);
   background: linear-gradient(to right, #480048, #C04848);
   padding: 15px 20px;
+}
+header.header.custom-sticky {
+  background: #480048;
+  background: -webkit-linear-gradient(left, #480048, #C04848);
+  background: linear-gradient(to right, #480048, #C04848);
+  padding: 15px 20px;
+  height:73px;
 }
 @media (max-width: 991px) {
   header.header.sticky {
@@ -2390,7 +2397,7 @@ html[xmlns] .flexslider .slides {
   }
 }
 #slider.flexslider ul.slides li img {
-  opacity: 0.5;
+/*  opacity: 0.5;*/
   width: 100%;
   height: auto;
   position: absolute;
@@ -2477,7 +2484,7 @@ html[xmlns] .flexslider .slides {
   -ms-transform: scale(1);
   -o-transform: scale(1);
   transform: scale(1);
-  opacity: 0.4;
+  opacity: 0.7;
   -moz-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   -webkit-transition: all 0.3s ease-in-out;
@@ -3684,7 +3691,7 @@ section#reviews {
 
 /*-------- 2.5 Login/register/admission--------*/
 #login_bg, #register_bg, #admission_bg {
-  background: url(http://via.placeholder.com/1600x1067/ccc/fff/bg_login.jpg) center center no-repeat fixed;
+  background: url(../img/blackboard.jpg) center center no-repeat fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -3694,7 +3701,7 @@ section#reviews {
 }
 
 #register_bg {
-  background: url(http://via.placeholder.com/1600x1067/ccc/fff/bg_register.jpg) center center no-repeat fixed;
+  background: url(../img/blackboard.jpg) center center no-repeat fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -5104,7 +5111,7 @@ ul.list_3 li:before {
 }
 
 .call_section {
-  background: url(http://via.placeholder.com/1600x1067/ccc/fff/bg_call_section.jpg) center center no-repeat fixed;
+  background: url(../img/community.jpg) center center no-repeat fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;

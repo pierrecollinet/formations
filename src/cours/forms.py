@@ -22,7 +22,7 @@ class ConfirmationForm(forms.Form):
 class CoursModelForm(forms.ModelForm):
     class Meta:
         model = Cours
-        fields = ('titre','courte_description','long_description','image',)
+        fields = ('titre','courte_description','long_description','prerequis','image',)
 
     def __init__(self, *args, **kwargs):
         super(CoursModelForm, self).__init__(*args, **kwargs)
@@ -33,6 +33,7 @@ class CoursModelForm(forms.ModelForm):
                                 Field('titre', placeholder="Titre du cours"),
                                 Field('courte_description', placeholder="Description en quelques lignes..."),
                                 Field('long_description', placeholder='Description plus détaillée...'),
+                                Field('prerequis', placeholder="Quel(s) sont les prérequis pour assister au cours ?"),
                                 Field('image'),
         )
 
@@ -46,7 +47,7 @@ class LeconModelForm(forms.ModelForm):
     ordre       = forms.IntegerField(widget=forms.HiddenInput(attrs={'value':1}))
     class Meta:
         model = Lecon
-        fields = ('titre','contenu','prerequis','ordre',)
+        fields = ('titre','contenu','ordre',)
 
     def __init__(self, *args, **kwargs):
         super(LeconModelForm, self).__init__(*args, **kwargs)
@@ -58,7 +59,6 @@ class LeconModelForm(forms.ModelForm):
         self.helper.layout = Layout(
                                 Field('titre', placeholder="Titre du cours",css_class="col-xs-12"),
                                 Field('contenu', placeholder="Décris le contenu du cours..."),
-                                Field('prerequis', placeholder="Quel(s) sont les prérequis pour assister au cours ?"),
                                 Field('ordre'),
                                 Div(
                                     Div('date_debut',css_class='col-md-6',placeholder="Date de début"),
@@ -83,9 +83,8 @@ class LeconModelForm(forms.ModelForm):
         cleaned_data = super().clean()
         titre = cleaned_data.get("titre")
         contenu = cleaned_data.get("contenu")
-        prerequis = cleaned_data.get("prerequis")
 
-        if not titre or not contenu or not prerequis:
+        if not titre or not contenu:
             msg = "Tous les champs sont obligatoires ! "
             raise forms.ValidationError(msg)
 
