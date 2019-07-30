@@ -26,7 +26,8 @@
           <ul class="clearfix">
             <li><a href="#description" class="active">Description</a></li>
             <li><a href="#lessons">Cours</a></li>
-            <li><a href="#reviews">Feedbacks</a></li>
+            {% if cours.reviewcours_set.all|length > 0 %}<li><a href="#reviews">Feedbacks</a></li>{% endif %}
+            <li><a href="#formateur">Formateur</a></li>
           </ul>
         </div>
       </nav>
@@ -49,7 +50,7 @@
 
             <section id="lessons">
               <div class="intro_title">
-                <h2>Leçons</h2>
+                <h2>Contenu du cours</h2>
                 <ul>
                   <li>{{cours.lecon_set.all|length }} leçons</li>
                 </ul>
@@ -74,11 +75,17 @@
                       <div class="list_lessons">
                         {% autoescape off %}{{ lecon.contenu }}{% endautoescape %}
                         {% if lecon.option_set.all|length > 1 %}
-                            <p>Choisis l'horaire qui te convient le mieux : </p>
+                            <p>Voici les différents horaires (et lieux) possibles pour ce cours : </p>
                         {% endif %}
                         <ul>
                           {% for option in lecon.option_set.all %}
-                          <li><a href="" class="video">{{ option.show_date_range }}</a><span>{{ option.tarif }} &euro; /<a href="{% url 'edit-option' pk=option.pk %}"><i class="icon-edit-2"></i>Modifier</a></span></li>
+                          <li>
+                            <div class="row">
+                              <div class="col-xs-12 col-md-5">{{ option.show_date_range }}</div>
+                              <div class="col-xs-12 col-md-5">{{ option.salle.nom}}</div>
+                              <div class="col-xs-12 col-md-2">{{ option.tarif }} &euro;</div>
+                            </div>
+                          </li>
                           {% endfor %}
                         </ul>
                       </div>
@@ -94,68 +101,110 @@
 
             <section id="description">
               <h2>Prérequis</h2>
-              {% autoescape off %}{{ cours.prerequis }}{% endautoescape %}
-              <span style="color:red;">Ajouter quelque chose OU prérequis dans "Leçon" ???</span>
+              <div class="margin-bottom30">
+              {% autoescape off %}
+                {% if cours.prerequis %}
+                  {{ cours.prerequis }}
+                {% else %}
+                  Aucun, je vous guide en partant de zéro.
+                {% endif %}
+              {% endautoescape %}
+              </div>
             </section>
             <!-- /section -->
 
+            <section id="formateur">
+              {% if cours.get_teachers|length > 1 %}
+              <h2>A propos des formateurs</h2>
+              {% elif cours.get_teachers|length == 1%}
+              <h2>A propos du formateur</h2>
+              {% endif%}
+              <p>Zril causae ancillae sit ea. Dicam veritus mediocritatem sea ex, nec id agam eius. Te pri facete latine salutandi, scripta mediocrem et sed, cum ne mundi vulputate. Ne his sint graeco detraxit, posse exerci volutpat has in.</p>
+              <div class="row add_top_20 add_bottom_30">
+                <div class="col-lg-6">
+                  <ul class="list_teachers">
+                    {% for teacher in cours.get_teachers %}
+                        <li>
+                          <a href="{% url 'teacher-detail' pk=teacher.formateur.pk %}">
+                          <figure><img src="{{teacher.formateur.photo_profil.url}}" alt=""></figure>
+                          <h5>{{ teacher.formateur.prenom }}</h5>
+                          <p>Mathematics</p><i class="pe-7s-angle-right-circle"></i></a>
+                        </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </section>
+            <!-- /section -->
+
+            {% if cours.reviewcours_set.all|length > 0 %}
             <section id="reviews">
               <h2>Feedback</h2>
               <div class="reviews-container">
                 <div class="row">
                   <div class="col-lg-3">
                     <div id="review_summary">
-                      <strong>4.7</strong>
+                      <strong>{{cours.get_moyenne_review}}</strong>
                       <div class="rating">
+                        {% if cours.get_moyenne_review <= 1.0 %}
+                 <i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i>
+                        {% elif cours.get_moyenne_review <= 2.0 %}
+                        <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i>
+                        {% elif cours.get_moyenne_review <= 3.0 %}
+                        <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i>
+                        {% elif cours.get_moyenne_review <= 4.0 %}
                         <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
+                        {% elif cours.get_moyenne_review <= 5.0 %}
+                        <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i>
+                        {% endif %}
                       </div>
                       <small>Basé sur {{ cours.reviewcours_set.all|length }} feedbacks</small>
                     </div>
                   </div>
                   <div class="col-lg-9">
                     <div class="row">
-                      <div class="col-lg-10 col-9">
+                      <div class="col-lg-7 col-9">
                         <div class="progress">
-                          <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar" role="progressbar" style="width:{{cours.get_five_star_review_percentage}}%" aria-valuenow="{{cours.get_five_star_review_percentage}}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
-                      <div class="col-lg-2 col-3"><small><strong>5 stars</strong></small></div>
+                      <div class="col-lg-5 col-3"><small><strong><div class="rating same-line"><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i></div> {{cours.get_five_star_review_percentage}} %</strong></small></div>
                     </div>
                     <!-- /row -->
                     <div class="row">
-                      <div class="col-lg-10 col-9">
+                      <div class="col-lg-7 col-9">
                         <div class="progress">
-                          <div class="progress-bar" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar" role="progressbar" style="width: {{cours.get_four_star_review_percentage}}%;" aria-valuenow="{{cours.get_four_star_review_percentage}}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
-                      <div class="col-lg-2 col-3"><small><strong>4 stars</strong></small></div>
+                      <div class="col-lg-5 col-3"><small><strong><div class="rating same-line"><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i></div> {{cours.get_four_star_review_percentage}} %</strong></small></div>
                     </div>
                     <!-- /row -->
                     <div class="row">
-                      <div class="col-lg-10 col-9">
+                      <div class="col-lg-7 col-9">
                         <div class="progress">
-                          <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar" role="progressbar" style="width: {{cours.get_three_star_review_percentage}}%" aria-valuenow="{{cours.get_three_star_review_percentage}}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
-                      <div class="col-lg-2 col-3"><small><strong>3 stars</strong></small></div>
+                      <div class="col-lg-5 col-3"><small><strong><div class="rating same-line"><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i></div> {{cours.get_three_star_review_percentage}} %</strong></small></div>
                     </div>
                     <!-- /row -->
                     <div class="row">
-                      <div class="col-lg-10 col-9">
+                      <div class="col-lg-7 col-9">
                         <div class="progress">
-                          <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar" role="progressbar" style="width: {{cours.get_two_star_review_percentage}}%" aria-valuenow="{{cours.get_two_star_review_percentage}}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
-                      <div class="col-lg-2 col-3"><small><strong>2 stars</strong></small></div>
+                      <div class="col-lg-5 col-3"><small><strong><div class="rating same-line"><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i></div> {{cours.get_two_star_review_percentage}} %</strong></small></div>
                     </div>
                     <!-- /row -->
                     <div class="row">
-                      <div class="col-lg-10 col-9">
+                      <div class="col-lg-7 col-9">
                         <div class="progress">
-                          <div class="progress-bar" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div class="progress-bar" role="progressbar" style="width:{{cours.get_one_star_review_percentage}}%;" aria-valuenow="{{cours.get_one_star_review_percentage}}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
-                      <div class="col-lg-2 col-3"><small><strong>1 stars</strong></small></div>
+                      <div class="col-lg-5 col-3"><small><strong><div class="rating same-line"><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i></div> {{cours.get_one_star_review_percentage}} %</strong></small></div>
                     </div>
                     <!-- /row -->
                   </div>
@@ -172,7 +221,17 @@
                   </figure>
                   <div class="rev-content">
                     <div class="rating">
-                      <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
+                        {% if review.rating <= 1.0 %}
+                 <i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i>
+                        {% elif review.rating <= 2.0 %}
+                        <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i>
+                        {% elif review.rating <= 3.0 %}
+                        <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i>
+                        {% elif review.rating <= 4.0 %}
+                        <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i>
+                        {% elif review.rating <= 5.0 %}
+                        <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i>
+                        {% endif %}
                     </div>
                     <div class="rev-info">
                       {{ review.auteur.username }} – {{review.created}}:
@@ -188,6 +247,7 @@
               </div>
               <!-- /review-container -->
             </section>
+            {% endif %}
             <!-- /section -->
           </div>
           <!-- /col -->
@@ -198,18 +258,18 @@
                 <a href="https://www.youtube.com/watch?v=LDgd_gUcqCw" class="video"><i class="arrow_triangle-right"></i><img src="{{ cours.get_main_teacher.photo_profil.url }}" alt="" class="img-fluid"><span>View course preview</span></a>
               </figure>
               <div class="price">
-                {{ cours.total }} &euro;<span class="original_price"><em>{{ cours.total }} &euro;</em>60% discount price</span>
+                {{ cours.total }} &euro;<span class="original_price"> pour {{ cours.total_time_lecons}} heures de formation</span>
               </div>
-              <a href="#0" class="btn_1 full-width">Purchase</a>
-              <a href="#0" class="btn_1 full-width outline"><i class="icon_heart"></i> Add to wishlist</a>
+              <a href="{% url 'show-panier' pk=cours.pk %}" class="btn_1 full-width">S'inscrire</a>
               <div id="list_feat">
                 <h3>Cela comprend</h3>
                 <ul>
-                  <li><i class="icon_mobile"></i>Questions illimitées au professeur</li>
-                  <li><i class="icon_archive_alt"></i>3 ressources téléchargeables</li>
-                  <li><i class="icon_mobile"></i>{{ cours.total_time_lecons}} heures de formation</li>
-                  <li><i class="icon_chat_alt"></i>Tutor chat</li>
-                  <li><i class="icon_document_alt"></i>Course certificate</li>
+                  <li><i class="icon-comment-empty"></i>Questions illimitées au professeur</li>
+                  <li><i class="icon-doc-text-inv"></i>3 ressources téléchargeables</li>
+                  <li><i class="icon-clock"></i>{{ cours.total_time_lecons}} heures de formation</li>
+                  <li><i class="icon-users"></i>Max. {{cours.get_capacite}} étudiants</li>
+                  <li><i class="icon-th"></i><b>catégories</b> : {% for ss in cours.get_sous_categories %}{{ss.nom}}{% if not forloop.last %}, {% endif%}{% endfor%}</li>
+                  <li><i class="icon-location-2"></i>{% for salle in cours.get_locations %}- <b>{{ salle.nom }}</b> ({{ salle.adresse }}) <br>{% endfor %}</li>
                 </ul>
               </div>
             </div>

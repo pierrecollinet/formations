@@ -10,9 +10,17 @@
     <section id="hero_in" class="cart_section">
       <div class="wrapper">
         <div class="container">
-          <div class="bs-wizard clearfix">
-            <div class="bs-wizard-step active">
-              <div class="text-center bs-wizard-stepnum">Ton panier</div>
+          <div class="bs-wizard clearfix active">
+            <div class="bs-wizard-step">
+              <div class="text-center bs-wizard-stepnum">Choisis ta formation</div>
+              <div class="progress">
+                <div class="progress-bar"></div>
+              </div>
+              <a href="{% url 'show-panier' pk=cours.pk %}" class="bs-wizard-dot"></a>
+            </div>
+
+            <div class="bs-wizard-step">
+              <div class="text-center bs-wizard-stepnum">Confirme ton inscription</div>
               <div class="progress">
                 <div class="progress-bar"></div>
               </div>
@@ -20,15 +28,7 @@
             </div>
 
             <div class="bs-wizard-step disabled">
-              <div class="text-center bs-wizard-stepnum">Paiement</div>
-              <div class="progress">
-                <div class="progress-bar"></div>
-              </div>
-              <a href="#0" class="bs-wizard-dot"></a>
-            </div>
-
-            <div class="bs-wizard-step disabled">
-              <div class="text-center bs-wizard-stepnum">Terminé!</div>
+              <div class="text-center bs-wizard-stepnum">Commence à apprendre!</div>
               <div class="progress">
                 <div class="progress-bar"></div>
               </div>
@@ -53,7 +53,10 @@
                     Cours
                   </th>
                   <th>
-                    Réduction
+                    Date
+                  </th>
+                  <th>
+                    Horaire
                   </th>
                   <th>
                     Prix
@@ -64,89 +67,53 @@
                 </tr>
               </thead>
               <tbody>
+                <form class='form-cours-ajax' method='POST' action='{% url "update" %}' data-endpoint='{% url "update" %}' class="form"> {% csrf_token %}
+                {% for lecon in cours.lecon_set.all %}
                 <tr>
                   <td>
                     <div class="thumb_cart">
                       <img src="http://via.placeholder.com/150x150/ccc/fff/thumb_cart_1.jpg" alt="Image">
                     </div>
-                    <span class="item_cart">Persius delenit has cu</span>
+                    <span class="item_cart">{{ lecon.titre }}</span>
                   </td>
                   <td>
-                    0%
+                    {% for option in lecon.option_set.all %}
+                      {{ option.debut|date:"d/m/y" }} <br>
+                    {% endfor %}
                   </td>
                   <td>
-                    <strong>24,71$</strong>
+                    {% for option in lecon.option_set.all %}
+                      {{ option.debut|date:"H:m" }}-{{ option.fin|date:"H:m" }} <br>
+                    {% endfor %}
+                  </td>
+                  <td>
+                    <strong>
+                    {% for option in lecon.option_set.all %}
+                      {{ option.tarif }} &euro;<br>
+                    {% endfor %}
+                    </strong>
                   </td>
                   <td class="options" style="width:5%; text-align:center;">
-                    <a href="#"><i class="icon-trash"></i></a>
+                    {% for option in lecon.option_set.all %}
+                      <input type="checkbox" name="option" value="{{option.id}}" {% if option.id in cart_options_ids %}checked{% endif %}><br>
+
+                    {% endfor %}
                   </td>
                 </tr>
-                <tr>
-                  <td>
-                    <div class="thumb_cart">
-                      <img src="http://via.placeholder.com/150x150/ccc/fff/thumb_cart_2.jpg" alt="Image">
-                    </div>
-                    <span class="item_cart">At deseruisse scriptorem</span>
-                  </td>
-                  <td>
-                    0%
-                  </td>
-                  <td>
-                    <strong>15,50$</strong>
-                  </td>
-                  <td class="options" style="width:5%; text-align:center;">
-                    <a href="#"><i class="icon-trash"></i></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="thumb_cart">
-                      <img src="http://via.placeholder.com/150x150/ccc/fff/thumb_cart_3.jpg" alt="Image">
-                    </div>
-                    <span class="item_cart">Ea vel semper quaerendum</span>
-                  </td>
-                  <td>
-                    0%
-                  </td>
-                  <td>
-                    <strong>24,71$</strong>
-                  </td>
-                  <td class="options" style="width:5%; text-align:center;">
-                    <a href="#"><i class="icon-trash"></i></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="thumb_cart">
-                      <img src="http://via.placeholder.com/150x150/ccc/fff/thumb_cart_4.jpg" alt="Image">
-                    </div>
-                    <span class="item_cart">Ei has exerci graecis</span>
-                  </td>
-                  <td>
-                    0%
-                  </td>
-                  <td>
-                    <strong>24,71$</strong>
-                  </td>
-                  <td class="options" style="width:5%; text-align:center;">
-                    <a href="#"><i class="icon-trash"></i></a>
-                  </td>
-                </tr>
+                {% endfor %}
+                </form>
               </tbody>
             </table>
             <div class="cart-options clearfix">
               <div class="float-left">
                 <div class="apply-coupon">
                   <div class="form-group">
-                    <input type="text" name="coupon-code" value="" placeholder="Your Coupon Code" class="form-control">
+                    <input type="text" name="coupon-code" value="" placeholder="Code promo" class="form-control">
                   </div>
                   <div class="form-group">
-                    <button type="button" class="btn_1 outline">Apply Coupon</button>
+                    <button type="button" class="btn_1 outline">Vérifier le coupon</button>
                   </div>
                 </div>
-              </div>
-              <div class="float-right fix_mobile">
-                <button type="button" class="btn_1 outline">Update Cart</button>
               </div>
             </div>
             <!-- /cart-options -->
@@ -157,10 +124,10 @@
           <aside class="col-lg-4" id="sidebar">
             <div class="box_detail">
               <div id="total_cart">
-                Total <span class="float-right">69.00$</span>
+                Total <span class="float-right"><span id="total-price">{{ cart_obj.total }}</span> &euro;</span>
               </div>
               <div class="add_bottom_30">Lorem ipsum dolor sit amet, sed vide <strong>moderatius</strong> ad. Ex eius soleat sanctus pro, enim conceptam in quo, <a href="#0">brute convenire</a> appellantur an mei.</div>
-              <a href="{% url 'checkout' %}" class="btn_1 full-width">Réserver</a>
+              <a href="{% url 'checkout' pk=cours.pk %}" class="btn_1 full-width">Réserver</a>
               <a href="{% url 'welcome' %}" class="btn_1 full-width outline"><i class="icon-right"></i> Explorer les formations</a>
             </div>
           </aside>
@@ -176,4 +143,33 @@
 
 
 {% block javascript %}
+<script>
+
+
+  // Cart + Add Products
+  var coursForm = $(".form-cours-ajax") // #form-product-ajax
+  // var actionEndpoint = thisForm.attr("action"); // API Endpoint
+  var actionEndpoint = coursForm.attr("data-endpoint")
+  var httpMethod = coursForm.attr("method");
+
+  $(':checkbox').change(function() {
+      var formData = coursForm.serialize();
+      $.ajax({
+        url: actionEndpoint,
+        method: httpMethod,
+        data: formData,
+        success: function(data){
+          $("#total-price").html(data.total)
+        },
+        error: function(errorData){
+          $.alert({
+            title: "Oops!",
+            content: "Une erreur s'est produite.",
+            theme: "modern",
+          })
+        }
+      })
+
+  });
+</script>
 {% endblock %}

@@ -23,6 +23,9 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD') # code sur sendgrid.
 EMAIL_PORT = 587
 EMAIL_USER_TLS = False
 
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_PUB_KEY =  os.environ.get('STRIPE_PUB_KEY')
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -84,7 +87,8 @@ INSTALLED_APPS = [
     'apprenants',
     'partenaires',
     'carts',
-    'billing'
+    'billing',
+    'reservation'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -140,7 +144,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'formations.context_processors.categories_processor',
                 'formations.context_processors.best_courses_processor',
-
             ],
         },
     },
@@ -205,7 +208,7 @@ SECURE_HSTS_SECONDS             = 1000000
 SECURE_FRAME_DENY               = True
 
 # Authentification configuration
-ACCOUNT_EMAIL_REQUIRED=True
+ACCOUNT_EMAIL_REQUIRED=False
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 LOGIN_REDIRECT_URL = "/"

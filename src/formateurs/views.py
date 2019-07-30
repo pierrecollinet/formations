@@ -46,8 +46,10 @@ def wait_to_be_validated(request):
         return redirect('dashboard-formateurs')
     return render(request, 'formateurs/wait-to-be-validated.html', {})
 
-
-
+def teacher_detail(request, pk):
+    print(pk)
+    teacher = Formateur.objects.get(pk=pk)
+    return render(request, 'formateurs/teacher-detail.html', {"teacher":teacher})
 
 
 

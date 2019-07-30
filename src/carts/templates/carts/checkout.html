@@ -11,8 +11,16 @@
       <div class="wrapper">
         <div class="container">
           <div class="bs-wizard clearfix">
+            <div class="bs-wizard-step">
+              <div class="text-center bs-wizard-stepnum">Choisis ta formation</div>
+              <div class="progress">
+                <div class="progress-bar"></div>
+              </div>
+              <a href="{% url 'show-panier' pk=cours.pk %}" class="bs-wizard-dot"></a>
+            </div>
+
             <div class="bs-wizard-step active">
-              <div class="text-center bs-wizard-stepnum">Ton panier</div>
+              <div class="text-center bs-wizard-stepnum">Confirme ton inscription</div>
               <div class="progress">
                 <div class="progress-bar"></div>
               </div>
@@ -20,15 +28,7 @@
             </div>
 
             <div class="bs-wizard-step disabled">
-              <div class="text-center bs-wizard-stepnum">Paiement</div>
-              <div class="progress">
-                <div class="progress-bar"></div>
-              </div>
-              <a href="#0" class="bs-wizard-dot"></a>
-            </div>
-
-            <div class="bs-wizard-step disabled">
-              <div class="text-center bs-wizard-stepnum">Terminé!</div>
+              <div class="text-center bs-wizard-stepnum">Commence à apprendre!</div>
               <div class="progress">
                 <div class="progress-bar"></div>
               </div>
@@ -46,11 +46,12 @@
         <div class="row">
           <div class="col-lg-8">
             <div class="box_cart">
+            {% if not user.is_authenticated %}
             <div class="message">
-              <p>Exisitng Customer? <a href="#0">Click here to login</a></p>
+              <p>Tu à déjà un compte chez Udema?<a href="{% url 'account_login' %}?next={{request.path}}">Connecte-toi ici !</a></p>
             </div>
             <div class="form_title">
-              <h3><strong>1</strong>Your Details</h3>
+              <h3><strong>1</strong>Tes informations personnelles</h3>
               <p>
                 Mussum ipsum cacilds, vidis litro abertis.
               </p>
@@ -61,7 +62,7 @@
                   <span class="input">
                     <input class="input_field" type="text">
                     <label class="input_label">
-                      <span class="input__label-content">First name</span>
+                      <span class="input__label-content">Prénom</span>
                     </label>
                   </span>
                 </div>
@@ -69,7 +70,7 @@
                   <span class="input">
                     <input class="input_field" type="text">
                     <label class="input_label">
-                      <span class="input__label-content">Last name</span>
+                      <span class="input__label-content">Nom</span>
                     </label>
                   </span>
                 </div>
@@ -87,7 +88,7 @@
                   <span class="input">
                     <input class="input_field" type="email">
                     <label class="input_label">
-                      <span class="input__label-content">Confirm email</span>
+                      <span class="input__label-content">Confirme ton email</span>
                     </label>
                   </span>
                 </div>
@@ -97,159 +98,41 @@
                   <span class="input">
                     <input class="input_field" type="text">
                     <label class="input_label">
-                      <span class="input__label-content">Telephone</span>
+                      <span class="input__label-content">GSM</span>
                     </label>
                   </span>
                 </div>
               </div>
             </div>
             <hr>
+            {% endif %}
             <!--End step -->
 
-            <div class="form_title">
-              <h3><strong>2</strong>Payment Information</h3>
-              <p>
-                Mussum ipsum cacilds, vidis litro abertis.
-              </p>
-            </div>
-            <div class="step">
-              <span class="input">
-                <input class="input_field" type="text">
-                <label class="input_label">
-                  <span class="input__label-content">Name on card</span>
-                </label>
-              </span>
-              <div class="row">
-                <div class="col-md-6">
-                  <span class="input">
-                    <input class="input_field" type="text">
-                    <label class="input_label">
-                      <span class="input__label-content">Card number</span>
-                    </label>
-                  </span>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                  <img src="img/payments.png" alt="Cards" class="cards">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 add_top_30">
-                  <label>Expiration date</label>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <span class="input">
-                        <input class="input_field" type="text">
-                        <label class="input_label">
-                          <span class="input__label-content">MM</span>
-                        </label>
-                      </span>
-                    </div>
-                    <div class="col-md-6">
-                      <span class="input">
-                        <input class="input_field" type="text">
-                        <label class="input_label">
-                          <span class="input__label-content">Year</span>
-                        </label>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 add_top_30">
-                  <div class="form-group">
-                    <label>Security code</label>
-                    <div class="row">
-                      <div class="col-md-4">
-                        <span class="input">
-                          <input class="input_field" type="text">
-                          <label class="input_label">
-                            <span class="input__label-content">CCV</span>
-                          </label>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--End row -->
-
-              <h5>Or checkout with Paypal</h5>
-              <p>
-                Lorem ipsum dolor sit amet, vim id accusata sensibus, id ridens quaeque qui. Ne qui vocent ornatus molestie, reque fierent dissentiunt mel ea.
-              </p>
-              <p>
-                <img src="img/paypal_bt.png" alt="Image">
-              </p>
-            </div>
-            <hr>
             <!--End step -->
+            {% if not has_card %}
+                <!-- enter credit card here -->
+                <div class="form_title">
+                  <h3><strong>2</strong>Informations bancaires</h3>
+                  <p>
+                    Mussum ipsum cacilds, vidis litro abertis.
+                  </p>
+                </div>
+                <div class='stripe-payment-form' data-token='{{ publish_key }}' data-next-url='{{ request.build_absolute_uri }}' data-btn-title='Ajouter un moyen de paiement'></div>
 
-            <div class="form_title">
-              <h3><strong>3</strong>Billing Address</h3>
-              <p>
-                Mussum ipsum cacilds, vidis litro abertis.
-              </p>
-            </div>
-            <div class="step">
-              <div class="row">
-                <div class="col-md-6 col-sm-6">
-                  <span class="input">
-                    <input class="input_field" type="text">
-                    <label class="input_label">
-                      <span class="input__label-content">Country</span>
-                    </label>
-                  </span>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 col-sm-6">
-                  <span class="input">
-                    <input class="input_field" type="text">
-                    <label class="input_label">
-                      <span class="input__label-content">Street line 1</span>
-                    </label>
-                  </span>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                  <span class="input">
-                    <input class="input_field" type="text">
-                    <label class="input_label">
-                      <span class="input__label-content">Street line 2</span>
-                    </label>
-                  </span>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <span class="input">
-                    <input class="input_field" type="text">
-                    <label class="input_label">
-                      <span class="input__label-content">City</span>
-                    </label>
-                  </span>
-                </div>
-                <div class="col-md-3">
-                  <span class="input">
-                    <input class="input_field" type="text">
-                    <label class="input_label">
-                      <span class="input__label-content">State</span>
-                    </label>
-                  </span>
-                </div>
-                <div class="col-md-3">
-                  <span class="input">
-                    <input class="input_field" type="text">
-                    <label class="input_label">
-                      <span class="input__label-content">Postal code</span>
-                    </label>
-                  </span>
-                </div>
-              </div>
-              <!--End row -->
-            </div>
+            {% else %}
+                <h1>Finalise ton inscription</h1>
+                <p>Cart Items: {% for product in object.cart.products.all %}{{ product }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+                <p>Moyen de paiement: {{ billing_profile.default_card }} (<a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Changer</a>)</p>
+                <p>Total: {{ cart_obj.total }} &euro;</p>
+
+                <form class='form' method='POST' action="">{% csrf_token %}
+                    <button type='submit' class='btn btn-success'>Confirmer</button>
+                </form>
+            {% endif %}
             <hr>
             <!--End step -->
             <div id="policy">
-              <h5>Cancellation policy</h5>
+              <h5>Politique d'annulation</h5>
               <p class="nomargin">Lorem ipsum dolor sit amet, vix <a href="#0">cu justo blandit deleniti</a>, discere omittantur consectetuer per eu. Percipit repudiare similique ad sed, vix ad decore nullam ornatus.</p>
             </div>
             </div>
@@ -258,12 +141,32 @@
 
           <aside class="col-lg-4" id="sidebar">
             <div class="box_detail">
-              <div id="total_cart">
-                Total <span class="float-right">69.00$</span>
-              </div>
+            <div id="total_cart">
+                Total <span class="float-right">{{ cart_obj.total }} &euro;</span>
+            </div>
+
+            <table class="table table-striped cart-list">
+              <tbody>
+                {% for option in cart_obj.options.all %}
+                <tr>
+                  <td>
+                    <span class="">{{ option.lecon.titre }}</span>
+                  </td>
+                  <td>
+                    <strong>
+                        {{ option.lecon.option_set.first.tarif }} &euro;
+                    </strong>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
               <div class="add_bottom_30">Lorem ipsum dolor sit amet, sed vide <strong>moderatius</strong> ad. Ex eius soleat sanctus pro, enim conceptam in quo, <a href="#0">brute convenire</a> appellantur an mei.</div>
-              <a href="{% url 'checkout-done' %}" class="btn_1 full-width">Checkout</a>
-              <a href="courses-grid-sidebar.html" class="btn_1 full-width outline"><i class="icon-right"></i> Continue Shopping</a>
+              <form class='form' method='POST' action="">{% csrf_token %}
+                  <button type='submit' class="btn_1 full-width">Confirmer</button>
+              </form>
+              <a href="courses-grid-sidebar.html" class="btn_1 full-width outline"><i class="icon-right"></i> Explorer les formations</a>
             </div>
           </aside>
         </div>

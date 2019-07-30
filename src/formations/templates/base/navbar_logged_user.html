@@ -15,18 +15,6 @@
     </a>
     <nav id="menu" class="main-menu">
       <ul>
-        <li class="nav-item">
-          <form role="search" method="get" class="form-inline my-2 my-lg-0 mr-lg-2" action="{% url 'search' %}">
-              <div class="input-group" id="navbar-search">
-                  <input type="text" class="form-control search-top" name="q" placeholder="Que veux-tu apprendre ?">
-                  <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit">
-                      <i class="icon-search"></i>
-                    </button>
-                  </span>
-              </div>
-          </form>
-        </li>
         <li><span><a href="#0"><i class="icon-th"></i>Categories</a></span>
           <ul>
             {% for categorie in categories %}
@@ -43,8 +31,20 @@
             {% endfor %}
           </ul>
         </li>
+        <li class="nav-item">
+          <form role="search" method="get" class="form-inline my-2 my-lg-0 mr-lg-2" action="{% url 'search' %}">
+              <div class="input-group" id="navbar-search">
+                  <input type="text" class="form-control search-top" name="q" placeholder="Que veux-tu apprendre ?">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                      <i class="icon-search"></i>
+                    </button>
+                  </span>
+              </div>
+          </form>
+        </li>
         <li><span><a href="{% url 'become-teacher' %}">Enseigner</a></span></li>
-        <li><span><a href="#0">{{ request.user.username }}</a></span>
+        <li><span><a href="#0">{{ request.user.username }} <i class="icon-down-open"></i></a></span>
           <ul>
             <li><a href="{% url 'dashboard-student' %}">Tableau de bord</a></li>
             <li><a href="">Modify profile</a></li>

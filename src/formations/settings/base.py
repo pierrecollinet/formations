@@ -31,6 +31,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+STRIPE_SECRET_KEY = "sk_test_IjIi2cQwhiXCOqqnX7sjZNML"
+STRIPE_PUB_KEY =  'pk_test_fpPhnmP0kFV0uzcMHMW0ED68'
 
 # Application definition
 INSTALLED_APPS = [
@@ -64,7 +66,8 @@ INSTALLED_APPS = [
     'apprenants',
     'partenaires',
     'carts',
-    'billing'
+    'billing',
+    'reservation'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -203,7 +206,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
 SECURE_FRAME_DENY               = False
 
 # Authentification configuration
-ACCOUNT_EMAIL_REQUIRED=True
+ACCOUNT_EMAIL_REQUIRED=False
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 LOGIN_REDIRECT_URL = "/"

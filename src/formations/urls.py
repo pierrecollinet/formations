@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^apprenants/', include('apprenants.urls')),
     url(r'^partenaires/', include('partenaires.urls')),
     url(r'^panier/', include('carts.urls')),
+    url(r'^billing/', include('billing.urls')),
 
     url(r'^accounts/', include('allauth.urls')),
     url(r'^tinymce/', include('tinymce.urls')),

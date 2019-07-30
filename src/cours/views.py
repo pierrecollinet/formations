@@ -285,5 +285,3 @@ def edit_competence(request, pk):
     return render(request, 'cours/mes-competences/edit-competence.html', {"form":form})
 
 
-
-

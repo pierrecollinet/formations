@@ -2,6 +2,7 @@ from django.db import models
 from fontawesome.fields import IconField
 from django.db.models.signals import pre_save, post_save, post_delete
 from django.contrib.auth.models import User
+from partenaires.models import SalleCours
 
 class Categorie(models.Model):
     nom  = models.CharField(max_length = 200)
@@ -56,10 +57,20 @@ class Cours(models.Model):
     active             = models.BooleanField(default = True)
     total              = models.CharField(max_length=20, default="0")
     validated          = models.BooleanField(default = False)
+    moyenne_review     = models.CharField(max_length=20, default="5")
 
     objects = CoursManager()
     def __str__(self):
         return self.titre
+
+    def get_teachers(self):
+        return set(self.formateurcours_set.all())
+
+    def get_locations(self):
+        lecons_pks = self.get_lecons().values_list('pk', flat=True)
+        salles_pks = Option.objects.filter(lecon__pk__in = lecons_pks).values_list('salle', flat=True)
+        salles = SalleCours.objects.filter(pk__in = salles_pks)
+        return salles
 
     def get_main_teacher(self):
         main_teachers = self.formateurcours_set.filter(main=True)
@@ -77,11 +88,63 @@ class Cours(models.Model):
         lecons = Lecon.objects.filter(cours=self)
         return lecons
 
+    def get_sous_categories(self):
+        souscategoriecours = SousCategorieCours.objects.filter(cours=self)
+        sous_categorie_ids = souscategoriecours.values_list('sous_categorie', flat=True)
+        sous_categories = SousCategorie.objects.filter(pk__in=sous_categorie_ids)
+        return set(sous_categories)
+
     def total_time_lecons(self):
         total = 0
         for lecon in self.get_lecons():
             total += lecon.get_time_lecon()
-        return total
+        return round(total, 2)
+
+    def get_capacite(self):
+        lecon = self.get_lecons().first()
+        option = lecon.option_set.all()
+        capacite = option.first().capacite
+        return capacite
+
+    def get_moyenne_review(self):
+        return float(self.moyenne_review)
+
+    def get_one_star_review(self):
+        return ReviewCours.objects.filter(cours=self, rating=1)
+    def get_two_star_review(self):
+        return ReviewCours.objects.filter(cours=self, rating=2)
+    def get_three_star_review(self):
+        return ReviewCours.objects.filter(cours=self, rating=3)
+    def get_four_star_review(self):
+        return ReviewCours.objects.filter(cours=self, rating=4)
+    def get_five_star_review(self):
+        return ReviewCours.objects.filter(cours=self, rating=5)
+
+    def get_one_star_review_percentage(self):
+        if len(ReviewCours.objects.filter(cours=self))>0:
+            return int(100*(len(ReviewCours.objects.filter(cours=self, rating=1))/len(ReviewCours.objects.filter(cours=self))))
+        else :
+            return 0
+    def get_two_star_review_percentage(self):
+        if len(ReviewCours.objects.filter(cours=self))>0:
+            return int(100*(len(ReviewCours.objects.filter(cours=self, rating=2))/len(ReviewCours.objects.filter(cours=self))))
+        else :
+            return 0
+    def get_three_star_review_percentage(self):
+        if len(ReviewCours.objects.filter(cours=self))>0:
+            return int(100*(len(ReviewCours.objects.filter(cours=self, rating=3))/len(ReviewCours.objects.filter(cours=self))))
+        else :
+            return 0
+    def get_four_star_review_percentage(self):
+        if len(ReviewCours.objects.filter(cours=self))>0:
+            return int(100*(len(ReviewCours.objects.filter(cours=self, rating=4))/len(ReviewCours.objects.filter(cours=self))))
+        else :
+            return 0
+    def get_five_star_review_percentage(self):
+        if len(ReviewCours.objects.filter(cours=self))>0:
+            return int(100*(len(ReviewCours.objects.filter(cours=self, rating=5))/len(ReviewCours.objects.filter(cours=self))))
+        else :
+            return 0
 
 class FormateurCours(models.Model):
     cours = models.ForeignKey(Cours, on_delete=models.CASCADE,)
@@ -119,7 +182,8 @@ class Lecon(models.Model):
         if len(options)>0:
             option = options.first()
             delta = option.fin - option.debut
-            return delta.total_seconds()/3600
+            delta_hours = delta.total_seconds()/3600
+            return round(delta_hours, 2)
         else :
           return 0
 
@@ -129,6 +193,7 @@ class Option(models.Model):
     fin      = models.DateTimeField()
     tarif    = models.CharField(max_length=10)
     capacite = models.PositiveSmallIntegerField(default=3)
+    salle    = models.ForeignKey('partenaires.SalleCours', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         if self.lecon:
@@ -169,6 +234,19 @@ class ReviewCours(models.Model):
 
     def __str__(self):
         return self.auteur.username + " - " + self.commentaire[:30]
+    class Meta:
+        ordering = ('-rating', )
+def review_post_save(sender, instance, *args, **kwargs):
+    reviews = ReviewCours.objects.filter(cours=instance.cours)
+    total = 0
+    count = 0
+    for r in reviews:
+        total += r.rating
+        count += 1
+    cours = instance.cours
+    cours.moyenne_review = float(total)/count
+    cours.save()
+post_save.connect(review_post_save, sender = ReviewCours)
 
 class Cible(models.Model):
     nom         = models.CharField(max_length=200)
