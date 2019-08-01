@@ -172,12 +172,10 @@ class CreateCoursWizard(SessionWizardView):
         return redirect('dashboard-formateurs')
 
 def ajax_get_sous_categories(request, pk):
-    print('okokokokok')
     categorie = Categorie.objects.get(pk=pk)
     sous_categories = SousCategorie.objects.filter(categorie=categorie)
     sous_categories_dict=[]
     [sous_categories_dict.append((each_sous_categorie.pk,each_sous_categorie.nom)) for each_sous_categorie in sous_categories]
-    print(sous_categories_dict)
     return HttpResponse(simplejson.dumps(sous_categories_dict), content_type="application/json")
 
 @formateur_required

@@ -25,7 +25,6 @@ class ContactForm(forms.Form):
 
         if check_human:
             if check_human != str(4):
-                print('ROOOOOBOOOOOTT')
                 msg = "Nous avons à faire à un robot !"
                 self.add_error('check_human', msg)
                 raise forms.ValidationError(

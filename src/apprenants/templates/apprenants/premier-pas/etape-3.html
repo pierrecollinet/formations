@@ -1,1 +1,43 @@
-etape-3.html
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<main>
+  <div style="height:10px;width:75%; background-color:#a1a7b3;top:70px;position:absolute;z-index:10;"></div>
+  <div style="height:10px;width:100%; background-color:#e8e9eb;top:70px;position:absolute;z-index:5;"></div>
+
+    <div class="container margin_120_95">
+      <div class="row">
+        <div class="col-lg-6 col-md-8 col-xs-12 offset-md-2 offset-lg-3">
+          <div class="white-box-form">
+            <div class="main_title_2">
+              <span><em></em></span>
+              <h1>Quel est votre parcours jusqu'ici ?</h1>
+              <form name="" id="" method="POST" enctype="multipart/form-data">
+                <!-- Leave for security protection, read docs for details -->
+                <div id="middle-wizard">
+                  <div class="step">
+                    {% csrf_token %}
+                    {{ wizard.management_form }}
+                    {% crispy form %}
+                    <button type="submit" name="wizard_goto_step" class="btn btn-info" value="{{ wizard.steps.prev }}" formnovalidate="formnovalidate"><i class="icon-left-open"></i> Précédent </button>
+                    <button type="submit" name="process" class="submit btn btn-success">Confirmer <i class="icon-ok"></i></button>
+                  </div>
+                  <!-- /step-->
+
+                </div>
+
+                <!-- /bottom-wizard -->
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/row-->
+    </div>
+
+</main>
+
+
+{% endblock %}
