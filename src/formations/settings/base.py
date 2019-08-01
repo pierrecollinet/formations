@@ -19,7 +19,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
-
+EMAILS = ['pi.collinet@gmail.com']
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -124,6 +124,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'formations.context_processors.categories_processor',
+                'formations.context_processors.encouragement_processor',
                 'formations.context_processors.best_courses_processor',
             ],
         },
@@ -206,9 +207,9 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
 SECURE_FRAME_DENY               = False
 
 # Authentification configuration
-ACCOUNT_EMAIL_REQUIRED=False
+ACCOUNT_EMAIL_REQUIRED=True
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 LOGIN_REDIRECT_URL = "/"
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {

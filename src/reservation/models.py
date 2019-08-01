@@ -141,7 +141,7 @@ class Reservation(models.Model):
     def check_done(self):
         billing_profile = self.billing_profile
         total   = self.total
-        if billing_profile and total > 0:
+        if billing_profile and float(total) > 0:
             return True
         return False
 

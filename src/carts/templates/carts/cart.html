@@ -160,6 +160,13 @@
         data: formData,
         success: function(data){
           $("#total-price").html(data.total)
+          if (data.warning){
+            $.alert({
+              title: "Attention!",
+              content: data.warning,
+              theme: "modern",
+            })
+          }
         },
         error: function(errorData){
           $.alert({

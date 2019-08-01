@@ -1,0 +1,29 @@
+Confirmation de votre inscription
+
+Merci pour votre inscription au cours, "{{ reservation.cart.cours.titre }}"! Vous retrouverez toutes les informations pratiques via ce lien : {{ host}}{{ reservation.cart.cours.get_absolute_url }}
+
+INFOS PRATIQUES
+- Professeur : {{ reservation.cart.cours.get_main_teacher }}
+- Intitulé du cours : {{ reservation.cart.cours.titre }}
+- Horaires & Dates :
+{% for option in reservation.cart.options.all %}
+• {{ option.show_date_range }}
+{% endfor %}
+- Adresse : {{ reservation.cart.options.first.salle.adresse }}
+
+Les étudiants qui se sont inscrits à {{ reservation.cart.cours.titre }} sont aussi inscrits à :
+{% for c in cours_related %}
+- {{ c.titre }} ({{ host}}{{ c.get_absolute_url }})
+{% endfor %}
+
+Si vous avez la moindre question d'ici là, n'hésitez pas à nous contacter.
+
+Bonne journée,
+
+L'équipe de Kairos
+info@kairos.be
+0476 31 27 45
+rue Armand Campenhout, 61 - Ixelles
+
+
+

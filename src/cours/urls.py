@@ -29,6 +29,4 @@ urlpatterns = [
 
     url('^creer-cours/$', CreateCoursWizard.as_view(FORMS), name="creer-cours"),
     url('^get_sous_categories/(?P<pk>\d+)/$', ajax_get_sous_categories, name="get-sous-categories"),
-
-
 ]

@@ -115,3 +115,31 @@ ul#top_menu li a.btn_2:hover {
     border-radius: 50%;
     object-fit: cover;
 }
+
+@media(min-width:991px){
+  .symbol-school{
+          width:20%;
+          font-size: 30px;
+  }
+}
+
+.m20 {
+  margin: 20px;
+}
+
+.white-box-form{
+  text-align: center;
+    background: #fff;
+    padding: 40px 30px 30px 30px;
+    display: block;
+    -webkit-box-shadow: 0px 3px 0px 0px #f0f2f4;
+    -moz-box-shadow: 0px 3px 0px 0px #f0f2f4;
+    box-shadow: 0px 3px 0px 0px #f0f2f4;
+    color: #555;
+    margin-bottom: 30px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    overflow: hidden;
+}

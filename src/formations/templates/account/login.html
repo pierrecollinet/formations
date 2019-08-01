@@ -37,7 +37,7 @@
             {% endif %}
             <button type="submit" class="btn_1 rounded full-width add_top_60">Se connecter à Udema</button>
             <div class="row text-center">
-              <div class="text-center add_top_10">Pas encore membre? <strong><a href="{% url 'account_signup' %}">Crée-toi un compte!</a></strong></div>
+              <div class="text-center add_top_10">Pas encore membre? <strong><a href="{% url 'account_signup' %}{% if redirect_field_value %}?next={{ redirect_field_value }}{% endif %}">Crée-toi un compte!</a></strong></div>
               </div>
             </div>
           </form>

@@ -143,7 +143,7 @@ function displayBtnStatus(element, newHtml, newClasses, loadTime, timeout){
         var successMsg = data.message || "Success ! ta carte a été ajoutée"
         card.clear()
         if (nextUrl){
-          successMsg = successMsg + '<br/><br/><i class="fa fa-spin fa-spinner"></i>... Redirect'
+          successMsg = successMsg + '<br/><br/><i class="fa fa-spin fa-spinner"></i>... Retour à votre réservation'
         }
         if ($.alert){
           $.alert(successMsg)

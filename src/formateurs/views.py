@@ -21,6 +21,8 @@ def formateur_required(function):
     wrapper.__name__ = function.__name__
     return wrapper
 
+def why_become_teacher(request):
+    return render(request, 'formateurs/why-become-teacher.html')
 
 @formateur_required
 def dashboard_formateurs(request):

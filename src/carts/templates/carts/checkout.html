@@ -121,7 +121,6 @@
 
             {% else %}
                 <h1>Finalise ton inscription</h1>
-                <p>Cart Items: {% for product in object.cart.products.all %}{{ product }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
                 <p>Moyen de paiement: {{ billing_profile.default_card }} (<a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Changer</a>)</p>
                 <p>Total: {{ cart_obj.total }} &euro;</p>
 

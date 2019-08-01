@@ -22,6 +22,7 @@ EMAIL_MAIN = os.environ.get('EMAIL_MAIN')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD') # code sur sendgrid.com
 EMAIL_PORT = 587
 EMAIL_USER_TLS = False
+EMAILS = ['pi.collinet@gmail.com', 'picol18@hotmail.com']
 
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_PUB_KEY =  os.environ.get('STRIPE_PUB_KEY')
@@ -143,6 +144,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'formations.context_processors.categories_processor',
+                'formations.context_processors.encouragement_processor',
                 'formations.context_processors.best_courses_processor',
             ],
         },
@@ -208,9 +210,9 @@ SECURE_HSTS_SECONDS             = 1000000
 SECURE_FRAME_DENY               = True
 
 # Authentification configuration
-ACCOUNT_EMAIL_REQUIRED=False
+ACCOUNT_EMAIL_REQUIRED=True
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 LOGIN_REDIRECT_URL = "/"
 SOCIALACCOUNT_QUERY_EMAIL=ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_EMAIL_REQUIRED=ACCOUNT_EMAIL_REQUIRED

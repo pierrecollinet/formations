@@ -9,3 +9,6 @@ def complete_profile(request):
 def dashboard_student(request):
     return render(request, 'apprenants/dashboard-student.html', {})
 
+@login_required
+def premier_pas(request):
+    return render(request, 'apprenants/premier-pas/etape-1.html', {})

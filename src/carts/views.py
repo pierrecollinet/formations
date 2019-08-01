@@ -14,6 +14,7 @@ from reservation.models import Reservation
 import stripe
 STRIPE_SECRET_KEY = getattr(settings, "STRIPE_SECRET_KEY", "sk_test_IjIi2cQwhiXCOqqnX7sjZNML")
 STRIPE_PUB_KEY =  getattr(settings, "STRIPE_PUB_KEY", 'pk_test_fpPhnmP0kFV0uzcMHMW0ED68')
+EMAILS = getattr(settings, "EMAILS", 'pi.collinet@gmail.com')
 stripe.api_key = STRIPE_SECRET_KEY
 
 @login_required
@@ -48,19 +49,20 @@ def checkout(request, pk):
     if request.method == "POST":
         is_prepared = reservation_obj.check_done()
         if is_prepared:
-            did_charge, crg_msg = billing_profile.charge(reservation_obj)
-            if did_charge:
+        #    did_charge, crg_msg = billing_profile.charge(reservation_obj)
+            if True : #did_charge:
                 reservation_obj.mark_paid()
                 request.session['cart_items'] = 0
                 del request.session['cart_id']
                 if not billing_profile.user:
                     billing_profile.set_cards_inactive()
                 # envoi de l'email de confirmation
-                plaintext = get_template('../templates/emails/confirmation-inscription.txt')
-                htmly     = get_template('../templates/emails/confirmation-inscription.html')
-                subject, from_email = 'Confirmation inscription - ', 'pi.collinet@gmail.com'
-                to = ['pi.collinet@gmail.com']
-                d = { 'reservation': reservation_obj}
+                cours_related = reservation_obj.cart.cours.get_related();
+                plaintext = get_template('../templates/carts/emails/confirmation-inscription.txt')
+                htmly     = get_template('../templates/carts/emails/confirmation-inscription.html')
+                subject, from_email = reservation_obj.billing_profile.user.username + ', bienvenue dans ' + reservation_obj.cart.cours.titre, 'info@kairos.be'
+                to = EMAILS
+                d = { 'reservation': reservation_obj, 'cours_related':cours_related[:3], 'host':request.get_host()}
                 text_content = plaintext.render(d)
                 html_content = htmly.render(d)
                 msg = EmailMultiAlternatives(subject, text_content, from_email, to)
@@ -82,15 +84,20 @@ def cart_update(request):
     options = request.POST.getlist('option')
     cart_obj, new_obj = Cart.objects.new_or_get(request)
     cart_obj.options.clear()
+    lecons = []
+    warning = None
     for option_id in options :
         option = Option.objects.get(id=option_id)
+        if option.lecon not in lecons:
+            lecons.append(option.lecon)
+        else:
+            warning = "Vous avez sélectionné 2 fois le même module (contenu du cours identique). C'est votre droit, mais on préfère vous prévenir :-)"
         cart_obj.options.add(option)
     request.session['cart_items'] = cart_obj.options.count()
-    print(cart_obj.options.count())
     if request.is_ajax(): # Asynchronous JavaScript And XML / JSON
-        print("Ajax request")
         json_data = {
-            "total": cart_obj.total
+            "total": cart_obj.total,
+            "warning": warning
         }
         return JsonResponse(json_data, status=200)
 

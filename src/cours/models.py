@@ -3,6 +3,7 @@ from fontawesome.fields import IconField
 from django.db.models.signals import pre_save, post_save, post_delete
 from django.contrib.auth.models import User
 from partenaires.models import SalleCours
+from django.urls import reverse
 
 class Categorie(models.Model):
     nom  = models.CharField(max_length = 200)
@@ -66,11 +67,28 @@ class Cours(models.Model):
     def get_teachers(self):
         return set(self.formateurcours_set.all())
 
+    def get_absolute_url(self):
+        #return "/detail-cours/pk/"
+        return reverse("detail-cours", kwargs={'pk': self.pk})
+
     def get_locations(self):
         lecons_pks = self.get_lecons().values_list('pk', flat=True)
         salles_pks = Option.objects.filter(lecon__pk__in = lecons_pks).values_list('salle', flat=True)
         salles = SalleCours.objects.filter(pk__in = salles_pks)
         return salles
+
+
+    def get_related(self):
+        cours_related_ids = []
+        sous_categories =  self.get_sous_categories()
+        for ss_c in sous_categories:
+            ss_cat_cours = SousCategorieCours.objects.filter(sous_categorie = ss_c)
+            cours_ids = ss_cat_cours.values_list('cours', flat=True)
+            for c_id in cours_ids:
+              cours_related_ids.append(c_id)
+        cours_related = Cours.objects.filter(pk__in=cours_related_ids).exclude(pk = self.pk)
+        print(cours_related)
+        return cours_related
 
     def get_main_teacher(self):
         main_teachers = self.formateurcours_set.filter(main=True)
