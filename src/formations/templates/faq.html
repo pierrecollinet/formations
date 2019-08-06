@@ -19,6 +19,7 @@
         <aside class="col-lg-3" id="sidebar">
             <div class="box_style_cat" id="faq_box">
               <ul id="cat_nav">
+<<<<<<< HEAD
                 {% for c in categories %}
                     {% if forloop.first %}
                         <li><a href="#{{ c.slug }}" class="active"><i class="{{ c.icon }}"></i>{{ c.categorie }}</a></li>
@@ -26,6 +27,11 @@
                         <li><a href="#{{ c.slug }}"><i class="{{ c.icon }}"></i>{{ c.categorie }}</a></li>
                     {% endif %}
                 {% endfor %}
+=======
+                <li><a href="#Fonctionnement" class="active"><i class="icon_document_alt"></i>Fonctionnement</a></li>
+                <li><a href="#Payement"><i class="icon_document_alt"></i>Payement</a></li>
+                <li><a href="#Conditions Générales"><i class="icon_document_alt"></i>Conditions Générales</a></li>
+>>>>>>> cbafe975f897bf603f0dff771fae8605401ca9db
               </ul>
             </div>
             <!--/sticky -->
@@ -33,10 +39,15 @@
         <!--/aside -->
 
         <div class="col-lg-9" id="faq">
+<<<<<<< HEAD
           {% for c in categories %}
           <h4 class="nomargin_top">{{ c.categorie }}</h4>
           <div role="tablist" class="add_bottom_45 accordion_2" id="{{ c.slug }}">
             {% for faq in c.faq_set.all %}
+=======
+          <h4 class="nomargin_top">Fonctionnements</h4>
+          <div role="tablist" class="add_bottom_45 accordion_2" id="payment">
+>>>>>>> cbafe975f897bf603f0dff771fae8605401ca9db
             <div class="card">
               <div class="card-header" role="tab">
                 <h5 class="mb-0">
@@ -46,11 +57,158 @@
 
               <div id="{{ c.slug }}{{ faq.id }}" class="{% if forloop.parentloop.first and forloop.first %}show {% endif %} collapse" role="tabpanel" data-parent="#{{ c.slug }}">
                 <div class="card-body">
+<<<<<<< HEAD
                   {{ faq.reponse }}
                 </div>
               </div>
             </div>
             {% endfor %}
+=======
+                  <p>Kairos offre la possibilité à chaque individu possédant une expertise de l'enseigner. Chaque visiteur a ensuite l'oportunité de suivre les cours de son choix. Les cours sont en groupes et dans des salles parfaitement adaptées à chaque matière.</p>
+                  <p>Les élèves d'un jour dans une matière sont tous susceptibles d'être le professeur du lendemain dans une matière différente. Kairos pousse au partage des connaissances et veut offrir des formations abordables ou la majorité des revenus revient aux professeurs.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /card -->
+            <div class="card">
+              <div class="card-header" role="tab">
+                <h5 class="mb-0">
+                  <a class="collapsed" data-toggle="collapse" href="#collapseTwo_payment" aria-expanded="false">
+                    <i class="indicator ti-plus"></i>Generative Modeling Review
+                  </a>
+                </h5>
+              </div>
+              <div id="collapseTwo_payment" class="collapse" role="tabpanel" data-parent="#payment">
+                <div class="card-body">
+                  <p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                  <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /card -->
+            <div class="card">
+              <div class="card-header" role="tab">
+                <h5 class="mb-0">
+                  <a class="collapsed" data-toggle="collapse" href="#collapseThree_payment" aria-expanded="false">
+                    <i class="indicator ti-plus"></i>Variational Autoencoders
+                  </a>
+                </h5>
+              </div>
+              <div id="collapseThree_payment" class="collapse" role="tabpanel" data-parent="#payment">
+                <div class="card-body">
+                  <p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                  <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /card -->
+          </div>
+          <!-- /accordion payment -->
+
+          <h4 class="nomargin_top">Payement</h4>
+          <div role="tablist" class="add_bottom_45 accordion_2" id="tips">
+            <div class="card">
+              <div class="card-header" role="tab">
+                <h5 class="mb-0">
+                  <a data-toggle="collapse" href="#collapseOne_tips" aria-expanded="true"><i class="indicator ti-plus"></i>Introdocution</a>
+                </h5>
+              </div>
+
+              <div id="collapseOne_tips" class="collapse" role="tabpanel" data-parent="#tips">
+                <div class="card-body">
+                  <p>Les inscriptions aux cours se fait exclusivement au travers de la plateforme et n'est confirmé qu'une voit le payement en ligne effectué. Le cout de chaque cours est défini par le professeur qui perçoit la majorité des revenus de la formation. </p>
+                  <p>Le cout de la formation inclu la location de la salle et la préparation nécessaire à la compréhension de la classe.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /card -->
+            <div class="card">
+              <div class="card-header" role="tab">
+                <h5 class="mb-0">
+                  <a class="collapsed" data-toggle="collapse" href="#collapseTwo_tips" aria-expanded="false">
+                    <i class="indicator ti-plus"></i>Generative Modeling Review
+                  </a>
+                </h5>
+              </div>
+              <div id="collapseTwo_tips" class="collapse" role="tabpanel" data-parent="#tips">
+                <div class="card-body">
+                  <p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                  <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /card -->
+            <div class="card">
+              <div class="card-header" role="tab">
+                <h5 class="mb-0">
+                  <a class="collapsed" data-toggle="collapse" href="#collapseThree_tips" aria-expanded="false">
+                    <i class="indicator ti-plus"></i>Variational Autoencoders
+                  </a>
+                </h5>
+              </div>
+              <div id="collapseThree_tips" class="collapse" role="tabpanel" data-parent="#tips">
+                <div class="card-body">
+                  <p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                  <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /card -->
+          </div>
+          <!-- /accordion suggestions -->
+
+          <h4 class="nomargin_top">Reccomendations</h4>
+          <div role="tablist" class="add_bottom_45 accordion_2" id="reccomendations">
+            <div class="card">
+              <div class="card-header" role="tab">
+                <h5 class="mb-0">
+                  <a data-toggle="collapse" href="#collapseOne_reccomendations" aria-expanded="true"><i class="indicator ti-plus"></i>Introdocution</a>
+                </h5>
+              </div>
+
+              <div id="collapseOne_reccomendations" class="collapse" role="tabpanel" data-parent="#reccomendations">
+                <div class="card-body">
+                  <p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                  <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /card -->
+            <div class="card">
+              <div class="card-header" role="tab">
+                <h5 class="mb-0">
+                  <a class="collapsed" data-toggle="collapse" href="#collapseTwo_reccomendations" aria-expanded="false">
+                    <i class="indicator ti-plus"></i>Generative Modeling Review
+                  </a>
+                </h5>
+              </div>
+              <div id="collapseTwo_reccomendations" class="collapse" role="tabpanel" data-parent="#reccomendations">
+                <div class="card-body">
+                  <p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                  <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /card -->
+            <div class="card">
+              <div class="card-header" role="tab">
+                <h5 class="mb-0">
+                  <a class="collapsed" data-toggle="collapse" href="#collapseThree_reccomendations" aria-expanded="false">
+                    <i class="indicator ti-plus"></i>Variational Autoencoders
+                  </a>
+                </h5>
+              </div>
+              <div id="collapseThree_reccomendations" class="collapse" role="tabpanel" data-parent="#reccomendations">
+                <div class="card-body">
+                  <p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+                  <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
+                </div>
+              </div>
+            </div>
+            <!-- /card -->
+          </div>
+          <!-- /accordion Reccomendations -->
+>>>>>>> cbafe975f897bf603f0dff771fae8605401ca9db
 
           </div>
           <!-- /accordion payment -->
