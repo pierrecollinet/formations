@@ -20,3 +20,29 @@ class GuestEmail(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class CategorieFaq(models.Model):
+    categorie = models.CharField(max_length=200,blank=True, null=True)
+    icon      = IconField(blank=True, null=True)
+    slug      = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.categorie
+
+class Faq(models.Model):
+    question  = models.TextField(blank=True, null=True)
+    reponse   = models.TextField(blank=True, null=True)
+    categorie = models.ForeignKey(CategorieFaq, on_delete=models.CASCADE,blank=True, null=True)
+
+    def __str__(self):
+        return self.question[:30]
+
+
+class Encouragement(models.Model):
+    proverbe = models.TextField()
+    auteur = models.CharField(max_length=200,blank=True, null=True)
+
+    def __str__(self):
+        return self.auteur + ' - ' + self.proverbe[:30]
+

@@ -9,15 +9,28 @@
 
     <div class="container margin_120_95">
       <div class="row">
-        <div class="col-lg-6 col-md-8 col-xs-12 offset-md-2 offset-lg-3">
+        <div class="col-lg-8 col-md-8 col-xs-12 offset-md-2 offset-lg-2">
           <div class="white-box-form">
             <div class="main_title_2">
               <span><em></em></span>
-              <h1>Quel est votre parcours jusqu'ici ?</h1>
+              <h1>Félicitation {{ request.user.username }}</h1>
+            </div>
+            <div>
               <form name="" id="" method="POST" enctype="multipart/form-data">
                 <!-- Leave for security protection, read docs for details -->
                 <div id="middle-wizard">
-                  <div class="step">
+                  <div class="step" style="font-size:15px;">
+                    <p>Grâce à ces quelques renseignements nous serons capables de vous proposer des formations parfaitement adaptées à vos besoins.</p>
+                    {% if cours|length != 0 %}
+                        <p>Voici une première sélection que nous avons préparée pour vous :</p>
+                        <div class ="row" style="display:flex;">
+                        {% for c in cours %}
+                            <div class ="col-xs-12 col-sm-6" style="display:flex;">
+                              {% include 'cours/snippets/card-cours-grid.html' with instance=c %}
+                            </div>
+                        {% endfor %}
+                        </div>
+                    {% endif %}
                     {% csrf_token %}
                     {{ wizard.management_form }}
                     {% crispy form %}
@@ -40,8 +53,4 @@
 </main>
 
 
-{% endblock %}
-
-{% block script %}
-<script src="{% static 'js/display_faculte.js' %}"></script>
 {% endblock %}

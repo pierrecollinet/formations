@@ -11,7 +11,8 @@ from crispy_forms.bootstrap import InlineRadios, InlineCheckboxes, FieldWithButt
 
 from datetime import datetime, date
 
-from cours.models import Cours, Lecon, Option, SkillCours, Categorie, SousCategorie
+from cours.models import Cours, Lecon, Option, SkillCours, Categorie, SousCategorie, Matiere
+from apprenants.models import Faculte, University
 
 class IntroductionForm(forms.Form):
     title = 'introduction'
@@ -161,4 +162,24 @@ class SkillModelForm(forms.ModelForm):
 class SousCategorieForm(forms.Form):
     categorie      = forms.ModelChoiceField(queryset=Categorie.objects.all())
     sous_categorie = forms.ModelMultipleChoiceField(queryset=SousCategorie.objects.all(), widget=forms.CheckboxSelectMultiple)
+
+ANNEES = (
+          ('ba1', 'BA1'),
+          ('ba2', 'BA2'),
+          ('ba3', 'BA3'),
+          ('ma1', 'MA1'),
+          ('ma2', 'MA2'),
+)
+
+class SearchForm(forms.Form):
+    universite = forms.ModelChoiceField(queryset=University.objects.all(), required = False)
+    faculte    = forms.ModelChoiceField(queryset=Faculte.objects.all(), required = False)
+    annee      = forms.ChoiceField(choices = ANNEES, required = False)
+    matiere    = forms.ModelChoiceField(queryset=Matiere.objects.all(), required = False)
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.add_input(Submit('submit', 'Chercher', css_class='btn btn-default btn-lg'))
 

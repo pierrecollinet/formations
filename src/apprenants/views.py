@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.http import HttpResponse
+import json as simplejson
 
-from cours.forms import CoursModelForm, LeconModelForm, OptionModelForm, SkillModelForm, IntroductionForm, ConfirmationForm, SousCategorieForm
-
-from cours.forms import CoursModelForm, LeconModelForm, OptionModelForm, SkillModelForm, IntroductionForm, ConfirmationForm, SousCategorieForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from formtools.wizard.views import WizardView, SessionWizardView
@@ -13,7 +12,9 @@ from django.core.files.storage import FileSystemStorage
 from django.forms import formset_factory
 from django.forms.formsets import BaseFormSet
 
-from apprenants.forms import CategorieUserForm
+from cours.models import Cours
+from apprenants.forms import CategorieUserForm, UniversitaireForm, AdulteForm, SecondaireForm, ConfirmationForm
+from apprenants.models import University, Faculte
 
 from allauth.account.forms import SignupForm
 
@@ -25,97 +26,82 @@ def complete_profile(request):
 def dashboard_student(request):
     return render(request, 'apprenants/dashboard-student.html', {})
 
-@login_required
-def premier_pas(request):
-    return render(request, 'apprenants/premier-pas/etape-1.html', {})
-
-LeconFormSet = formset_factory(LeconModelForm,
-                                 formset=BaseFormSet,
-                                 max_num=20,
-                                 )
-
-FORMS = [("signup", SignupForm),
+FORMS = [
          ("categorie_user", CategorieUserForm),
-         ("etude_user", ConfirmationForm)]
+         ("etude_user",     UniversitaireForm),
+         ("confirmation",   ConfirmationForm)
+         ]
 
-TEMPLATES = {"signup" : "apprenants/premier-pas/etape-1.html",
+TEMPLATES = {
              "categorie_user" : "apprenants/premier-pas/etape-2.html",
-             "etude_user": "apprenants/premier-pas/etape-3.html"}
-
+             "etude_user"     : "apprenants/premier-pas/etape-3.html",
+             "confirmation"   : "apprenants/premier-pas/etape-4.html"
+             }
+from django.forms.widgets import HiddenInput
 class PremierPasWizard(SessionWizardView):
     file_storage = FileSystemStorage(location=settings.DEFAULT_FILE_STORAGE)
 
     def get_template_names(self):
         return [TEMPLATES[self.steps.current]]
 
+    def get_form(self, step=None, data=None, files=None):
+        form = super(PremierPasWizard, self).get_form(step, data, files)
+        # determine the step if not given
+        if step is None:
+            step = self.steps.current
+
+        if step == "etude_user":
+            prev_data = self.get_cleaned_data_for_step("categorie_user")
+            categorie_user = prev_data["categories"]
+            if categorie_user == "universitaire":
+                form.fields['universite'].required = True
+                form.fields['faculte'].required = True
+                form.fields['annee_univ'].required = True
+                form.fields['profession'].widget = HiddenInput()
+                form.fields['salarie'].widget = HiddenInput()
+                form.fields['etablissement_scolaire'].widget = HiddenInput()
+                form.fields['annee_sec'].widget = HiddenInput()
+            elif categorie_user == "adulte":
+                form.fields['salarie'].required = True
+                form.fields['profession'].required = True
+                form.fields['universite'].widget = HiddenInput()
+                form.fields['faculte'].widget = HiddenInput()
+                form.fields['annee_univ'].widget = HiddenInput()
+                form.fields['etablissement_scolaire'].widget = HiddenInput()
+                form.fields['annee_sec'].widget = HiddenInput()
+            elif categorie_user == "secondaire":
+                form.fields['etablissement_scolaire'].required = True
+                form.fields['annee_sec'].required = True
+                form.fields['profession'].widget = HiddenInput()
+                form.fields['salarie'].widget = HiddenInput()
+                form.fields['universite'].widget = HiddenInput()
+                form.fields['faculte'].widget = HiddenInput()
+                form.fields['annee_univ'].widget = HiddenInput()
+        return form
+
     def get_context_data(self, form, **kwargs):
         context = super(PremierPasWizard, self).get_context_data(form=form, **kwargs)
-        if self.steps.current == 'confirmation':
-          cours_form = self.get_cleaned_data_for_step('creer_cours')
-          lecon_form = self.get_cleaned_data_for_step('creer_lecon')
-          categorie_form = self.get_cleaned_data_for_step('ajouter_sous_categorie')
-          cours = Cours(
-                        titre = cours_form['titre'],
-                        courte_description = cours_form['courte_description'],
-                        long_description = cours_form['long_description'],
-                        image = cours_form['image']
-                        )
-          sous_categories = []
-          for sous_categorie in categorie_form['sous_categorie']:
-              sous_categories.append(sous_categorie)
-          context.update({'cours':cours, 'image':cours_form['image'],'sous_categories':sous_categories})
-          lecons = []
-          for form in lecon_form:
-              lecon = Lecon(
-                          titre     = form['titre'],
-                          cours     = Cours.objects.first(),
-                          contenu   = form['contenu'],
-                          prerequis = form['prerequis'],
-                          ordre     = form['ordre']
-                      )
-              lecons.append(lecon)
-          context.update({'lecons':lecons})
+        if self.steps.current == 'categorie_user':
+            if self.request.method == "POST":
+                form = SignupForm(self.request.POST)
+                form.save(self.request)
+         #   form = self.get_form('signup')
+         #   form.save()
+        elif self.steps.current == 'confirmation':
+            categorie_user = self.get_cleaned_data_for_step('categorie_user')
+            etude_user = self.get_cleaned_data_for_step('etude_user')
+            faculte = etude_user['faculte']
+            universite = etude_user['universite']
+            cours = Cours.objects.filter(faculte = faculte)
+            context.update({'cours':cours})
         return context
+
     def done(self, form_list, **kwargs):
-        cours_form = self.get_cleaned_data_for_step('creer_cours')
-        lecon_form = self.get_cleaned_data_for_step('creer_lecon')
-        categorie_form = self.get_cleaned_data_for_step('ajouter_sous_categorie')
+        return redirect('welcome')
 
-        # 1. On sauve le nouveau cours
-        cours = Cours(
-                        titre = cours_form['titre'],
-                        courte_description = cours_form['courte_description'],
-                        long_description = cours_form['long_description'],
-                        image = cours_form['image']
-                        )
-        cours.save()
-
-        # 2. On sauve les leçons du cours ET les options
-        for form in lecon_form:
-            lecon = Lecon(
-                        titre     = form['titre'],
-                        cours     = cours,
-                        contenu   = form['contenu'],
-                        prerequis = form['prerequis'],
-                        ordre     = form['ordre']
-                      )
-            lecon.save()
-            debut = datetime.combine(form['date_debut'], form['heure_debut'])
-            fin   = datetime.combine(form['date_fin'], form['heure_fin'])
-            option =  Option(
-                            lecon    = lecon,
-                            debut    = debut,
-                            fin      = fin,
-                            tarif    = form['tarif'],
-                            capacite = form['capacite'],
-
-              )
-            option.save()
-        # 3. On associe les sous-catégories au cours
-        for sous_categorie in categorie_form['sous_categorie']:
-            sous_categorie = SousCategorieCours(cours=cours, sous_categorie=sous_categorie)
-            sous_categorie.save()
-        # 4. On associe le cours au formateur qui l'a créé
-        formateur_cours = FormateurCours(cours=cours, formateur=self.request.user.formateur)
-        formateur_cours.save()
-        return redirect('dashboard-formateurs')
+def ajax_get_faculte(request, pk):
+    universite = University.objects.get(pk=pk)
+    faculte = Faculte.objects.filter(universite=universite)
+    faculte_dict=[]
+    [faculte_dict.append((each_faculte.pk,each_faculte.nom_complet)) for each_faculte in faculte]
+    return HttpResponse(simplejson.dumps(faculte_dict), content_type="application/json")

@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
-
+from django.template.loader import render_to_string
 import os
 from django.conf import settings
 from django.http import HttpResponse
 import json as simplejson
+from django.http import JsonResponse
+
 # import models
-from cours.models import Categorie, SousCategorie, Cours, SousCategorieCours, FormateurCours, Lecon, Option, SkillCours
+from cours.models import Categorie, SousCategorie, Cours, SousCategorieCours, FormateurCours, Lecon, Option, SkillCours, Matiere, MatiereCours
 from formateurs.models import Formateur
 from formateurs.forms import FormateurForm
-from cours.forms import CoursModelForm, LeconModelForm, OptionModelForm, SkillModelForm, IntroductionForm, ConfirmationForm, SousCategorieForm
+from cours.forms import CoursModelForm, LeconModelForm, OptionModelForm, SkillModelForm, IntroductionForm, ConfirmationForm, SousCategorieForm, SearchForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from formtools.wizard.views import WizardView, SessionWizardView
@@ -39,14 +41,29 @@ def detail_cours(request, pk):
     return render(request, 'cours/detail_cours.html', {"cours":cours})
 
 def courses_grid(request):
-    cours = Cours.objects.all()
     categories = Categorie.objects.all()
-    return render(request, 'cours/courses-grid-sidebar.html', {"cours":cours, "categories":categories})
+    form = SearchForm(request.POST or None)
+    cours = Cours.objects.all()
+    if form.is_valid():
+        universite_id = form.cleaned_data['universite']
+        faculte_id = form.cleaned_data['faculte']
+        annee = form.cleaned_data['annee']
+        matiere_id = form.cleaned_data['matiere']
+        cours = get_cours(universite_id, faculte_id, annee, matiere_id)
+    return render(request, 'cours/courses-grid-sidebar.html', {"cours":cours, "categories":categories, "form":form})
 
 def courses_list(request):
     cours = Cours.objects.all()
     categories = Categorie.objects.all()
-    return render(request, 'cours/courses-list-sidebar.html', {"cours":cours, "categories":categories})
+    form = SearchForm(request.POST or None)
+    cours = Cours.objects.all()
+    if form.is_valid():
+        universite_id = form.cleaned_data['universite']
+        faculte_id = form.cleaned_data['faculte']
+        annee = form.cleaned_data['annee']
+        matiere_id = form.cleaned_data['matiere']
+        cours = get_cours(universite_id, faculte_id, annee, matiere_id)
+    return render(request, 'cours/courses-list-sidebar.html', {"cours":cours, "categories":categories, "form":form})
 
 def detail_categorie_grid(request, pk):
     categorie = Categorie.objects.get(pk=pk)
@@ -282,4 +299,41 @@ def edit_competence(request, pk):
         return redirect('detail-cours-formateur', pk=competence.cours.pk)
     return render(request, 'cours/mes-competences/edit-competence.html', {"form":form})
 
+def get_cours(universite_id = None, faculte_id = None, annee = None, matiere_id = None):
+    cours = Cours.objects.all()
+    if universite_id:
+        cours = cours.filter(universite = universite_id)
+    if faculte_id:
+        cours = cours.filter(faculte = faculte_id)
+    if annee:
+        cours = cours.filter(annee = annee)
+    if matiere_id:
+        cours_ids = MatiereCours.objects.filter(matiere = matiere_id).values_list('cours', flat=True)
+        cours = cours.filter(id__in = cours_ids)
+    return cours
+
+def ajax_get_cours(request):
+    cours_html = ""
+    universite_id = request.POST['universite']
+    faculte_id = request.POST['faculte']
+    matiere_id = request.POST['matiere']
+    annee = request.POST['annee']
+    cours = get_cours(universite_id, faculte_id, annee, matiere_id)
+
+    for c in cours:
+        html = "<div class='col-md-6' style='display:flex;'>"
+        html += render_to_string('cours/snippets/card-cours-grid.html', {'instance': c})
+        html += "</div>"
+        cours_html += html
+    json_data = {
+        "cours_html": cours_html,
+    }
+    return JsonResponse(json_data, status=200)
+
+def ajax_get_faculte(request, pk):
+    universite = University.objects.get(pk=pk)
+    faculte = Faculte.objects.filter(universite=universite)
+    faculte_dict=[]
+    [faculte_dict.append((each_faculte.pk,each_faculte.nom_complet)) for each_faculte in faculte]
+    return HttpResponse(simplejson.dumps(faculte_dict), content_type="application/json")
 

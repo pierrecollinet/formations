@@ -794,10 +794,10 @@ ul#top_menu li a.btn_1:hover {
   -o-background-size: cover;
   background-size: cover;
 }
-#hero_in.general .wrapper {
+/*#hero_in.general .wrapper {
   background-color: #372675;
   background-color: rgba(57, 39, 121, 0.8);
-}
+}*/
 #hero_in.courses:before {
   background: url(http://via.placeholder.com/1600x1067/ccc/fff/bg_courses.jpg) center center no-repeat;
   -webkit-background-size: cover;
@@ -5048,7 +5048,7 @@ ul.list_3 li:before {
 /*============================================================================================*/
 /*-------- 3.1 Misc --------*/
 .form-control {
-  padding: 12px 12px;
+/*  padding: 12px 12px; */
   font-size: 14px;
   font-size: 0.875rem;
   -webkit-border-radius: 3px;

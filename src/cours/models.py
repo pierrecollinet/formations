@@ -49,6 +49,13 @@ class CoursManager(models.Manager):
     def all(self):
         return self.get_queryset().validated()
 
+ANNEES = (
+          ('ba1', 'BA1'),
+          ('ba2', 'BA2'),
+          ('ba3', 'BA3'),
+          ('ma1', 'MA1'),
+          ('ma2', 'MA2'),
+)
 class Cours(models.Model):
     titre              = models.CharField(max_length = 500)
     courte_description = models.TextField(blank = True, null = True)
@@ -59,6 +66,9 @@ class Cours(models.Model):
     total              = models.CharField(max_length=20, default="0")
     validated          = models.BooleanField(default = False)
     moyenne_review     = models.CharField(max_length=20, default="5")
+    faculte            = models.ForeignKey('apprenants.Faculte', on_delete=models.CASCADE,blank = True, null = True)
+    universite         = models.ForeignKey('apprenants.University', on_delete=models.CASCADE,blank = True, null = True)
+    annee              = models.CharField(max_length=20, blank = True, null = True, choices=ANNEES)
 
     objects = CoursManager()
     def __str__(self):
@@ -291,6 +301,21 @@ class CibleCours(models.Model):
 
     def __str__(self):
         return self.cours.titre + " - " + self.cible.nom
+
+class Matiere(models.Model):
+    nom = models.CharField(max_length=200)
+    icon = IconField()
+
+    def __str__(self):
+        return self.nom
+
+class MatiereCours(models.Model):
+    cours = models.ForeignKey(Cours, on_delete=models.CASCADE,)
+    matiere = models.ForeignKey(Matiere, on_delete=models.CASCADE,)
+
+    def __str__(self):
+        return self.cours.titre + " - " + self.matiere.nom
+
 
 
 

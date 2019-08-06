@@ -60,56 +60,9 @@
           <div id="filters_col"> <a data-toggle="collapse" href="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filters_col_bt">Filters </a>
             <div class="collapse show" id="collapseFilters">
               <div class="filter_type">
-                <h6>Categories</h6>
-                <ul>
-                  <li>
-                    <label>
-                      <input type="checkbox" class="icheck" checked><a href="{% url 'courses-grid' %}">Tout <small></small></a>
-                    </label>
-                  </li>
-                  {% for categorie in categories %}
-                  <li>
-                    <label>
-                      <input type="checkbox" class="icheck" checked><a href="{% url 'categorie-grid' pk=categorie.pk %}">{{ categorie.nom }} <small>({{ categorie.get_number_cours }})</small></a>
-                    </label>
-                  </li>
-                  {% endfor %}
-                </ul>
-              </div>
-              <div class="filter_type">
-                <h6>Rating</h6>
-                <ul>
-                  <li>
-                    <label>
-                      <input type="checkbox" class="icheck">
-                      <span class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i> <small>(145)</small></span>
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <input type="checkbox" class="icheck">
-                      <span class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i> <small>(25)</small></span>
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <input type="checkbox" class="icheck">
-                      <span class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i> <small>(68)</small></span>
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <input type="checkbox" class="icheck">
-                      <span class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i> <small>(34)</small></span>
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <input type="checkbox" class="icheck">
-                      <span class="rating"><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i><i class="icon_star"></i> <small>(10)</small></span>
-                    </label>
-                  </li>
-                </ul>
+                <form method="POST" enctype="multipart/form-data" class="search-form">{% csrf_token %}
+                    {% crispy form %}
+                </form>
               </div>
             </div>
             <!--/collapse -->
@@ -119,7 +72,7 @@
         <!-- /aside -->
 
         <div class="col-lg-9">
-          <div class="row" style="display:flex;">
+          <div class="row replace" style="display:flex;">
             {% if cours|length > 0%}
               {% for c in cours %}
               <div class="col-md-6" style="display:flex;">
@@ -192,5 +145,67 @@ $(function () {
         }, 2000);
     {% endif %}
 });
+
+  function display_facultes(){
+            var universite_id = $('#id_universite :selected').val();
+            $('#div_id_faculte').show()
+            request_url = '/apprenants/get_faculte/' + universite_id + '/';
+            $.ajax({
+                  url: request_url,
+                  success: function(json){
+                    var strResult;
+                    $('#div_id_faculte').empty();
+                    strResult = '<label for="id_faculte" class="control-label">'+
+                      'Faculté </label><br>'+
+                      '<select name="faculte" class="select form-control" required="" id="id_faculte">'+
+                      '<option value="" selected="">---------</option>'
+
+                      for(var j = 0; j < json.length; j++){
+                            strResult += '<option value="' + parseInt(json[j][0]) + '">' + json[j][1] +'</option>'
+                        }
+                        strResult += '</select>'
+                        $('#div_id_faculte').append(strResult)
+                  }
+            })
+  }
+
+  if ($('#id_universite').value){
+    display_facultes();
+  }
+  $('#id_universite').change(function() {
+    display_facultes();
+  });
+
+
+  var searchForm = $(".search-form")
+  var httpMethod = searchForm.attr("method");
+  var actionEndpoint = '/cours/ajax-get-cours/';
+
+  function ajax_display_cours() {
+      var formData = searchForm.serialize();
+      console.log(formData)
+      $.ajax({
+        url: actionEndpoint,
+        method: httpMethod,
+        data: formData,
+        success: function(data){
+            $('.replace').html(data.cours_html)
+        },
+        error: function(errorData){
+          $.alert({
+            title: "Oops!",
+            content: "Une erreur s'est produite.",
+            theme: "modern",
+          })
+        }
+      })
+    }
+
+  searchForm.change(function() {
+      ajax_display_cours()
+  });
 </script>
+
+
 {% endblock %}
+

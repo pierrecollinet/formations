@@ -33,4 +33,6 @@ def become_partenaire(request):
         print('error')
     return render(request, 'partenaires/become_partenaire.html', {'form':form})
 
+def nos_salles(request):
 
+    return render(request, 'partenaires/nos_salles.html', {})

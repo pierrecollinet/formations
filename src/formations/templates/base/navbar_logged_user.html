@@ -1,7 +1,10 @@
 {% load static %}
   <header class="header menu_2">
     <div id="preloader" style="display: flex;align-items: center;justify-content: center;"">
-      <div class="col-xs-12"><p style="color:black; width:100%;">{{ encouragement }}</p><br></div>
+      <div class="col-xs-12">
+        <p style="color:black; width:100%;"><i>{{ encouragement.proverbe }}</i></p>
+        <p>{{ encouragement.auteur }}</p>
+      </div>
       <div data-loader="circle-side"></div>
     </div><!-- /Preload -->
     <div id="logo">
@@ -46,7 +49,7 @@
               </div>
           </form>
         </li>
-        <li><span><a href="{% url 'become-teacher' %}">Enseigner</a></span></li>
+        <li><span><a href="{% url 'why-become-teacher' %}">Enseigner</a></span></li>
         <li><span><a href="#0">{{ request.user.username }} <i class="icon-down-open"></i></a></span>
           <ul>
             <li><a href="{% url 'dashboard-student' %}">Tableau de bord</a></li>

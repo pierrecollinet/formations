@@ -6,8 +6,9 @@ from django.contrib import messages
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 
+from cours.forms import SearchForm
 from cours.models import Cours, Categorie, Lecon, SousCategorie, Cible, CibleCours
-from formations.models import Prospect
+from formations.models import Prospect, CategorieFaq
 from formations.forms import ContactForm
 
 def welcome(request):
@@ -44,14 +45,16 @@ def about(request):
     return render(request, 'about.html', {})
 
 def faq(request):
-    return render(request, 'faq.html', {})
+    categories = CategorieFaq.objects.all()
+    return render(request, 'faq.html', {"categories":categories})
 
 def terms_and_conditions(request):
     return render(request, 'terms_and_conditions.html', {})
 
 def search(request):
     all_cours = set()
-    if 'q' in request.GET :
+    form = SearchForm(request.POST or None)
+    if 'q' in request.GET and request.GET['q'] != "":
         query = request.GET['q']
         cours = Cours.objects.filter(
                                   Q(titre__icontains=query)|
@@ -76,7 +79,7 @@ def search(request):
         cible = Cible.objects.get(pk=pk)
         cible_cours_pk = CibleCours.objects.filter(cible=cible).values_list('cours', flat=True)
         all_cours = Cours.objects.filter(pk__in = cible_cours_pk)
-    return render(request, 'cours/courses-grid-sidebar.html', {"cours":all_cours, "anchor":"courses"})
+    return render(request, 'cours/courses-grid-sidebar.html', {"cours":all_cours, "anchor":"courses", "form":form})
 
 def newsletter(request):
     if 'email_newsletter' in request.POST:

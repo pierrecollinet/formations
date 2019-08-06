@@ -14,12 +14,12 @@ class University(models.Model):
 class Faculte(models.Model):
     nom_complet = models.CharField(max_length = 200)
     abreviation = models.CharField(max_length = 200, blank=True, null=True)
-    univerite   = models.ForeignKey(University, on_delete=models.CASCADE,)
+    universite   = models.ForeignKey(University, on_delete=models.CASCADE,)
     icon        = IconField(blank=True, null=True)
     logo        = models.ImageField(upload_to = 'mes_images/', blank=True, null=True)
 
     def __str__(self):
-        return self.nom
+        return self.nom_complet
 
 ANNEES = (
           ('ba1', 'BA1'),
